@@ -48,6 +48,27 @@
 
             actualizarHora();
             setInterval(actualizarHora, 1000);
+
+
+            // Obtener el elemento input
+            const dniInput = document.getElementById('dni');
+
+            // Capturar el evento 'keydown' en el input
+            dniInput.addEventListener('keydown', function(event) {
+                if (event.key === 'Enter') {
+                    event.preventDefault(); // Evitar el comportamiento por defecto del Enter
+                    document.querySelector('form').submit(); // Enviar el formulario
+                    dniInput.focus(); // Volver a enfocar el input
+                }
+            });
+
+            // También volver a enfocar después del envío del formulario
+            document.querySelector('form').addEventListener('submit', function() {
+                setTimeout(() => {
+                    dniInput.focus();
+                    dniInput.value = ''; // Opcional: Limpiar el campo después del envío
+                }, 100);
+            });
         </script>
     </body>
 </html>
