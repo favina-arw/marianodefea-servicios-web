@@ -1,0 +1,40 @@
+body {
+    background: url("../images/japanese-lofi-cafe.jpg") no-repeat center center fixed;
+    background-size: cover;
+    height: 100vh;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Opcional: Capa de oscurecimiento para mejorar la legibilidad del formulario */
+body::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Ajusta la opacidad según sea necesario */
+    z-index: 0;
+    pointer-events: none;  /* ✅ Permite que los clics pasen a los elementos debajo */
+}
+
+.login-container {
+    position: relative;
+    z-index: 1; /* Para que el formulario quede por encima del fondo */
+}
+
+.login-form {
+    background: rgba(255, 255, 255, 0.8); /* Fondo semitransparente */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Asegurar que el contenido se vea sobre la capa de fondo */
+.container {
+    position: relative;
+    z-index: 1;
+}

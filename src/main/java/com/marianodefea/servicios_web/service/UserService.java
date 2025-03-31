@@ -40,4 +40,9 @@ public class UserService implements IUserService{
     public String encryptPassword(String password) {
         return new BCryptPasswordEncoder().encode(password);
     }
+
+    @Override
+    public boolean existsByCuil(String cuil) {
+        return userRepository.existsByCuil(cuil);
+    }
 }

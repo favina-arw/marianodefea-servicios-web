@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>Crear agente</title>
+        <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+        <link rel="stylesheet" th:href="@{/css/styles.css}">
+    </head>
+    <body>
+        <div th:insert="~{fragments/toast.html}"></div>
+        <div class="login-container d-flex justify-content-center align-items-center vh-100">
+                <div class="login-form p-4 bg-white rounded shadow" style="max-width: 400px; width: 100%;">
+                    <h3 class="text-center mb-4">Crear Agente</h3>
+                    <form th:action="@{/agentes/crearAgente}" method="POST">
+                        <div class="mb-3">
+                            <label for="dni" class="form-label">DNI</label>
+                            <input type="text" class="form-control" id="dni" name="dni" required>
+                            <label for="cuil" class="form-label">CUIL/CUIT</label>
+                            <input type="text" class="form-control" id="cuil" name="cuil">
+                        </div>
+                        <div class="mb-3">
+                            <label for="nombre" class="form-label">Nombre/s</label>
+                            <input type="text" class="form-control" id="nombre" name="nombre" required>
+                            <label for="apellido" class="form-label">Apellido/s</label>
+                            <input type="text" class="form-control" id="apellido" name="apellido" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">CREAR AGENTE</button>
+                    </form>
+                </div>
+            </div>
+        <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+    </body>
+</html>

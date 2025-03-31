@@ -8,10 +8,12 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class UserDetailsServiceImp implements UserDetailsService {
 
     @Autowired
@@ -20,8 +22,9 @@ public class UserDetailsServiceImp implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String cuil) throws UsernameNotFoundException {
-        UserSec userSec = userRepository.findUserEntityByCuil(cuil).orElseThrow(() -> new UsernameNotFoundException("El usuario: " + cuil + " no fue encontrado."));
-
+        System.out.println("Entre al loadUserByUsername");
+        UserSec userSec = userRepository.findByCuil(cuil).orElseThrow(() -> new UsernameNotFoundException("El usuario: " + cuil + " no fue encontrado."));
+        System.out.println(userSec + "-----------------------------------------");
         List<SimpleGrantedAuthority> authorityList = new ArrayList<>();
 
         userSec.getRolesList()

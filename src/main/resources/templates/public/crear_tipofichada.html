@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Tipo de Fichadas</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+<div th:insert="~{fragments/toast.html}"></div>
+<div class="login-container d-flex justify-content-center align-items-center vh-100">
+    <div class="login-form p-4 bg-white rounded shadow" style="max-width: 400px; width: 100%;">
+        <h3 class="text-center mb-4">Crear Tipo de Fichada</h3>
+        <form th:action="@{/fichada/crearTipoFichada}" method="POST">
+            <div class="mb-3">
+                <label for="identificador" class="form-label">Identificador</label>
+                <input type="text" class="form-control" id="identificador" name="identificador" required>
+                <label for="nombre" class="form-label">Nombre</label>
+                <input type="text" class="form-control" id="nombre" name="nombre" required>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">CREAR TIPO DE FICHADA</button>
+        </form>
+    </div>
+</div>
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>

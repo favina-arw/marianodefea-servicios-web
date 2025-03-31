@@ -1,0 +1,30 @@
+<div th:if="${error}" class="toast toast-error">
+    <span th:text="${error}"></span>
+</div>
+
+<div th:if="${success}" class="toast toast-success">
+    <span th:text="${success}"></span>
+</div>
+
+<style>
+    .toast {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 15px;
+        border-radius: 8px;
+        color: white;
+        font-weight: bold;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        animation: fadeOut 4s forwards;
+    }
+
+    .toast-error { background-color: #ff4d4d; }
+    .toast-success { background-color: #28a745; }
+
+    @keyframes fadeOut {
+        0% { opacity: 1; }
+        80% { opacity: 1; }
+        100% { opacity: 0; }
+    }
+</style>

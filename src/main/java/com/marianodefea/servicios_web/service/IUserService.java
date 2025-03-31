@@ -12,4 +12,5 @@ public interface IUserService {
     void deleteById(Long id);
     UserSec update(UserSec userSec);
     String encryptPassword(String password);
+    boolean existsByCuil(String cuil);
 }

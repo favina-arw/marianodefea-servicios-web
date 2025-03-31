@@ -7,5 +7,6 @@ import java.util.Optional;
 
 public interface IUserRepository extends JpaRepository<UserSec, Long> {
 
-    Optional<UserSec> findUserEntityByCuil(String cuil);
+    Optional<UserSec> findByCuil(String cuil);
+    boolean existsByCuil(String cuil);
 }
