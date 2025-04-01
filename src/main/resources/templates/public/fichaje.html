@@ -49,34 +49,23 @@
             actualizarHora();
             setInterval(actualizarHora, 1000);
 
-
-            // Obtener el elemento input
-            const dniInput = document.getElementById('dni');
-            const form = document.querySelector('form');
             
-            // Capturar el evento 'keydown' en el input
-            dniInput.addEventListener('keydown', function (event) {
-                if (event.key === 'Enter') {
-                    event.preventDefault(); // Evitar la recarga por defecto
-                    
-                    // Enviar el formulario sin recargar la página (opcional: usar fetch/AJAX aquí)
-                    form.requestSubmit(); 
-                    
-                    // Asegurar que el foco vuelva al input después del envío
-                    setTimeout(() => {
-                        dniInput.focus();
-                        dniInput.value = ''; // Limpiar el campo después del envío
-                    }, 100);
-                }
+            document.addEventListener("DOMContentLoaded", function () {
+                const dniInput = document.getElementById("dni");
+            
+                dniInput.addEventListener("keydown", function (event) {
+                    if (event.key === "Enter") {
+                        setTimeout(() => {
+                            dniInput.focus();
+                            dniInput.value = ""; // Limpiar el campo después del envío
+                        }, 100);
+                    }
+                });
+            
+                window.addEventListener("load", function () {
+                    dniInput.focus(); // Asegurar que el input tenga el foco tras la recarga
+                });
             });
-            
-            // También volver a enfocar después del envío del formulario
-            form.addEventListener('submit', function (event) {
-                event.preventDefault(); // Evitar la recarga de la página
-                setTimeout(() => {
-                    dniInput.focus();
-                    dniInput.value = ''; // Limpiar el campo después del envío
-                }, 100);
         </script>
     </body>
 </html>
