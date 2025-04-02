@@ -7,18 +7,11 @@
         <link rel="stylesheet" th:href="@{/css/styles.css}">
     </head>
     <body>
-        <div class="container mt-5">
+        <div th:insert="~{fragments/toast.html}"></div>
+        <div class="container bg-white rounded shadow" style="max-width: 600px; width: 100%;">
             <div class="row justify-content-center">
-                <div class="col-md-6">
+                <div class="col-md-9">
                     <h2 class="text-center">Registro de Usuario</h2>
-
-                    <div th:if="${error}" class="alert alert-danger" role="alert">
-                        <p th:text="${error}"></p>
-                    </div>
-                    <div th:if="${success}" class="alert alert-success" role="alert">
-                        <p th:text="${success}"></p>
-                    </div>
-
                     <form th:action="@{/register}" method="post">
                         <div class="mb-3">
                             <label for="cuil" class="form-label">CUIL</label>
@@ -32,7 +25,7 @@
                             <label for="confirmPassword" class="form-label">Confirmar Contraseña</label>
                             <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
                         </div>
-                        <button type="submit" class="btn btn-primary w-100">Registrarse</button>
+                        <button type="submit" class="btn btn-primary w-100">REGISTRARSE</button>
                     </form>
                     <p class="text-center mt-3">¿Ya tienes una cuenta? <a th:href="@{/login}">Inicia sesión</a></p>
                 </div>

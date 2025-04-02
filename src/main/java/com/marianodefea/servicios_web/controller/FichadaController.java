@@ -54,7 +54,7 @@ public class FichadaController {
 
             if(fichadasDeAgente.isEmpty()) {
                 tipoFichada = 'E';
-                mensaje = "¡Bienvenido/a, " + agente.get().getNombre() + "!";
+                mensaje = "¡Hola, " + agente.get().getApellido() + ", " + agente.get().getNombre() + "!";
 
                 Fichada nuevaFichada = new Fichada();
                 nuevaFichada.setAgente(agente.get());
@@ -67,20 +67,11 @@ public class FichadaController {
             }
 
             if(fichadasDeAgente.get(0).getTipoFichada().getIdentificador().equals('E')){
-                System.out.println("Identidicador de última fichada equals 'E'");
-                System.out.println(fichadasDeAgente.get(0).getId());
-                System.out.println(fichadasDeAgente.get(0).getTipoFichada().getIdentificador());
-                System.out.println(fichadasDeAgente.get(0).getTipoFichada().getIdentificador().equals('E'));
                 tipoFichada = 'S';
                 mensaje = "¡Adiós, " + agente.get().getApellido() + ", "+ agente.get().getNombre() + "!";
-
             }else {
-                System.out.println("ELSE - Identidicador de última fichada equals 'S'");
-                System.out.println(fichadasDeAgente.get(0).getId());
-                System.out.println(fichadasDeAgente.get(0).getTipoFichada().getIdentificador());
-                System.out.println(fichadasDeAgente.get(0).getTipoFichada().getIdentificador().equals('E'));
                 tipoFichada = 'E';
-                mensaje = "¡Bienvenido/a, " + agente.get().getApellido() + ", "+ agente.get().getNombre() + "!";
+                mensaje = "¡Hola, " + agente.get().getApellido() + ", "+ agente.get().getNombre() + "!";
             }
 
             Fichada nuevaFichada = new Fichada();
@@ -104,7 +95,7 @@ public class FichadaController {
 
             if(fichadasDeAgente.isEmpty()) {
                 tipoFichada = 'E';
-                mensaje = "¡Bienvenido/a, " + agente.get().getNombre() + "!";
+                mensaje = "¡Hola, " + agente.get().getApellido() + ", " + agente.get().getNombre() + "!";
 
                 Fichada nuevaFichada = new Fichada();
                 nuevaFichada.setAgente(agente.get());
@@ -117,20 +108,13 @@ public class FichadaController {
             }
 
             if(fichadasDeAgente.get(0).getTipoFichada().getIdentificador().equals('E')){
-                System.out.println("Identidicador de última fichada equals 'E'");
-                System.out.println(fichadasDeAgente.get(0).getId());
-                System.out.println(fichadasDeAgente.get(0).getTipoFichada().getIdentificador());
-                System.out.println(fichadasDeAgente.get(0).getTipoFichada().getIdentificador().equals('E'));
                 tipoFichada = 'S';
                 mensaje = "¡Adiós, " + agente.get().getApellido() + ", "+ agente.get().getNombre() + "!";
 
             }else {
                 System.out.println("ELSE - Identidicador de última fichada equals 'S'");
-                System.out.println(fichadasDeAgente.get(0).getId());
-                System.out.println(fichadasDeAgente.get(0).getTipoFichada().getIdentificador());
-                System.out.println(fichadasDeAgente.get(0).getTipoFichada().getIdentificador().equals('E'));
                 tipoFichada = 'E';
-                mensaje = "¡Bienvenido/a, " + agente.get().getApellido() + ", "+ agente.get().getNombre() + "!";
+                mensaje = "¡Hola, " + agente.get().getApellido() + ", " + agente.get().getNombre() + "!";
             }
 
             Fichada nuevaFichada = new Fichada();

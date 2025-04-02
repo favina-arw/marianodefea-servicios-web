@@ -48,7 +48,7 @@ public class SecurityConfig {
                         .defaultSuccessUrl("/fichada", true)
                         .failureHandler((request, response, exception) -> {
                             System.out.println("Error de autenticación: " + exception.getMessage());
-                            response.sendRedirect("/login?error=true");
+                            response.sendRedirect("/login?error=true&errorMessage=" + exception.getMessage()); // Añade el mensaje de error
                         })
                         .permitAll()
                 )
@@ -70,6 +70,11 @@ public class SecurityConfig {
         return new UserDetailsServiceImp();
     }
 
+    @Bean
+    public PasswordEncoder passwordEncoder(){
+        return new BCryptPasswordEncoder();
+    }
+
 
     @Bean
     public AuthenticationProvider authenticationProvider (UserDetailsService userDetailsService){
@@ -80,8 +85,6 @@ public class SecurityConfig {
         return provider;
     }
 
-    @Bean
-    public PasswordEncoder passwordEncoder(){
-        return new BCryptPasswordEncoder();
-    }
+
+
 }

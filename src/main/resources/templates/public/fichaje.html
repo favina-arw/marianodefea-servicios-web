@@ -22,14 +22,21 @@
                     <h5><span id="hora-actual" class="fw-bold"></span></h5>
                 </div>
                 <div th:insert="~{fragments/toast.html}"></div>
-                <form th:action="@{/fichada}" method="POST">
+
+                <form th:action="@{/fichada}" method="POST" id="fichadaForm">
                     <div class="mb-3">
                         <label for="dni" class="form-label">DNI/CUIL/CUIT</label>
                         <input type="text" class="form-control" id="dni" name="dni" required>
                     </div>
 
-                    <button type="submit" class="btn btn-primary w-100">FICHAR</button>
+                    <button type="submit" class="btn btn-primary w-100" id="ficharBtn">FICHAR</button>
+
+                    <button class="btn btn-primary w-100" type="button" disabled id="loadingBtn" style="display: none;">
+                        <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                        <span role="status">Cargando...</span>
+                    </button>
                 </form>
+
             </div>
         </div>
         <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
@@ -48,6 +55,11 @@
 
             actualizarHora();
             setInterval(actualizarHora, 1000);
+
+            document.getElementById('fichadaForm').addEventListener('submit', function() {
+                document.getElementById('ficharBtn').style.display = 'none';
+                document.getElementById('loadingBtn').style.display = 'block';
+            });
 
             
             document.addEventListener("DOMContentLoaded", function () {

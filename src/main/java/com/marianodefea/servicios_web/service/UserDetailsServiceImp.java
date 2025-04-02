@@ -22,9 +22,7 @@ public class UserDetailsServiceImp implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String cuil) throws UsernameNotFoundException {
-        System.out.println("Entre al loadUserByUsername");
         UserSec userSec = userRepository.findByCuil(cuil).orElseThrow(() -> new UsernameNotFoundException("El usuario: " + cuil + " no fue encontrado."));
-        System.out.println(userSec + "-----------------------------------------");
         List<SimpleGrantedAuthority> authorityList = new ArrayList<>();
 
         userSec.getRolesList()
