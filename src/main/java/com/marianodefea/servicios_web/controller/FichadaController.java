@@ -22,6 +22,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -100,18 +101,28 @@ public class FichadaController {
 
     @PreAuthorize("permitAll()")
     @GetMapping("/fichador")
-    public String ingresarFichada(){
+    public String ingresarFichada(Model model){
+        if (model.containsAttribute("in")) {
+            String atributoIn = (String) model.getAttribute("in");
+            model.addAttribute("in", atributoIn); // Vuelve a agregar al modelo para la vista
+        } else if (model.containsAttribute("out")) {
+            String atributoOut = (String) model.getAttribute("out");
+            model.addAttribute("out", atributoOut);
+        } else if (model.containsAttribute("error")) {
+            String atributoError = (String) model.getAttribute("error");
+            model.addAttribute("error", atributoError);
+        }
         return "public/fichaje";
     }
 
     @PreAuthorize("permitAll()")
     @PostMapping()
-    public String ficharAgente(@RequestParam String dni, Model model){
+    public String ficharAgente(@RequestParam String dni, Model model, RedirectAttributes redirectAttributes){
         if (dni.length() <= 8){
             Optional<Agente> agente = agenteService.findByDni(dni);
             if (agente.isEmpty()) {
-                model.addAttribute("error", "No se encuantra Agente con DNI: " + dni + "");
-                return "public/fichaje";
+                redirectAttributes.addFlashAttribute("error", "No se encuantra Agente con DNI: " + dni + "");
+                return "redirect:/fichada/fichador";
             }
 
             List<Fichada> fichadasDeAgente = agente.get().getFichadas();
@@ -121,7 +132,7 @@ public class FichadaController {
 
             if(fichadasDeAgente.isEmpty()) {
                 tipoFichada = 'E';
-                mensaje = "¡Hola, " + agente.get().getApellido().toUpperCase() + ", " + agente.get().getNombre().toUpperCase() + "!";
+                mensaje = "¡Hola! ¡" + agente.get().getApellido().toUpperCase() + ", " + agente.get().getNombre().toUpperCase() + "!";
 
                 Fichada nuevaFichada = new Fichada();
                 nuevaFichada.setAgente(agente.get());
@@ -129,16 +140,16 @@ public class FichadaController {
                 nuevaFichada.setHora(LocalDateTime.now());
                 Fichada fichadaParaRetornar = fichadaService.save(nuevaFichada);
                 String horaFormateada = fichadaParaRetornar.getHora().format(formatter);
-                model.addAttribute("success", mensaje + " - Hora: " + horaFormateada);
-                return "public/fichaje";
+                redirectAttributes.addFlashAttribute("in", mensaje + " - Hora: " + horaFormateada);
+                return "redirect:/fichada/fichador";
             }
 
             if(fichadasDeAgente.get(0).getTipoFichada().getIdentificador().equals('E')){
                 tipoFichada = 'S';
-                mensaje = "¡Adiós, " + agente.get().getApellido().toUpperCase() + ", "+ agente.get().getNombre().toUpperCase() + "!";
+                mensaje = "¡Adiós! ¡" + agente.get().getApellido().toUpperCase() + ", "+ agente.get().getNombre().toUpperCase() + "!";
             }else {
                 tipoFichada = 'E';
-                mensaje = "¡Hola, " + agente.get().getApellido().toUpperCase() + ", "+ agente.get().getNombre().toUpperCase() + "!";
+                mensaje = "¡Hola! ¡" + agente.get().getApellido().toUpperCase() + ", "+ agente.get().getNombre().toUpperCase() + "!";
             }
 
             Fichada nuevaFichada = new Fichada();
@@ -147,12 +158,17 @@ public class FichadaController {
             nuevaFichada.setHora(LocalDateTime.now());
             Fichada fichadaParaRetornar = fichadaService.save(nuevaFichada);
             String horaFormateada = fichadaParaRetornar.getHora().format(formatter);
-            model.addAttribute("success", mensaje + " - Hora: " + horaFormateada);
+
+            if(fichadaParaRetornar.getTipoFichada().getIdentificador().equals('E')) {
+                redirectAttributes.addFlashAttribute("in", mensaje + " - Hora: " + horaFormateada);
+            }else {
+                redirectAttributes.addFlashAttribute("out", mensaje + " - Hora: " + horaFormateada);
+            }
         }else{
             Optional<Agente> agente = agenteService.findByCuil(dni);
             if (agente.isEmpty()) {
-                model.addAttribute("error", "No se encuantra Agente con CUIL/T: " + dni + "");
-                return "public/fichaje";
+                redirectAttributes.addFlashAttribute("error", "No se encuantra Agente con DNI: " + dni + "");
+                return "redirect:/fichada/fichador";
             }
 
             List<Fichada> fichadasDeAgente = agente.get().getFichadas();
@@ -162,7 +178,7 @@ public class FichadaController {
 
             if(fichadasDeAgente.isEmpty()) {
                 tipoFichada = 'E';
-                mensaje = "¡Hola, " + agente.get().getApellido().toUpperCase() + ", " + agente.get().getNombre().toUpperCase() + "!";
+                mensaje = "¡Hola! ¡" + agente.get().getApellido().toUpperCase() + ", " + agente.get().getNombre().toUpperCase() + "!";
 
                 Fichada nuevaFichada = new Fichada();
                 nuevaFichada.setAgente(agente.get());
@@ -170,17 +186,17 @@ public class FichadaController {
                 nuevaFichada.setHora(LocalDateTime.now());
                 Fichada fichadaParaRetornar = fichadaService.save(nuevaFichada);
                 String horaFormateada = fichadaParaRetornar.getHora().format(formatter);
-                model.addAttribute("success", mensaje + " - Hora: " + horaFormateada);
-                return "public/fichaje";
+                redirectAttributes.addFlashAttribute("in", mensaje + " - Hora: " + horaFormateada);
+                return "redirect:/fichada/fichador";
             }
 
             if(fichadasDeAgente.get(0).getTipoFichada().getIdentificador().equals('E')){
                 tipoFichada = 'S';
-                mensaje = "¡Adiós, " + agente.get().getApellido().toUpperCase() + ", "+ agente.get().getNombre().toUpperCase() + "!";
+                mensaje = "¡Adiós! ¡" + agente.get().getApellido().toUpperCase() + ", "+ agente.get().getNombre().toUpperCase() + "!";
 
             }else {
                 tipoFichada = 'E';
-                mensaje = "¡Hola, " + agente.get().getApellido().toUpperCase() + ", " + agente.get().getNombre().toUpperCase() + "!";
+                mensaje = "¡Hola! ¡" + agente.get().getApellido().toUpperCase() + ", " + agente.get().getNombre().toUpperCase() + "!";
             }
 
             Fichada nuevaFichada = new Fichada();
@@ -189,9 +205,13 @@ public class FichadaController {
             nuevaFichada.setHora(LocalDateTime.now());
             Fichada fichadaParaRetornar = fichadaService.save(nuevaFichada);
             String horaFormateada = fichadaParaRetornar.getHora().format(formatter);
-            model.addAttribute("success", mensaje + " - Hora: " + horaFormateada);
+            if(fichadaParaRetornar.getTipoFichada().getIdentificador().equals('E')) {
+                redirectAttributes.addFlashAttribute("in", mensaje + " - Hora: " + horaFormateada);
+            }else {
+                redirectAttributes.addFlashAttribute("out", mensaje + " - Hora: " + horaFormateada);
+            }
         }
-        return "public/fichaje";
+        return "redirect:/fichada/fichador";
     }
 
 }
