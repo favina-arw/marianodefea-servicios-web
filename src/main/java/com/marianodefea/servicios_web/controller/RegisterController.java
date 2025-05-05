@@ -3,7 +3,6 @@ package com.marianodefea.servicios_web.controller;
 import com.marianodefea.servicios_web.model.security.UserSec;
 import com.marianodefea.servicios_web.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,7 +17,7 @@ public class RegisterController {
 
     @GetMapping("/register")
     public String showRegisterForm() {
-        return "register";
+        return "public/register";
     }
 
     @PostMapping("/register")
@@ -29,12 +28,12 @@ public class RegisterController {
 
         if (!password.equals(confirmPassword)) {
             model.addAttribute("error", "Las contraseñas no coinciden");
-            return "register";
+            return "public/register";
         }
 
         if (userService.existsByCuil(cuil)) {
             model.addAttribute("error", "El nombre de usuario ya está en uso");
-            return "register";
+            return "public/register";
         }
 
         UserSec newUser = new UserSec();
@@ -43,6 +42,6 @@ public class RegisterController {
         userService.save(newUser);
 
         model.addAttribute("success", "Registro exitoso. Ahora puedes iniciar sesión.");
-        return "register";
+        return "public/register";
     }
 }

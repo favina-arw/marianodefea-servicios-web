@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+    <!-- Fragmento de scripts -->
+    <th:block th:fragment="scripts">
+        <!-- Script del sidebar colapsable -->
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const toggleBtn = document.getElementById('toggle-sidebar');
+                const sidebar = document.querySelector('.sidebar');
+
+                if(toggleBtn && sidebar) {
+                    toggleBtn.addEventListener('click', () => {
+                        sidebar.classList.toggle('collapsed');
+                        sidebar.style.width = sidebar.classList.contains('collapsed') ? '80px' : '250px';
+                    });
+                }
+            });
+
+            document.addEventListener('DOMContentLoaded', function() {
+                const sidebar = document.querySelector('.sidebar');
+                const toggleBtn = document.getElementById('toggle-sidebar');
+
+                // Cargar estado guardado
+                if(localStorage.getItem('sidebarCollapsed') === 'true') {
+                    sidebar.classList.add('collapsed');
+                    sidebar.style.width = '80px';
+                }
+
+                // Manejar clic
+                toggleBtn?.addEventListener('click', () => {
+                    const isCollapsed = sidebar.classList.toggle('collapsed');
+                    sidebar.style.width = isCollapsed ? '80px' : '250px';
+                    localStorage.setItem('sidebarCollapsed', isCollapsed);
+                });
+            });
+
+        </script>
+
+        <!-- Otros scripts globales -->
+        <script src="/js/app.js"></script>
+
+        <!-- DataTables CSS -->
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+
+        <!-- jQuery (necesario para DataTables) -->
+        <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+
+        <!-- DataTables JS -->
+        <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+    </th:block>
+    </body>
+</html>

@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorate="~{layouts/dashboard}">
     <head>
         <meta charset="UTF-8">
         <title>Crear agente</title>
-        <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
-        <link rel="stylesheet" th:href="@{/css/styles.css}">
     </head>
     <body>
-        <div th:insert="~{fragments/toast.html}"></div>
-        <div class="login-container d-flex justify-content-center align-items-center vh-100">
+        <main layout:fragment="content">
+            <div class="login-container d-flex justify-content-center align-items-center vh-100">
                 <div class="login-form p-4 bg-white rounded shadow" style="max-width: 400px; width: 100%;">
                     <h3 class="text-center mb-4">Crear Agente</h3>
                     <form th:action="@{/agentes/crearAgente}" method="POST">
@@ -28,6 +28,6 @@
                     </form>
                 </div>
             </div>
-        <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+        </main>
     </body>
 </html>

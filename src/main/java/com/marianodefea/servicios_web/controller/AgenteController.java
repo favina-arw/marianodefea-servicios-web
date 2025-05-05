@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/agentes")
 public class AgenteController {
@@ -18,9 +20,16 @@ public class AgenteController {
     @Autowired
     AgenteService agenteService;
 
+    @GetMapping("/")
+    public String listarAgentes(Model model){
+        List<Agente> agentes = agenteService.findAll();
+        model.addAttribute("agentes", agentes);
+        return "user/listar_agentes";
+    }
+
     @GetMapping("/crearAgente")
     public String crearAgenteFormulario(){
-        return "crear_agente";
+        return "user/crear_agente";
     }
 
     @PostMapping("/crearAgente")
@@ -43,6 +52,8 @@ public class AgenteController {
             return "agentes/crear_agente";
         }
         model.addAttribute("success", "Agente: " + agenteCreado.getNombre() + ", " + agenteCreado.getApellido() + ". Creado con éxito.");
-        return "public/fichaje";
+        return "redirect:/agentes/";
     }
+
+
 }

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorate="~{layouts/dashboard}">
+
+<head>
+  <title>Listado de Agentes</title>
+</head>
+
+<body>
+<main layout:fragment="content">
+  <a th:href="@{/agentes/crearAgente}" class="btn btn-success d-flex flex-column align-items-center justify-content-center p-3" style="width: 100px; height: 100px;">
+    <i class="fas fa-user-plus fa-2x mb-2"></i>
+    <span class="fw-bold">Agregar Agente</span>
+  </a>
+  <br>
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <h4 class="card-title mb-3">Listado de Agentes</h4>
+      <hr>
+      <table class="table table-striped mt-0 mb-0">
+        <thead>
+        <tr>
+          <th>NOMBRE</th>
+          <th>APELLIDO</th>
+          <th>DNI</th>
+          <th>CUIT</th>
+          <th>CARGO</th>
+          <th>HORA ENTRADA</th>
+          <th>HORA SALIDA</th>
+          <th>ACCIONES</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="agente : ${agentes}">
+          <td th:text="${agente.nombre}"></td>
+          <td th:text="${agente.apellido}"></td>
+          <td th:text="${agente.dni}"></td>
+          <td th:text="${agente.cuil}"></td>
+          <td th:text="${agente.cargo}"></td>
+          <td> - </td>
+          <td> - </td>
+          <td> - </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</main>
+</body>
+
+</html>

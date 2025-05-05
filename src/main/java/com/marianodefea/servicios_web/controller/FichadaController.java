@@ -1,22 +1,33 @@
 package com.marianodefea.servicios_web.controller;
 
+import com.marianodefea.servicios_web.dto.FichadaDTO;
 import com.marianodefea.servicios_web.dto.TipoFichadaDTO;
 import com.marianodefea.servicios_web.model.Agente;
 import com.marianodefea.servicios_web.model.fichada.Fichada;
 import com.marianodefea.servicios_web.model.fichada.TipoFichada;
+import com.marianodefea.servicios_web.repository.IFichadaRepository;
 import com.marianodefea.servicios_web.service.AgenteService;
 import com.marianodefea.servicios_web.service.FichadaService;
+import com.marianodefea.servicios_web.service.InformeService;
 import com.marianodefea.servicios_web.service.TipoFichadaService;
+import com.marianodefea.servicios_web.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/fichada")
@@ -31,8 +42,64 @@ public class FichadaController {
     @Autowired
     private AgenteService agenteService;
 
+    @Autowired
+    private InformeService informeService;
+
+    @GetMapping("/listarFichadas")
+    public String listarFichadas(
+            @RequestParam(required = false) String nombre,
+            @RequestParam(required = false) String apellido,
+            @RequestParam(required = false) String tipoFichada,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaDesde,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaHasta,
+            @RequestParam(required = false) String dni,
+            @RequestParam(defaultValue = "0") int page,
+            Model model
+    ){
+        Pageable pageable = PageRequest.of(page, 10, Sort.by("hora").descending());
+        Page<Fichada> fichadas = fichadaService.buscarFichadas(nombre, apellido, tipoFichada, fechaDesde, fechaHasta, dni, pageable);
+
+        model.addAttribute("fichadas", fichadas);
+        model.addAttribute("nombre", nombre);
+        model.addAttribute("apellido", apellido);
+        model.addAttribute("tipoFichada", tipoFichada);
+        model.addAttribute("fechaDesde", fechaDesde);
+        model.addAttribute("fechaHasta", fechaHasta);
+        model.addAttribute("dni", dni);
+        return "user/listar_fichadas";
+    }
+
+    @GetMapping("/informeAsistenciaMensual")
+    public String mostrarInforme(Model model){
+        Map<Agente, Map<LocalDate, String>> informe = informeService.generarInformeAsistenciaMensual();
+
+        LocalDate inicio = DateUtils.getPrimerDiaDelMesAnterior();
+        LocalDate fin = DateUtils.getUltimoDiaDelMesAnterior();
+
+        List<LocalDate> dias = DateUtils.getDiasLaborablesPorRango(inicio, fin);
+        List<LocalDate> diasHabiles = new ArrayList<>(informe.values().iterator().next().keySet());
+        model.addAttribute("diasHabiles", diasHabiles);
+        model.addAttribute("informe", informe);
+        return "user/motrar_informe_asistencia_mensual";
+    }
+
+    @GetMapping("/crearTipoFichada")
+    public String createTipoFichada(){
+        return "user/crear_tipofichada";
+    }
+
+    @PostMapping("crearTipoFichada")
+    public String createTipoFichada(@ModelAttribute TipoFichadaDTO tipoFichadaDTO, Model model){
+        TipoFichada nuevoTipo = new TipoFichada();
+        nuevoTipo.setIdentificador(tipoFichadaDTO.getIdentificador());
+        nuevoTipo.setNombre(tipoFichadaDTO.getNombre());
+        TipoFichada tipoResultado = tipoFichadaService.save(nuevoTipo);
+        model.addAttribute("success", "Tipo: " + tipoResultado.getNombre() + " - Creado con éxito.");
+        return "user/crear_tipofichada";
+    }
+
     @PreAuthorize("permitAll()")
-    @GetMapping
+    @GetMapping("/fichador")
     public String ingresarFichada(){
         return "public/fichaje";
     }
@@ -54,7 +121,7 @@ public class FichadaController {
 
             if(fichadasDeAgente.isEmpty()) {
                 tipoFichada = 'E';
-                mensaje = "¡Hola, " + agente.get().getApellido() + ", " + agente.get().getNombre() + "!";
+                mensaje = "¡Hola, " + agente.get().getApellido().toUpperCase() + ", " + agente.get().getNombre().toUpperCase() + "!";
 
                 Fichada nuevaFichada = new Fichada();
                 nuevaFichada.setAgente(agente.get());
@@ -68,10 +135,10 @@ public class FichadaController {
 
             if(fichadasDeAgente.get(0).getTipoFichada().getIdentificador().equals('E')){
                 tipoFichada = 'S';
-                mensaje = "¡Adiós, " + agente.get().getApellido() + ", "+ agente.get().getNombre() + "!";
+                mensaje = "¡Adiós, " + agente.get().getApellido().toUpperCase() + ", "+ agente.get().getNombre().toUpperCase() + "!";
             }else {
                 tipoFichada = 'E';
-                mensaje = "¡Hola, " + agente.get().getApellido() + ", "+ agente.get().getNombre() + "!";
+                mensaje = "¡Hola, " + agente.get().getApellido().toUpperCase() + ", "+ agente.get().getNombre().toUpperCase() + "!";
             }
 
             Fichada nuevaFichada = new Fichada();
@@ -95,7 +162,7 @@ public class FichadaController {
 
             if(fichadasDeAgente.isEmpty()) {
                 tipoFichada = 'E';
-                mensaje = "¡Hola, " + agente.get().getApellido() + ", " + agente.get().getNombre() + "!";
+                mensaje = "¡Hola, " + agente.get().getApellido().toUpperCase() + ", " + agente.get().getNombre().toUpperCase() + "!";
 
                 Fichada nuevaFichada = new Fichada();
                 nuevaFichada.setAgente(agente.get());
@@ -109,12 +176,11 @@ public class FichadaController {
 
             if(fichadasDeAgente.get(0).getTipoFichada().getIdentificador().equals('E')){
                 tipoFichada = 'S';
-                mensaje = "¡Adiós, " + agente.get().getApellido() + ", "+ agente.get().getNombre() + "!";
+                mensaje = "¡Adiós, " + agente.get().getApellido().toUpperCase() + ", "+ agente.get().getNombre().toUpperCase() + "!";
 
             }else {
-                System.out.println("ELSE - Identidicador de última fichada equals 'S'");
                 tipoFichada = 'E';
-                mensaje = "¡Hola, " + agente.get().getApellido() + ", " + agente.get().getNombre() + "!";
+                mensaje = "¡Hola, " + agente.get().getApellido().toUpperCase() + ", " + agente.get().getNombre().toUpperCase() + "!";
             }
 
             Fichada nuevaFichada = new Fichada();
@@ -128,18 +194,4 @@ public class FichadaController {
         return "public/fichaje";
     }
 
-    @GetMapping("/crearTipoFichada")
-    public String createTipoFichada(){
-        return "public/crear_tipofichada";
-    }
-
-    @PostMapping("crearTipoFichada")
-    public String createTipoFichada(@ModelAttribute TipoFichadaDTO tipoFichadaDTO, Model model){
-        TipoFichada nuevoTipo = new TipoFichada();
-        nuevoTipo.setIdentificador(tipoFichadaDTO.getIdentificador());
-        nuevoTipo.setNombre(tipoFichadaDTO.getNombre());
-        TipoFichada tipoResultado = tipoFichadaService.save(nuevoTipo);
-        model.addAttribute("success", "Tipo: " + tipoResultado.getNombre() + " - Creado con éxito.");
-        return "public/crear_tipofichada";
-    }
 }

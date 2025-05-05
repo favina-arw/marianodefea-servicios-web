@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorate="~{layouts/dashboard}">
+
+  <head>
+    <title>Listado de Fichadas</title>
+  </head>
+
+  <body>
+    <main layout:fragment="content">
+      <a th:href="@{/fichada/informeAsistenciaMensual}" class="btn btn-success d-flex flex-column align-items-center justify-content-center p-3" style="width: 100px; height: 100px;">
+        <i class="fa-solid fa-calendar-days fa-2x mb-2"></i>
+        <span class="fw-bold">ASISTENCIA MENSUAL</span>
+      </a>
+      <br>
+
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h4 class="card-title mb-3">Listado de Fichadas</h4>
+          <hr>
+          <form method="get" class="mb-3">
+            <div class="container">
+              <div class="row">
+                <div class="col-lg-2">
+                  <label for="nombre" class="form-label">Nombre</label>
+                  <input type="text" id="nombre" name="nombre" placeholder="ej: Mariano" th:value="${nombre}" class="form-control">
+                </div>
+                <div class="col-lg-2">
+                  <label for="apellido" class="form-label">Apellido</label>
+                  <input type="text" id="apellido" name="apellido" placeholder="ej: Defea" th:value="${apellido}" class="form-control">
+                </div>
+                <div class="col-lg-2">
+                  <label for="dni" class="form-label">DNI</label>
+                  <input type="text" id="dni" name="dni" placeholder="DNI" th:value="${dni}" class="form-control">
+                </div>
+                <div class="col-lg-2">
+                  <label for="tipoFichada" class="form-label">Tipo de Fichada</label>
+                  <select id="tipoFichada" name="tipoFichada" class="form-control">
+                    <option value="">Todos</option>
+                    <option value="ENTRADA" th:selected="${tipoFichada == 'ENTRADA'}">Entrada</option>
+                    <option value="SALIDA" th:selected="${tipoFichada == 'SALIDA'}">Salida</option>
+                  </select>
+                </div>
+                <div class="col-lg-2">
+                  <label for="fechaDesde" class="form-label">Fecha Desde</label>
+                  <input type="date" id="fechaDesde" name="fechaDesde" th:value="${fechaDesde}" class="form-control">
+                </div>
+                <div class="col-lg-2">
+                  <label for="fechaHasta" class="form-label">Fecha Hasta</label>
+                  <input type="date" id="fechaHasta" name="fechaHasta" th:value="${fechaHasta}" class="form-control">
+                </div>
+              </div>
+              <br>
+              <div class="container col-lg-12 d-flex justify-content-center">
+                <div class="col-lg-3 d-flex align-items-center">
+                  <button type="submit" class="btn btn-primary w-100">FILTRAR</button>
+                </div>
+              </div>
+              <div class="container mt-3 col-lg-12 d-flex justify-content-center">
+                <!-- Botón Limpiar -->
+                <div class="form-group me-1 col-lg-2">
+                  <a th:href="@{/fichada/listarFichadas}" class="btn btn-secondary w-100">LIMPIAR FILTROS</a>
+                </div>
+
+                <!-- Botón Refrescar -->
+                <div class="form-group col-lg-2">
+                  <button type="button" class="btn btn-info w-100" onclick="location.reload();">RECARGAR TABLA</button>
+                </div>
+              </div>
+            </div>
+          </form>
+
+          <table id="tabla-fichadas" class="table table-striped mt-0 mb-0">
+            <thead>
+            <tr>
+              <th>AGENTE</th>
+              <th>DNI</th>
+              <th>TIPO</th>
+              <th>HORA</th>
+            </tr>
+            </thead>
+            <tbody>
+              <tr th:each="fichada : ${fichadas.content}">
+                <td th:text="${fichada.agente.apellido} +', '+ ${fichada.agente.nombre}"></td>
+                <td th:text="${fichada.agente.dni}"></td>
+                <td th:text="${fichada.tipoFichada}"></td>
+                <td th:text="${#temporals.format(fichada.hora, 'dd/MM/yyyy HH:mm')}"></td>
+              </tr>
+            </tbody>
+          </table>
+          <div>
+            <span th:text="'Página ' + ${fichadas.number + 1} + ' de ' + ${fichadas.totalPages}"></span>
+          </div>
+
+          <div>
+            <a th:href="@{/fichadas(page=${fichadas.number - 1}, tipoFichada=${tipoFichada}, fechaDesde=${fechaDesde}, fechaHasta=${fechaHasta}, dni=${dni})}"
+               th:if="${fichadas.hasPrevious()}">Anterior</a>
+
+            <a th:href="@{/fichadas(page=${fichadas.number + 1}, tipoFichada=${tipoFichada}, fechaDesde=${fechaDesde}, fechaHasta=${fechaHasta}, dni=${dni})}"
+               th:if="${fichadas.hasNext()}">Siguiente</a>
+          </div>
+        </div>
+      </div>
+    </main>
+
+  </body>
+
+</html>

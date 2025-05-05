@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorate="~{layouts/dashboard}">
+    <head>
+        <title>Informe de Asistencia Mensual</title>
+    </head>
+
+    <body>
+        <main layout:fragment="content">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h4 class="card-title mb-3">Listado</h4>
+                    <hr>
+                    <div class="table-responsive">
+                        <table class="table table-striped table-sm mt-0 mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Agente</th>
+                                    <th th:each="dia : ${diasHabiles}" th:text="${#strings.substring(dia, 8, 10)} + '/' + ${#strings.substring(dia, 5, 7)}">Día</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="entry : ${informe}">
+                                    <td th:text="${entry.key.nombre}">Nombre</td>
+                                    <td th:each="dia : ${diasHabiles}" th:text="${entry.value[dia]}">Estado</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <pre th:text="${informe.value['2025/4/01']}">Cargando...</pre>
+            </div>
+        </main>
+    </body>
+</html>

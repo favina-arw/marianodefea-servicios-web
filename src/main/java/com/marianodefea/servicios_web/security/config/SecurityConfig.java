@@ -11,7 +11,9 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -45,7 +47,7 @@ public class SecurityConfig {
                 .httpBasic(Customizer.withDefaults()) // HTTP Basic Auth
                 .formLogin(login -> login
                         .loginPage("/login")
-                        .defaultSuccessUrl("/fichada", true)
+                        .defaultSuccessUrl("/dashboard", true)
                         .failureHandler((request, response, exception) -> {
                             System.out.println("Error de autenticación: " + exception.getMessage());
                             response.sendRedirect("/login?error=true&errorMessage=" + exception.getMessage()); // Añade el mensaje de error

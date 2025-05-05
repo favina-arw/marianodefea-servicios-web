@@ -1,10 +1,7 @@
 package com.marianodefea.servicios_web.model.fichada;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Getter
@@ -19,4 +16,9 @@ public class TipoFichada {
     private Character identificador;
     @Column(unique = true, nullable = false)
     private String nombre;
+
+    @Override
+    public String toString(){
+        return this.nombre;
+    }
 }

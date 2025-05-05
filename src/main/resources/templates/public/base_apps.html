@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorate="public/base">
+
+    <body>
+        <!-- Toast Notifications (si las tienes) -->
+        <div th:replace="~{fragments/toast :: toast}"></div>
+
+        <!-- Navbar -->
+        <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+        <div class="d-flex">
+            <!-- Sidebar -->
+            <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+
+            <!-- Contenido principal -->
+            <main class="flex-grow-1 p-3" layout:fragment="content">
+                <h1>Dashboard</h1>
+                <p th:text="${mensaje}">Contenido de prueba del dashboard</p>
+            </main>
+        </div>
+
+        <!-- Footer -->
+        <div th:replace="~{fragments/footer :: footer}"></div>
+    </body>
+</html>

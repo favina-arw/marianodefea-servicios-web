@@ -15,7 +15,7 @@ public class LoginController {
         if (errorMessage != null) {
             model.addAttribute("error", errorMessage); // Agrega el mensaje al modelo
         }
-        return "login";
+        return "public/login";
     }
 
 }
