@@ -1,17 +1,17 @@
 <div th:if="${error}" class="toast toast-error">
-    <span th:text="${error}"></span>
+    <span th:text="${error}" style="white-space: pre-line;"></span>
 </div>
 
 <div th:if="${success}" class="toast toast-success">
-    <span th:text="${success}"></span>
+    <span th:text="${success}" style="white-space: pre-line;"></span>
 </div>
 
 <div th:if="${in}" class="toast toast-in">
-    <span th:text="${in}"></span>
+    <span th:text="${in}" style="white-space: pre-line;"></span>
 </div>
 
 <div th:if="${out}" class="toast toast-out">
-    <span th:text="${out}"></span>
+    <span th:text="${out}" style="white-space: pre-line;"></span>
 </div>
 
 <style>
@@ -23,8 +23,14 @@
         border-radius: 8px;
         color: white;
         font-weight: bold;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        animation: fadeOut 4s forwards;
+        animation: fadeOut 6s forwards;
+        width: fit-content;
+        max-width: 90vw;
     }
 
     .toast-error { background-color: #ff4d4d; }

@@ -140,7 +140,7 @@ public class FichadaController {
                 nuevaFichada.setHora(LocalDateTime.now());
                 Fichada fichadaParaRetornar = fichadaService.save(nuevaFichada);
                 String horaFormateada = fichadaParaRetornar.getHora().format(formatter);
-                redirectAttributes.addFlashAttribute("in", mensaje + " - Hora: " + horaFormateada);
+                redirectAttributes.addFlashAttribute("in", mensaje + "\nHora: " + horaFormateada);
                 return "redirect:/fichada/fichador";
             }
 
@@ -160,9 +160,9 @@ public class FichadaController {
             String horaFormateada = fichadaParaRetornar.getHora().format(formatter);
 
             if(fichadaParaRetornar.getTipoFichada().getIdentificador().equals('E')) {
-                redirectAttributes.addFlashAttribute("in", mensaje + " - Hora: " + horaFormateada);
+                redirectAttributes.addFlashAttribute("in", mensaje + "\nHora: " + horaFormateada);
             }else {
-                redirectAttributes.addFlashAttribute("out", mensaje + " - Hora: " + horaFormateada);
+                redirectAttributes.addFlashAttribute("out", mensaje + "\nHora: " + horaFormateada);
             }
         }else{
             Optional<Agente> agente = agenteService.findByCuil(dni);
@@ -186,7 +186,7 @@ public class FichadaController {
                 nuevaFichada.setHora(LocalDateTime.now());
                 Fichada fichadaParaRetornar = fichadaService.save(nuevaFichada);
                 String horaFormateada = fichadaParaRetornar.getHora().format(formatter);
-                redirectAttributes.addFlashAttribute("in", mensaje + " - Hora: " + horaFormateada);
+                redirectAttributes.addFlashAttribute("in", mensaje + "\nHora: " + horaFormateada);
                 return "redirect:/fichada/fichador";
             }
 
@@ -206,9 +206,9 @@ public class FichadaController {
             Fichada fichadaParaRetornar = fichadaService.save(nuevaFichada);
             String horaFormateada = fichadaParaRetornar.getHora().format(formatter);
             if(fichadaParaRetornar.getTipoFichada().getIdentificador().equals('E')) {
-                redirectAttributes.addFlashAttribute("in", mensaje + " - Hora: " + horaFormateada);
+                redirectAttributes.addFlashAttribute("in", mensaje + "\nHora: " + horaFormateada);
             }else {
-                redirectAttributes.addFlashAttribute("out", mensaje + " - Hora: " + horaFormateada);
+                redirectAttributes.addFlashAttribute("out", mensaje + "\nHora: " + horaFormateada);
             }
         }
         return "redirect:/fichada/fichador";
