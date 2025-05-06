@@ -21,7 +21,7 @@ body::before {
     pointer-events: none;  /* ✅ Permite que los clics pasen a los elementos debajo */
 }
 
-.login-container {
+.login-container .table-fichada-index-container {
     position: relative;
     z-index: 1; /* Para que el formulario quede por encima del fondo */
 }

@@ -11,6 +11,7 @@ import com.marianodefea.servicios_web.service.FichadaService;
 import com.marianodefea.servicios_web.service.InformeService;
 import com.marianodefea.servicios_web.service.TipoFichadaService;
 import com.marianodefea.servicios_web.utils.DateUtils;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.core.Local;
 import org.springframework.data.domain.Page;
@@ -67,6 +68,7 @@ public class FichadaController {
         model.addAttribute("fechaDesde", fechaDesde);
         model.addAttribute("fechaHasta", fechaHasta);
         model.addAttribute("dni", dni);
+
         return "user/listar_fichadas";
     }
 
@@ -89,7 +91,7 @@ public class FichadaController {
         return "user/crear_tipofichada";
     }
 
-    @PostMapping("crearTipoFichada")
+    @PostMapping("/crearTipoFichada")
     public String createTipoFichada(@ModelAttribute TipoFichadaDTO tipoFichadaDTO, Model model){
         TipoFichada nuevoTipo = new TipoFichada();
         nuevoTipo.setIdentificador(tipoFichadaDTO.getIdentificador());
@@ -112,6 +114,15 @@ public class FichadaController {
             String atributoError = (String) model.getAttribute("error");
             model.addAttribute("error", atributoError);
         }
+
+        List<Fichada> ultimasQuince = fichadaService.findTop10ByOrderByHoraDesc()
+                        .stream()
+                        .peek(fichada -> {
+                            fichada.getAgente().setNombre(fichada.getAgente().getNombre().toUpperCase());
+                            fichada.getAgente().setApellido(fichada.getAgente().getApellido().toUpperCase());
+                        }).collect(Collectors.toList());
+        System.out.println(ultimasQuince);
+        model.addAttribute("ultimasQuince", ultimasQuince);
         return "public/fichaje";
     }
 

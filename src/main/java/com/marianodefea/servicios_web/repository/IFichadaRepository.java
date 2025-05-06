@@ -21,4 +21,5 @@ public interface IFichadaRepository extends JpaRepository<Fichada, Long>, JpaSpe
         return findAll(specification, pageable);
     }
     List<Fichada> findByAgenteAndHoraBetween(Agente agente, LocalDateTime start, LocalDateTime end);
+    List<Fichada> findTop10ByOrderByHoraDesc();
 }

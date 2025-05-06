@@ -24,6 +24,11 @@ public class FichadaService implements IFichadaService{
     }
 
     @Override
+    public List<Fichada> findTop10ByOrderByHoraDesc() {
+        return fichadaRepository.findTop10ByOrderByHoraDesc();
+    }
+
+    @Override
     public Optional<Fichada> findById(Long id) {
         return fichadaRepository.findById(id);
     }

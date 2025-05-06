@@ -1,0 +1,30 @@
+<!-- Fragmento Thymeleaf -->
+<div th:fragment="tablaFichadas">
+    <table id="tabla-fichadas" class="table table-striped mt-0 mb-0">
+        <thead>
+        <tr>
+            <th>AGENTE</th>
+            <th>DNI</th>
+            <th>TIPO</th>
+            <th>HORA</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="fichada : ${fichadas.content}">
+            <td th:text="${fichada.agente.apellido} + ', ' + ${fichada.agente.nombre}"></td>
+            <td th:text="${fichada.agente.dni}"></td>
+            <td th:text="${fichada.tipoFichada}"></td>
+            <td th:text="${#temporals.format(fichada.hora, 'dd/MM/yyyy HH:mm')}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div>
+        <span th:text="'Página ' + ${fichadas.number + 1} + ' de ' + ${fichadas.totalPages}"></span>
+    </div>
+
+    <div>
+        <a href="#" th:if="${fichadas.hasPrevious()}" th:attr="data-page=${fichadas.number - 1}">Anterior</a>
+        <a href="#" th:if="${fichadas.hasNext()}" th:attr="data-page=${fichadas.number + 1}">Siguiente</a>
+    </div>
+</div>

@@ -7,38 +7,60 @@
         <link rel="stylesheet" th:href="@{/css/styles.css}">
     </head>
     <body>
-
-        <div class="container d-flex justify-content-center align-items-center vh-100">
-            <div class="p-4 bg-white rounded shadow" style="max-width: 400px; width: 100%;">
-                <h3 class="text-center mb-4">Fichaje de Personal</h3>
-                <!-- Imagen del logo -->
-                <div class="text-center my-3">
-                    <img th:src="@{/images/logo_nuevo_795.jpg}"
-                         alt="Logo"
-                         class="img-fluid rounded"
-                         style="max-height: 300px;">
-                </div>
-                <div class="text-center mb-3">
-                    <h5><span id="hora-actual" class="fw-bold"></span></h5>
-                </div>
-                <div th:insert="~{fragments/toast.html}"></div>
-
-                <form th:action="@{/fichada}" method="POST" id="fichadaForm">
-                    <div class="mb-3">
-                        <label for="dni" class="form-label">DNI/CUIL/CUIT</label>
-                        <input type="text" class="form-control" id="dni" name="dni" required>
+        <div class="container ms-4 d-flex flex-row justify-content-between align-items-center" style="height: 100vh;">
+            <div class="d-flex me-1 justify-content-start align-items-center bg-white rounded shadow" style="display: inline-block; padding: 10px; position: relative; z-index: 1">
+                <table id="tabla-fichadas" class="table table-striped mt-0 mb-0" style="table-layout: fixed; width: 400px;">
+                    <thead>
+                    <tr>
+                        <th style="width: 200px; white-space: nowrap;">AGENTE</th>
+                        <th style="width: 50px; white-space: nowrap;">TIPO</th>
+                        <th style="width: 80px; white-space: nowrap;">HORA</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="fichada : ${ultimasQuince}">
+                        <td th:text="${fichada.agente.apellido} + ', ' + ${fichada.agente.nombre}" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"></td>
+                        <td th:text="${fichada.tipoFichada.identificador}" style="white-space: nowrap;"></td>
+                        <td th:text="${#temporals.format(fichada.hora, 'dd/MM HH:mm')}" style="white-space: nowrap;"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="container d-flex justify-content-start align-items-center vh-100">
+                <div class="p-4 bg-white rounded shadow" style="max-width: 400px; width: 100%;">
+                    <h3 class="text-center mb-4">Fichaje de Personal</h3>
+                    <!-- Imagen del logo -->
+                    <div class="text-center my-3">
+                        <img th:src="@{/images/logo_nuevo_795.jpg}"
+                             alt="Logo"
+                             class="img-fluid rounded"
+                             style="max-height: 300px;">
                     </div>
+                    <div class="text-center mb-3">
+                        <h5><span id="hora-actual" class="fw-bold"></span></h5>
+                    </div>
+                    <div th:insert="~{fragments/toast.html}"></div>
 
-                    <button type="submit" class="btn btn-primary w-100" id="ficharBtn">FICHAR</button>
+                    <form th:action="@{/fichada}" method="POST" id="fichadaForm">
+                        <div class="mb-3">
+                            <label for="dni" class="form-label">DNI/CUIL/CUIT</label>
+                            <input type="text" class="form-control" id="dni" name="dni" required>
+                        </div>
 
-                    <button class="btn btn-primary w-100" type="button" disabled id="loadingBtn" style="display: none;">
-                        <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
-                        <span role="status">Cargando...</span>
-                    </button>
-                </form>
+                        <button type="submit" class="btn btn-primary w-100" id="ficharBtn">FICHAR</button>
 
+                        <button class="btn btn-primary w-100" type="button" disabled id="loadingBtn" style="display: none;">
+                            <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                            <span role="status">Cargando...</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+            <div>
+                s
             </div>
         </div>
+
         <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
         <script>
             function actualizarHora() {

@@ -23,32 +23,32 @@
             <div class="container">
               <div class="row">
                 <div class="col-lg-2">
-                  <label for="nombre" class="form-label">Nombre</label>
-                  <input type="text" id="nombre" name="nombre" placeholder="ej: Mariano" th:value="${nombre}" class="form-control">
+                  <label for="nombreInput" class="form-label">Nombre</label>
+                  <input type="text" id="nombreInput" name="nombre" placeholder="ej: Mariano" th:value="${nombre}" class="form-control">
                 </div>
                 <div class="col-lg-2">
-                  <label for="apellido" class="form-label">Apellido</label>
-                  <input type="text" id="apellido" name="apellido" placeholder="ej: Defea" th:value="${apellido}" class="form-control">
+                  <label for="apellidoInput" class="form-label">Apellido</label>
+                  <input type="text" id="apellidoInput" name="apellido" placeholder="ej: Defea" th:value="${apellido}" class="form-control">
                 </div>
                 <div class="col-lg-2">
-                  <label for="dni" class="form-label">DNI</label>
-                  <input type="text" id="dni" name="dni" placeholder="DNI" th:value="${dni}" class="form-control">
+                  <label for="dniInput" class="form-label">DNI</label>
+                  <input type="text" id="dniInput" name="dni" placeholder="DNI" th:value="${dni}" class="form-control">
                 </div>
                 <div class="col-lg-2">
-                  <label for="tipoFichada" class="form-label">Tipo de Fichada</label>
-                  <select id="tipoFichada" name="tipoFichada" class="form-control">
+                  <label for="tipoFichadaInput" class="form-label">Tipo de Fichada</label>
+                  <select id="tipoFichadaInput" name="tipoFichada" class="form-control">
                     <option value="">Todos</option>
                     <option value="ENTRADA" th:selected="${tipoFichada == 'ENTRADA'}">Entrada</option>
                     <option value="SALIDA" th:selected="${tipoFichada == 'SALIDA'}">Salida</option>
                   </select>
                 </div>
                 <div class="col-lg-2">
-                  <label for="fechaDesde" class="form-label">Fecha Desde</label>
-                  <input type="date" id="fechaDesde" name="fechaDesde" th:value="${fechaDesde}" class="form-control">
+                  <label for="fechaDesdeInput" class="form-label">Fecha Desde</label>
+                  <input type="date" id="fechaDesdeInput" name="fechaDesde" th:value="${fechaDesde}" class="form-control">
                 </div>
                 <div class="col-lg-2">
-                  <label for="fechaHasta" class="form-label">Fecha Hasta</label>
-                  <input type="date" id="fechaHasta" name="fechaHasta" th:value="${fechaHasta}" class="form-control">
+                  <label for="fechaHastaInput" class="form-label">Fecha Hasta</label>
+                  <input type="date" id="fechaHastaInput" name="fechaHasta" th:value="${fechaHasta}" class="form-control">
                 </div>
               </div>
               <br>
@@ -94,16 +94,14 @@
           </div>
 
           <div>
-            <a th:href="@{/fichadas(page=${fichadas.number - 1}, tipoFichada=${tipoFichada}, fechaDesde=${fechaDesde}, fechaHasta=${fechaHasta}, dni=${dni})}"
+            <a th:href="@{/fichada/listarFichadas(page=${fichadas.number - 1}, tipoFichada=${tipoFichada}, fechaDesde=${fechaDesde}, fechaHasta=${fechaHasta}, dni=${dni})}"
                th:if="${fichadas.hasPrevious()}">Anterior</a>
 
-            <a th:href="@{/fichadas(page=${fichadas.number + 1}, tipoFichada=${tipoFichada}, fechaDesde=${fechaDesde}, fechaHasta=${fechaHasta}, dni=${dni})}"
+            <a th:href="@{/fichada/listarFichadas(page=${fichadas.number + 1}, tipoFichada=${tipoFichada}, fechaDesde=${fechaDesde}, fechaHasta=${fechaHasta}, dni=${dni})}"
                th:if="${fichadas.hasNext()}">Siguiente</a>
           </div>
         </div>
       </div>
     </main>
-
   </body>
-
 </html>

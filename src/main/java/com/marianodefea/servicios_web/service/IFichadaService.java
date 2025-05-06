@@ -10,6 +10,7 @@ import java.util.Optional;
 
 public interface IFichadaService {
     List<Fichada> findAll();
+    List<Fichada> findTop10ByOrderByHoraDesc();
     Page<Fichada> buscarFichadas(String nombre, String apellido, String tipoFichada, LocalDate desde, LocalDate hasta, String dni, Pageable pageable);
     Optional<Fichada> findById(Long id);
     Fichada save(Fichada fichada);
