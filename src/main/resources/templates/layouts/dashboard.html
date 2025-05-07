@@ -1,113 +1,171 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      style="height: 100%;">
 <head>
     <meta charset="UTF-8">
     <title>Mi Aplicación</title>
-    <!-- Incluye tus estilos aquí -->
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
     <th:block th:replace="~{fragments/estilos :: estilos}"></th:block>
-    <!-- Estilos inline (opcional mover a CSS) -->
     <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
 
+        #app-container {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        #main-container {
+            display: flex;
+            flex: 1;
+            min-height: 0;
+        }
+
+        .sidebar {
+            width: 80px;
+            transition: width 0.3s;
+        }
+
+        .sidebar.collapsed {
+            width: 250px;
+        }
+
+        .content-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            overflow: hidden;
+            margin-left: 1.5rem;
+            margin-right: 3rem;
+            transition: margin 0.3s;
+        }
+
+        .sidebar.collapsed ~ .content-wrapper {
+            margin-left: 1.5rem;
+        }
+
+        main {
+            flex: 1;
+            overflow-y: auto;
+            padding: 2rem 2rem 2rem 1rem;
+            max-width: calc(100% - 4rem);
+            width: 100%;
+        }
+
+        footer {
+            flex-shrink: 0;
+            padding: 1rem 3rem;
+        }
+
+        @media (max-width: 992px) {
+            .content-wrapper {
+                margin-right: 1.5rem;
+            }
+            main {
+                padding-right: 1rem;
+                max-width: calc(100% - 2rem);
+            }
+        }
     </style>
 </head>
 <body>
 
-<div class="nav-container">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="/">Mi Aplicación</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/}">Inicio</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/perfil}">Perfil</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/logout}">Cerrar sesión</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-</div>
-
-<div class="d-flex">
-    <div class="sidebar bg-dark text-white p-3" style="width: 80px; min-height: 100vh;">
-        <!-- Botón para colapsar -->
-        <div class="m-2 text-start">
-            <button id="toggle-sidebar" class="btn btn-sm btn-light">
-                <i class="fas fa-bars"></i>
-            </button>
-        </div>
-
-        <hr class="bg-light">
-
-        <ul class="nav flex-column">
-            <li class="nav-item mb-2">
-                <a th:href="@{/dashboard}" class="nav-link text-white hover-effect">
-                    <i class="fas fa-home me-2"></i> <span class="menu-label">Inicio</span>
-                </a>
-            </li>
-
-            <li class="nav-item mb-2">
-                <a th:href="@{/agentes/}" class="nav-link text-white hover-effect">
-                    <i class="fas fa-users me-2"></i> <span class="menu-label">Agentes</span>
-                </a>
-            </li>
-
-            <li class="nav-item mb-2">
-                <a th:href="@{/fichada/listarFichadas}" class="nav-link text-white hover-effect">
-                    <i class="fas fa-list me-2"></i> <span class="menu-label">Fichadas</span>
-                </a>
-            </li>
-
-            <li class="nav-item mb-2">
-                <a href="#" class="nav-link text-white hover-effect">
-                    <i class="fas fa-cog me-2"></i> <span class="menu-label">Configuración</span>
-                </a>
-            </li>
-
-            <li class="nav-item mb-2">
-                <a th:href="@{/admin}" class="nav-link text-white hover-effect">
-                    <i class="fa-solid fa-crown me-2"></i> <span class="menu-label">Admin</span>
-                </a>
-            </li>
-        </ul>
-    </div>
-
-    <div th:insert="~{fragments/toast.html}"></div>
-
-    <!-- Contenido principal -->
-    <main class="m-0 flex-grow-1 p-4" layout:fragment="content"></main>
-</div>
-
-<!-- Fragmento del footer -->
-<footer class="bg-dark text-white py-4 mt-auto">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-6">
-                <h5>Mi Aplicación Spring</h5>
-                <p class="mb-0">© 2025 Todos los derechos reservados</p>
-            </div>
-            <div class="col-md-6 text-md-end">
-                <div class="social-links">
-                    <a href="#" class="text-white me-3"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" class="text-white me-3"><i class="fab fa-twitter"></i></a>
-                    <a href="#" class="text-white"><i class="fab fa-linkedin-in"></i></a>
+<div id="app-container">
+    <div class="nav-container">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="/">Mi Aplicación</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/}">Inicio</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/perfil}">Perfil</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/logout}">Cerrar sesión</a>
+                        </li>
+                    </ul>
                 </div>
-                <p class="mt-2 mb-0">contacto@miapp.com</p>
             </div>
+        </nav>
+    </div>
+
+    <div id="main-container">
+        <div class="sidebar bg-dark text-white p-3">
+            <!-- Botón para colapsar -->
+            <div class="m-2 text-start">
+                <button id="toggle-sidebar" class="btn btn-sm btn-light">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+
+            <hr class="bg-light">
+
+            <ul class="nav flex-column">
+                <!-- Tus elementos del sidebar -->
+                <li class="nav-item mb-2">
+                    <a th:href="@{/dashboard}" class="nav-link text-white hover-effect">
+                        <i class="fas fa-home me-2"></i> <span class="menu-label">Inicio</span>
+                    </a>
+                </li>
+
+                <li class="nav-item mb-2">
+                    <a th:href="@{/agentes/}" class="nav-link text-white hover-effect">
+                        <i class="fas fa-users me-2"></i> <span class="menu-label">Agentes</span>
+                    </a>
+                </li>
+
+                <li class="nav-item mb-2">
+                    <a th:href="@{/fichada/listarFichadas}" class="nav-link text-white hover-effect">
+                        <i class="fas fa-list me-2"></i> <span class="menu-label">Fichadas</span>
+                    </a>
+                </li>
+
+                <li class="nav-item mb-2">
+                    <a href="#" class="nav-link text-white hover-effect">
+                        <i class="fas fa-cog me-2"></i> <span class="menu-label">Configuración</span>
+                    </a>
+                </li>
+
+                <li class="nav-item mb-2">
+                    <a th:href="@{/admin}" class="nav-link text-white hover-effect">
+                        <i class="fa-solid fa-crown me-2"></i> <span class="menu-label">Admin</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="content-wrapper">
+            <div th:insert="~{fragments/toast.html}"></div>
+
+            <!-- Contenido principal -->
+            <main layout:fragment="content"></main>
         </div>
     </div>
-</footer>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4">
+        <div class="container">
+            <!-- Contenido del footer -->
+            <span>Proximamente...</span>
+        </div>
+    </footer>
+</div>
 
 <!-- Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -119,14 +177,11 @@
         // Cargar estado guardado
         if(localStorage.getItem('sidebarCollapsed') === 'true') {
             sidebar.classList.add('collapsed');
-            sidebar.style.width = '80px';
         }
-
 
         // Manejar clic
         toggleBtn?.addEventListener('click', () => {
             const isCollapsed = sidebar.classList.toggle('collapsed');
-            sidebar.style.width = isCollapsed ? '250px' : '80px';
             localStorage.setItem('sidebarCollapsed', isCollapsed);
         });
     });

@@ -12,24 +12,31 @@
                 <div class="card-body">
                     <h4 class="card-title mb-3">Listado</h4>
                     <hr>
-                    <div class="table-responsive">
-                        <table class="table table-striped table-sm mt-0 mb-0">
+                    <div class="table-responsive" style="display: block; white-space: nowrap;">
+                        <table class="table table-striped";>
                             <thead>
-                                <tr>
-                                    <th>Agente</th>
-                                    <th th:each="dia : ${diasHabiles}" th:text="${#strings.substring(dia, 8, 10)} + '/' + ${#strings.substring(dia, 5, 7)}">Día</th>
-                                </tr>
+                            <tr>
+                                <th>Agente</th>
+                                <th th:each="dia : ${diasHabiles}"
+                                    th:text="${#temporals.format(dia, 'dd/MM')}">
+                                    Día
+                                </th>
+                            </tr>
                             </thead>
                             <tbody>
-                                <tr th:each="entry : ${informe}">
-                                    <td th:text="${entry.key.nombre}">Nombre</td>
-                                    <td th:each="dia : ${diasHabiles}" th:text="${entry.value[dia]}">Estado</td>
-                                </tr>
+                            <tr th:each="registro : ${informe}" th:with="agente=${registro.agente}">
+                                <td th:text="${agente.apellido?.toUpperCase() + ', ' + agente.nombre?.toUpperCase()}">
+                                    Nombre Agente
+                                </td>
+                                <td th:each="dia : ${diasHabiles}">
+                                    <!-- Versión segura con manejo de nulos -->
+                                    <span th:text="${registro.getAsistenciaPorDia(dia).orElse(null)?.estado ?: 'Sin datos'}"></span>
+                                </td>
+                            </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
-                <pre th:text="${informe.value['2025/4/01']}">Cargando...</pre>
             </div>
         </main>
     </body>

@@ -1,9 +1,11 @@
 package com.marianodefea.servicios_web.service;
 
+import com.marianodefea.servicios_web.dto.AsistenciaPorAgenteDTO;
 import com.marianodefea.servicios_web.model.Agente;
 import com.marianodefea.servicios_web.model.fichada.Fichada;
 import com.marianodefea.servicios_web.repository.IAgenteRepository;
 import com.marianodefea.servicios_web.repository.IFichadaRepository;
+import com.marianodefea.servicios_web.utils.Asistencia;
 import com.marianodefea.servicios_web.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,9 +14,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class InformeService {
@@ -27,19 +27,20 @@ public class InformeService {
     @Autowired
     private EventoService eventoService;
 
-    public Map<Agente, Map<LocalDate, String>> generarInformeAsistenciaMensual(){
+    public List<AsistenciaPorAgenteDTO> generarInformeAsistenciaMensual(){
         LocalDate inicio = DateUtils.getPrimerDiaDelMesAnterior();
         LocalDate fin = DateUtils.getUltimoDiaDelMesAnterior();
 
         List<LocalDate> diasHabiles = DateUtils.getDiasLaborablesPorRango(inicio, fin);
         List<Agente> agentes = agenteRepository.findAll();
-        Map<Agente, Map<LocalDate, String>> informe = new LinkedHashMap<>();
+        List<AsistenciaPorAgenteDTO> informe = new ArrayList<>();
 
         for (Agente agente : agentes){
-            Map<LocalDate, String> asistencias = new LinkedHashMap<>();
+            List<Asistencia> asistencias = new ArrayList<>();
 
             for (LocalDate dia: diasHabiles){
-                String diaFormateado = dia.toString();
+                String estado = "";
+
                 if(eventoService.esDiaLaboral(dia)){
                     LocalDateTime inicioDelDia = dia.atStartOfDay();
                     LocalDateTime finDelDia = dia.atTime(LocalTime.MAX);
@@ -49,18 +50,19 @@ public class InformeService {
                     boolean salida = fichadas.stream().anyMatch(f -> f.getTipoFichada().getNombre().toUpperCase().equals("SALIDA"));
 
                     if (entrada && salida) {
-                        asistencias.put(dia, "Presente");
+                        estado = "Presente";
                     }else if (!fichadas.isEmpty()) {
                         if (!salida)
-                            asistencias.put(dia, "No registró su salida");
+                            estado = (!salida) ? "No registró su salida" : "Incompleto";
                     }else{
-                        asistencias.put(dia, "Ausente");
+                        estado = "Ausente";
                     }
                 } else {
-                    asistencias.put(dia, "No se dictaron clases");
+                    estado = "No se dictaron clases";
                 }
+                asistencias.add(new Asistencia(dia, estado));
             }
-            informe.put(agente, asistencias);
+            informe.add(new AsistenciaPorAgenteDTO(agente, asistencias));
         }
         return informe;
     }

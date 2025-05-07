@@ -1,5 +1,6 @@
 package com.marianodefea.servicios_web.controller;
 
+import com.marianodefea.servicios_web.dto.AsistenciaPorAgenteDTO;
 import com.marianodefea.servicios_web.dto.FichadaDTO;
 import com.marianodefea.servicios_web.dto.TipoFichadaDTO;
 import com.marianodefea.servicios_web.model.Agente;
@@ -74,13 +75,11 @@ public class FichadaController {
 
     @GetMapping("/informeAsistenciaMensual")
     public String mostrarInforme(Model model){
-        Map<Agente, Map<LocalDate, String>> informe = informeService.generarInformeAsistenciaMensual();
-
+        List<AsistenciaPorAgenteDTO> informe = informeService.generarInformeAsistenciaMensual();
         LocalDate inicio = DateUtils.getPrimerDiaDelMesAnterior();
         LocalDate fin = DateUtils.getUltimoDiaDelMesAnterior();
 
-        List<LocalDate> dias = DateUtils.getDiasLaborablesPorRango(inicio, fin);
-        List<LocalDate> diasHabiles = new ArrayList<>(informe.values().iterator().next().keySet());
+        List<LocalDate> diasHabiles = DateUtils.getDiasLaborablesPorRango(inicio, fin);
         model.addAttribute("diasHabiles", diasHabiles);
         model.addAttribute("informe", informe);
         return "user/motrar_informe_asistencia_mensual";
