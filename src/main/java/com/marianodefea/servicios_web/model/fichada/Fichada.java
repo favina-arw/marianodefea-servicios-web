@@ -26,7 +26,7 @@ public class Fichada {
     @ManyToOne
     @JoinColumn(name = "agente_id", nullable = false)
     private Agente agente;
-    @Column(name = "tipo_registro", nullable = false)
+    @Column(name = "tipo_registro", nullable = false, columnDefinition = "varchar(255) default 'MANUAL'")
     private String tipoRegistro = "MANUAL";
 
 }
