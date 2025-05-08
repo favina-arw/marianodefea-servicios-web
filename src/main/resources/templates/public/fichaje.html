@@ -45,7 +45,7 @@
                         <form th:action="@{/fichada}" method="POST" id="fichadaForm">
                             <div class="mb-3">
                                 <label for="dni" class="form-label">DNI/CUIL/CUIT</label>
-                                <input type="text" class="form-control" id="dni" name="dni" required>
+                                <input type="text" class="form-control" id="dni" name="dni" autocomplete="off" required>
                             </div>
 
                             <button type="submit" class="btn btn-primary w-100" id="ficharBtn">FICHAR</button>
