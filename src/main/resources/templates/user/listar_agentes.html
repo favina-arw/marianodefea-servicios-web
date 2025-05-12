@@ -28,19 +28,25 @@
           <th>CARGO</th>
           <th>HORA ENTRADA</th>
           <th>HORA SALIDA</th>
+          <th>ESTADO</th>
           <th>ACCIONES</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="agente : ${agentes}">
-          <td th:text="${agente.nombre}"></td>
-          <td th:text="${agente.apellido}"></td>
+          <td th:text="${agente.nombre.toUpperCase()}"></td>
+          <td th:text="${agente.apellidotoUpperCase()}"></td>
           <td th:text="${agente.dni}"></td>
           <td th:text="${agente.cuil}"></td>
-          <td th:text="${agente.cargo}"></td>
+          <td th:text="${agente.cargo.toUpperCase()}"></td>
           <td> - </td>
           <td> - </td>
           <td> - </td>
+          <td>
+            <a href="#" class="btn btn-warning">Modificar</a>
+            <a href="#" class="btn btn-success">Activar</a>
+            <a href="#" class="btn btn-danger">Desactivar</a>
+          </td>
         </tr>
         </tbody>
       </table>

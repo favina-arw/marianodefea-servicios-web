@@ -1,61 +1,43 @@
 <!-- Fragmento del sidebar -->
-<div th:fragment="sidebar" class="sidebar bg-dark text-white p-3" style="width: 250px; min-height: 100vh;">
+<div th:fragment="sidebar" class="sidebar text-white p-3" style="width: 250px; min-height: 100vh; background-color: #FFD8A6;">
     <!-- Botón para colapsar -->
-    <div class="text-end mb-3">
+    <div class="text-start mb-3">
         <button id="toggle-sidebar" class="btn btn-sm btn-light">
             <i class="fas fa-bars"></i>
         </button>
     </div>
 
-    <div class="sidebar-header mb-4">
-        <h5 class="text-center">Menú Principal</h5>
-        <hr class="bg-light">
-    </div>
+    <hr style="color: #5A5A5A;">
 
     <ul class="nav flex-column">
         <li class="nav-item mb-2">
-            <a href="#" class="nav-link text-white hover-effect">
-                <i class="fas fa-home me-2"></i> Inicio
+            <a th:href="@{/dashboard}" class="nav-link text-white hover-effect">
+                <i class="fas fa-home me-2"></i> <span class="menu-label">Inicio</span>
             </a>
         </li>
+
         <li class="nav-item mb-2">
-            <a href="#" class="nav-link text-white hover-effect">
-                <i class="fas fa-chart-line me-2"></i> Dashboard
+            <a th:href="@{/agentes/}" class="nav-link text-white hover-effect">
+                <i class="fas fa-users me-2"></i> <span class="menu-label">Agentes</span>
             </a>
         </li>
+
         <li class="nav-item mb-2">
-            <a href="#" class="nav-link text-white hover-effect">
-                <i class="fas fa-users me-2"></i> Usuarios
+            <a th:href="@{/fichada/listarFichadas}" class="nav-link text-white hover-effect">
+                <i class="fas fa-list me-2"></i> <span class="menu-label">Fichadas</span>
             </a>
         </li>
+
         <li class="nav-item mb-2">
             <a href="#" class="nav-link text-white hover-effect">
-                <i class="fas fa-cog me-2"></i> Configuración
+                <i class="fas fa-cog me-2"></i> <span class="menu-label">Configuración</span>
+            </a>
+        </li>
+
+        <li class="nav-item mb-2">
+            <a th:href="@{/admin}" class="nav-link text-white hover-effect">
+                <i class="fa-solid fa-crown me-2"></i> <span class="menu-label">Admin</span>
             </a>
         </li>
     </ul>
 </div>
-
-<!-- Estilos inline (opcional mover a CSS) -->
-<style>
-    .sidebar.collapsed {
-        width: 80px !important;
-        overflow: hidden;
-    }
-    .sidebar.collapsed .nav-link span,
-    .sidebar.collapsed h5 {
-        display: none;
-    }
-    .sidebar.collapsed .nav-link i {
-        margin-right: 0;
-        font-size: 1.2rem;
-    }
-    .hover-effect:hover {
-        background: rgba(255, 255, 255, 0.1);
-        border-radius: 5px;
-        transition: all 0.3s;
-    }
-    .sidebar {
-        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
-    }
-</style>

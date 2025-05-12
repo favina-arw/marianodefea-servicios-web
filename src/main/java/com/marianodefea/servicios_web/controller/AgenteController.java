@@ -43,12 +43,12 @@ public class AgenteController {
         }else{
             nuevoAgente.setCuil(agenteDTO.getCuil());
         }
-        nuevoAgente.setNombre(agenteDTO.getNombre());
-        nuevoAgente.setApellido(agenteDTO.getApellido());
+        nuevoAgente.setNombre(agenteDTO.getNombre().toUpperCase());
+        nuevoAgente.setApellido(agenteDTO.getApellido().toUpperCase());
 
         Agente agenteCreado = agenteService.save(nuevoAgente);
         if (agenteCreado == null) {
-            model.addAttribute("error", "Hubo un problema, el agente no fur registrado");
+            model.addAttribute("error", "Hubo un problema, el agente no fue registrado");
             return "agentes/crear_agente";
         }
         model.addAttribute("success", "Agente: " + agenteCreado.getNombre() + ", " + agenteCreado.getApellido() + ". Creado con éxito.");
