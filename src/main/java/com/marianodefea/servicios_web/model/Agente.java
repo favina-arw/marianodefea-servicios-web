@@ -43,4 +43,8 @@ public class Agente {
         cargosAsignados.add(agenteCargo);
     }
 
+    public Boolean isActivo(){
+        return this.activo;
+    }
+
 }

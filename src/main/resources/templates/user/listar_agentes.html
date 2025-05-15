@@ -21,31 +21,33 @@
       <table class="table table-striped mt-0 mb-0">
         <thead>
         <tr>
-          <th>NOMBRE</th>
-          <th>APELLIDO</th>
-          <th>DNI</th>
-          <th>CUIT</th>
-          <th>CARGO</th>
-          <th>HORA ENTRADA</th>
-          <th>HORA SALIDA</th>
-          <th>ESTADO</th>
-          <th>ACCIONES</th>
+          <th class="text-start">NOMBRE</th>
+          <th class="text-center">APELLIDO</th>
+          <th class="text-center">DNI</th>
+          <th class="text-center">CUIT</th>
+          <th class="text-center">ESTADO</th>
+          <th class="text-center">ACCIONES</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="agente : ${agentes}">
-          <td th:text="${agente.nombre.toUpperCase()}"></td>
-          <td th:text="${agente.apellidotoUpperCase()}"></td>
-          <td th:text="${agente.dni}"></td>
-          <td th:text="${agente.cuil}"></td>
-          <td th:text="${agente.cargo.toUpperCase()}"></td>
-          <td> - </td>
-          <td> - </td>
-          <td> - </td>
-          <td>
+          <td class="text-start" th:text="${agente.nombre.toUpperCase()}"></td>
+          <td class="text-center" th:text="${agente.apellido.toUpperCase()}"></td>
+          <td class="text-center" th:text="${agente.dni}"></td>
+          <td class="text-center" th:text="${agente.cuil}"></td>
+          <td class="text-center">
+            <span th:if="${agente.isActivo()}" class="badge bg-success">Activo</span>
+            <span th:unless="${agente.isActivo()}" class="badge bg-danger">Inactivo</span>
+          </td>
+          <td class="text-center">
             <a href="#" class="btn btn-warning">Modificar</a>
-            <a href="#" class="btn btn-success">Activar</a>
-            <a href="#" class="btn btn-danger">Desactivar</a>
+            <a href="#"
+               th:classappend="${agente.isActivo()} ? 'btn-danger' : 'btn-success'"
+               class="btn">
+              <i th:classappend="${agente.isActivo()} ? 'fa-toggle-on' : 'fa-toggle-off'"
+                 class="fas"></i>
+              <span th:text="${agente.isActivo()} ? ' Desactivar' : ' Activar'"></span>
+            </a>
           </td>
         </tr>
         </tbody>
