@@ -1,0 +1,1 @@
+ALTER TABLE agentes DROP COLUMN cargo

@@ -1,0 +1,1 @@
+-- Inicialización: base de datos ya existente, migraciones comienzan en V2
