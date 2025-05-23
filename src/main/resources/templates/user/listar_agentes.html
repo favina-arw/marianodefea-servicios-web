@@ -8,53 +8,85 @@
 </head>
 
 <body>
-<main layout:fragment="content">
-  <a th:href="@{/agentes/crearAgente}" class="btn btn-success d-flex flex-column align-items-center justify-content-center p-3" style="width: 100px; height: 100px;">
-    <i class="fas fa-user-plus fa-2x mb-2"></i>
-    <span class="fw-bold">Agregar Agente</span>
-  </a>
-  <br>
-  <div class="card shadow-sm justify-content-center">
-    <div class="card-body">
-      <h4 class="card-title mb-3">Listado de Agentes</h4>
-      <hr>
-      <table class="table table-striped mt-0 mb-0">
-        <thead>
-        <tr>
-          <th class="text-start">NOMBRE</th>
-          <th class="text-center">APELLIDO</th>
-          <th class="text-center">DNI</th>
-          <th class="text-center">CUIT</th>
-          <th class="text-center">ESTADO</th>
-          <th class="text-center">ACCIONES</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="agente : ${agentes}">
-          <td class="text-start" th:text="${agente.nombre.toUpperCase()}"></td>
-          <td class="text-center" th:text="${agente.apellido.toUpperCase()}"></td>
-          <td class="text-center" th:text="${agente.dni}"></td>
-          <td class="text-center" th:text="${agente.cuil}"></td>
-          <td class="text-center">
-            <span th:if="${agente.isActivo()}" class="badge bg-success">Activo</span>
-            <span th:unless="${agente.isActivo()}" class="badge bg-danger">Inactivo</span>
-          </td>
-          <td class="text-center">
-            <a href="#" class="btn btn-warning">Modificar</a>
-            <a href="#"
-               th:classappend="${agente.isActivo()} ? 'btn-danger' : 'btn-success'"
-               class="btn">
-              <i th:classappend="${agente.isActivo()} ? 'fa-toggle-on' : 'fa-toggle-off'"
-                 class="fas"></i>
-              <span th:text="${agente.isActivo()} ? ' Desactivar' : ' Activar'"></span>
-            </a>
-          </td>
-        </tr>
-        </tbody>
-      </table>
+  <main layout:fragment="content">
+    <a th:href="@{/agentes/crearAgente}" class="btn btn-success d-flex flex-column align-items-center justify-content-center p-3" style="width: 100px; height: 100px;">
+      <i class="fas fa-user-plus fa-2x mb-2"></i>
+      <span class="fw-bold">Agregar Agente</span>
+    </a>
+    <br>
+    <div class="card shadow-sm justify-content-center">
+      <div class="card-body">
+        <h4 class="card-title mb-3">Listado de Agentes</h4>
+        <hr>
+        <table class="table table-striped mt-0 mb-0">
+          <thead>
+            <tr>
+              <th class="text-start">NOMBRE</th>
+              <th class="text-center">APELLIDO</th>
+              <th class="text-center">DNI</th>
+              <th class="text-center">CUIT</th>
+              <th class="text-center">CARGOS</th>
+              <th class="text-center">ESTADO</th>
+              <th class="text-center">ACCIONES</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="agente : ${agentes}">
+              <td class="text-start" th:text="${agente.nombre.toUpperCase()}"></td>
+              <td class="text-center" th:text="${agente.apellido.toUpperCase()}"></td>
+              <td class="text-center" th:text="${agente.dni}"></td>
+              <td class="text-center" th:text="${agente.cuil}"></td>
+              <td class="text-center" th:text="${agente.getCargosAsignados.size()}"></td>
+              <td class="text-center">
+                <span th:if="${agente.isActivo()}" class="badge bg-success">Activo</span>
+                <span th:unless="${agente.isActivo()}" class="badge bg-danger">Inactivo</span>
+              </td>
+              <td class="text-center">
+                <a href="#" class="btn btn-warning">Modificar</a>
+                <a href="#"
+                   th:classappend="${agente.isActivo()} ? 'btn-danger' : 'btn-success'"
+                   class="btn">
+                  <i th:classappend="${agente.isActivo()} ? 'fa-toggle-on' : 'fa-toggle-off'"
+                     class="fas"></i>
+                  <span th:text="${agente.isActivo()} ? ' Desactivar' : ' Activar'"></span>
+                </a>
+              </td>
+            </tr>
+            <tr th:each="agente : ${agentes}">
+              <td colspan="5" class="p-0">
+                <div class="collapse" th:id="'cargos_'+${agente.id}">
+                  <div class="p-3 bg-light">
+                    <h5>Cargos de <span th:text="${agente.nombre + ' ' + agente.apellido}"></span></h5>
+                    <table class="table table-sm table-bordered">
+                      <thead class="table-secondary">
+                      <tr>
+                        <th>Cargo</th>
+                        <th>Entrada</th>
+                        <th>Salida</th>
+                        <th>Acciones</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      <tr th:each="cargo : ${agente.cargosAsignados}">
+                        <td th:text="${cargo.nombre}"></td>
+                        <td th:text="${cargo.horaEntrada}"></td>
+                        <td th:text="${cargo.horaSalida}"></td>
+                        <td>
+                          <button class="btn btn-sm btn-primary me-1">Editar</button>
+                          <button class="btn btn-sm btn-danger">Eliminar</button>
+                        </td>
+                      </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
-  </div>
-</main>
+  </main>
 </body>
 
 </html>
