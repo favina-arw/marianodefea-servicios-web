@@ -82,7 +82,19 @@ public class FichadaController {
         List<LocalDate> diasHabiles = DateUtils.getDiasLaborablesPorRango(inicio, fin);
         model.addAttribute("diasHabiles", diasHabiles);
         model.addAttribute("informe", informe);
-        return "user/motrar_informe_asistencia_mensual";
+        return "user/mostrar_informe_asistencia_mensual";
+    }
+
+    @GetMapping("/informeAsistenciaMensual/{mes}")
+    public String mostrarInforme(Model model, @PathVariable("mes") int numeroMes){
+        List<AsistenciaPorAgenteDTO> informe = informeService.generarInformeAsistenciaMensual();
+        LocalDate inicio = DateUtils.getPrimerDiaDelMesAnterior();
+        LocalDate fin = DateUtils.getUltimoDiaDelMesAnterior();
+
+        List<LocalDate> diasHabiles = DateUtils.getDiasLaborablesPorRango(inicio, fin);
+        model.addAttribute("diasHabiles", diasHabiles);
+        model.addAttribute("informe", informe);
+        return "user/mostrar_informe_asistencia_mensual";
     }
 
     @GetMapping("/crearTipoFichada")

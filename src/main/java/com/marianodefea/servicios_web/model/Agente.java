@@ -29,9 +29,9 @@ public class Agente {
     private String nombre;
     @Column(nullable = false)
     private String apellido;
-    private Boolean activo;
+    private boolean activo = true;
 
-    @OneToMany(mappedBy = "agente", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "agente", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<AgenteCargo> cargosAsignados = new ArrayList<>();
 
     @OneToMany(mappedBy = "agente", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)

@@ -7,21 +7,23 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalTime;
+import java.util.List;
 
 @Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class ListarAgenteDTO {
 
+    private Long id;
     private String cuil;
     private String dni;
     private String nombre;
     private String apellido;
-    private Cargo cargo;
     private boolean activo;
+    private List<CargoAsignadoDTO> cargosAsignados;
 
-    public boolean isActivo(){
-    return activo;
+    public String isActivo(){
+    return this.activo ? "Activo" : "Inactivo";
     }
 
 }

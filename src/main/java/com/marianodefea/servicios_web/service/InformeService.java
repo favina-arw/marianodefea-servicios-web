@@ -66,4 +66,44 @@ public class InformeService {
         }
         return informe;
     }
+
+    public List<AsistenciaPorAgenteDTO> generarInformeAsistenciaMensual(int mes){
+        LocalDate inicio = DateUtils.getPrimerDiaDelMes(mes);
+        LocalDate fin = DateUtils.getUltimoDiaDelMes(mes);
+
+        List<LocalDate> diasHabiles = DateUtils.getDiasLaborablesPorRango(inicio, fin);
+        List<Agente> agentes = agenteRepository.findAll();
+        List<AsistenciaPorAgenteDTO> informe = new ArrayList<>();
+
+        for (Agente agente : agentes){
+            List<Asistencia> asistencias = new ArrayList<>();
+
+            for (LocalDate dia: diasHabiles){
+                String estado = "";
+
+                if(eventoService.esDiaLaboral(dia)){
+                    LocalDateTime inicioDelDia = dia.atStartOfDay();
+                    LocalDateTime finDelDia = dia.atTime(LocalTime.MAX);
+                    List<Fichada> fichadas = fichadaRepository.findByAgenteAndHoraBetween(agente, inicioDelDia, finDelDia);
+
+                    boolean entrada = fichadas.stream().anyMatch(f -> f.getTipoFichada().getNombre().toUpperCase().equals("ENTRADA"));
+                    boolean salida = fichadas.stream().anyMatch(f -> f.getTipoFichada().getNombre().toUpperCase().equals("SALIDA"));
+
+                    if (entrada && salida) {
+                        estado = "Presente";
+                    }else if (!fichadas.isEmpty()) {
+                        if (!salida)
+                            estado = (!salida) ? "No registró su salida" : "Incompleto";
+                    }else{
+                        estado = "Ausente";
+                    }
+                } else {
+                    estado = "No se dictaron clases";
+                }
+                asistencias.add(new Asistencia(dia, estado));
+            }
+            informe.add(new AsistenciaPorAgenteDTO(agente, asistencias));
+        }
+        return informe;
+    }
 }

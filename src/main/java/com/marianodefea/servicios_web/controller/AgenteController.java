@@ -1,6 +1,8 @@
 package com.marianodefea.servicios_web.controller;
 
 import com.marianodefea.servicios_web.dto.AgenteDTO;
+import com.marianodefea.servicios_web.dto.CargoAsignadoDTO;
+import com.marianodefea.servicios_web.dto.ListarAgenteDTO;
 import com.marianodefea.servicios_web.model.Agente;
 import com.marianodefea.servicios_web.service.AgenteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/agentes")
@@ -22,7 +25,27 @@ public class AgenteController {
 
     @GetMapping("/")
     public String listarAgentes(Model model){
-        List<Agente> agentes = agenteService.findAll();
+
+        List<ListarAgenteDTO> agentes = agenteService.findAll().stream().map(agente ->{
+            List<CargoAsignadoDTO> cargosAsignados = agente.getCargosAsignados().stream()
+                    .map(ca -> new CargoAsignadoDTO(
+                            ca.getId(),
+                            ca.getCargo().getNombre(),
+                            ca.getHorario() != null ? ca.getHorario().getHoraInicio().toString() : "-",
+                            ca.getHorario() != null ? ca.getHorario().getHoraFin().toString() : "-",
+                            ca.isActivo()
+                    )).collect(Collectors.toList());
+
+            return new ListarAgenteDTO(
+                    agente.getId(),
+                    agente.getCuil(),
+                    agente.getDni(),
+                    agente.getNombre(),
+                    agente.getApellido(),
+                    agente.isActivo(),
+                    cargosAsignados
+            );
+        }).collect(Collectors.toList());
         model.addAttribute("agentes", agentes);
         return "user/listar_agentes";
     }

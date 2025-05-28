@@ -8,6 +8,12 @@
     <link rel="icon" href="/images/logo_nuevo_795.jpg" type="image/jpg">
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
     <th:block th:replace="~{fragments/estilos :: estilos}"></th:block>
+    <script>
+        const isCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
+        if (isCollapsed) {
+            document.documentElement.classList.add('sidebar-collapsed');
+        }
+    </script>
 </head>
 <body>
 
