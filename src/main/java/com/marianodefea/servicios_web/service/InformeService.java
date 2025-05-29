@@ -50,12 +50,12 @@ public class InformeService {
                     boolean salida = fichadas.stream().anyMatch(f -> f.getTipoFichada().getNombre().toUpperCase().equals("SALIDA"));
 
                     if (entrada && salida) {
-                        estado = "Presente";
+                        estado = "P";
                     }else if (!fichadas.isEmpty()) {
                         if (!salida)
-                            estado = "Presente<br/>N/S";;
+                            estado = "P<br/>N/S";;
                     }else{
-                        estado = "Ausente";
+                        estado = "A";
                     }
                 } else {
                     estado = "No se dictaron clases";
@@ -89,12 +89,12 @@ public class InformeService {
                     boolean salida = fichadas.stream().anyMatch(f -> f.getTipoFichada().getNombre().toUpperCase().equals("SALIDA"));
 
                     if (entrada && salida) {
-                        estado = "Presente";
+                        estado = "P";
                     }else if (!fichadas.isEmpty()) {
                         if (!salida)
-                            estado = "Presente<br/>N/S";
+                            estado = "P<br/>N/S";
                     }else{
-                        estado = "Ausente";
+                        estado = "A";
                     }
                 } else {
                     estado = "No se dictaron clases";
