@@ -10,7 +10,31 @@
         <main layout:fragment="content">
             <div class="card shadow-sm">
                 <div class="card-body">
-                    <h4 class="card-title mb-3">Listado</h4>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <h4 class="card-title mb-3">
+                                Informe de Asistencia -
+                                <span th:text="${#strings.capitalize(#temporals.format(diasHabiles[0], 'MMMM yyyy'))}">Mes</span>
+                            </h4>
+                        </div>
+
+                        <div class="col-lg-8 d-flex justify-content-end align-items-end">
+                            <!-- Selector de mes -->
+                            <form onsubmit="return redirectToMes()">
+                                <div class="mb-3 d-flex align-items-center">
+                                    <label for="mes" class="form-label me-2">Seleccionar mes:</label>
+                                    <select id="mes" name="mes" class="form-select w-auto">
+                                        <option value="" disabled selected>-- Mes --</option>
+                                        <option th:each="i : ${#numbers.sequence(1, 12)}"
+                                                th:value="${i}"
+                                                th:text="${i}">Mes</option>
+                                    </select>
+                                    <button type="submit" class="btn btn-primary ms-2">Actualizar informe</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
                     <hr>
                     <div class="table-responsive" style="display: block; white-space: nowrap;">
                         <table class="table table-striped";>
@@ -30,7 +54,7 @@
                                 </td>
                                 <td th:each="dia : ${diasHabiles}">
                                     <!-- Versión segura con manejo de nulos -->
-                                    <span th:text="${registro.getAsistenciaPorDia(dia).orElse(null)?.estado ?: 'Sin datos'}"></span>
+                                    <span style="display: block; text-align: center;"  th:utext="${registro.getAsistenciaPorDia(dia).orElse(null)?.estado ?: 'Ausentedfds<br/>S/D'}"></span>
                                 </td>
                             </tr>
                             </tbody>
@@ -38,6 +62,21 @@
                     </div>
                 </div>
             </div>
+            <script>
+                // Selecciona el mes actual al cargar
+                window.addEventListener("DOMContentLoaded", function () {
+                    const mesActual = new Date().getMonth() + 1;
+                    document.getElementById("mes").value = mesActual;
+                });
+
+                function redirectToMes() {
+                    const mes = document.getElementById("mes").value;
+                    if (mes) {
+                        window.location.href = `/fichada/informeAsistenciaMensual/${mes}`;
+                    }
+                    return false; // evitar envío tradicional del formulario
+                }
+            </script>
         </main>
     </body>
 </html>

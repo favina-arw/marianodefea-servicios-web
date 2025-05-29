@@ -53,7 +53,7 @@ public class InformeService {
                         estado = "Presente";
                     }else if (!fichadas.isEmpty()) {
                         if (!salida)
-                            estado = (!salida) ? "No registró su salida" : "Incompleto";
+                            estado = "Presente<br/>N/S";;
                     }else{
                         estado = "Ausente";
                     }
@@ -76,11 +76,10 @@ public class InformeService {
         List<AsistenciaPorAgenteDTO> informe = new ArrayList<>();
 
         for (Agente agente : agentes){
-            List<Asistencia> asistencias = new ArrayList<>();
 
+            List<Asistencia> asistencias = new ArrayList<>();
             for (LocalDate dia: diasHabiles){
                 String estado = "";
-
                 if(eventoService.esDiaLaboral(dia)){
                     LocalDateTime inicioDelDia = dia.atStartOfDay();
                     LocalDateTime finDelDia = dia.atTime(LocalTime.MAX);
@@ -93,7 +92,7 @@ public class InformeService {
                         estado = "Presente";
                     }else if (!fichadas.isEmpty()) {
                         if (!salida)
-                            estado = (!salida) ? "No registró su salida" : "Incompleto";
+                            estado = "Presente<br/>N/S";
                     }else{
                         estado = "Ausente";
                     }

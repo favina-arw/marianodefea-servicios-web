@@ -57,7 +57,7 @@ public class TareasAutomaticasService {
                     salidaAutomatica.setAgente(entrada.getAgente());
                     salidaAutomatica.setTipoFichada(tipoSalida);
                     salidaAutomatica.setHora(LocalDateTime.of(hoy, LocalTime.of(23, 0)));
-                    salidaAutomatica.setTipoRegistro("automático");
+                    salidaAutomatica.setTipoRegistro("AUTOMÁTICO");
 
                     fichadaRepository.save(salidaAutomatica);
                     log.info("🔒 Cerrada automáticamente la entrada de {} (Agente ID: {})",

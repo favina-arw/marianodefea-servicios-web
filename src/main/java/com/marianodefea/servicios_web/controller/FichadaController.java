@@ -87,9 +87,9 @@ public class FichadaController {
 
     @GetMapping("/informeAsistenciaMensual/{mes}")
     public String mostrarInforme(Model model, @PathVariable("mes") int numeroMes){
-        List<AsistenciaPorAgenteDTO> informe = informeService.generarInformeAsistenciaMensual();
-        LocalDate inicio = DateUtils.getPrimerDiaDelMesAnterior();
-        LocalDate fin = DateUtils.getUltimoDiaDelMesAnterior();
+        List<AsistenciaPorAgenteDTO> informe = informeService.generarInformeAsistenciaMensual(numeroMes);
+        LocalDate inicio = DateUtils.getPrimerDiaDelMes(numeroMes);
+        LocalDate fin = DateUtils.getUltimoDiaDelMes(numeroMes);
 
         List<LocalDate> diasHabiles = DateUtils.getDiasLaborablesPorRango(inicio, fin);
         model.addAttribute("diasHabiles", diasHabiles);
