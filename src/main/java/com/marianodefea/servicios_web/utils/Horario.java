@@ -16,7 +16,7 @@ public class Horario {
     private LocalTime horaFin;
 
     // Método útil para validaciones
-    public boolean solapaCon(Horario otro) {
+    public boolean superponeCon(Horario otro) {
         return this.horaInicio.isBefore(otro.horaFin) &&
                 this.horaFin.isAfter(otro.horaInicio);
     }

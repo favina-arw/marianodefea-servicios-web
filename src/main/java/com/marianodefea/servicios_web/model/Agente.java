@@ -31,17 +31,17 @@ public class Agente {
     private String apellido;
     private boolean activo = true;
 
-    @OneToMany(mappedBy = "agente", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    private List<AgenteCargo> cargosAsignados = new ArrayList<>();
+    @OneToMany(mappedBy = "agente")
+    private List<Cargo> cargos;
 
     @OneToMany(mappedBy = "agente", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @OrderBy("hora DESC")
     private List<Fichada> fichadas = new ArrayList<>();
 
-    public void asignarCargo(Cargo cargo, Horario horario) {
+    /*public void asignarCargo(Cargo cargo, Horario horario) {
         AgenteCargo agenteCargo = AgenteCargo.crear(this, cargo, horario);
         cargosAsignados.add(agenteCargo);
-    }
+    }*/
 
     public Boolean isActivo(){
         return this.activo;

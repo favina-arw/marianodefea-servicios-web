@@ -9,7 +9,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CargoAsignadoDTO {
-    private Long idAgenteCargo;
+    private Long id;
     private String nombreCargo;
     private String horaEntrada;
     private String horaSalida;

@@ -1,5 +1,6 @@
 package com.marianodefea.servicios_web.model;
 
+import com.marianodefea.servicios_web.utils.Horario;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,8 +19,12 @@ public class Cargo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String nombre;
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    private CargoTipo cargoTipo;
+    @Embedded
+    private Horario horario;
+    private boolean activo;
 
-    @OneToMany(mappedBy = "cargo")
-    private List<AgenteCargo> agentesAsignados = new ArrayList<>();
+    @ManyToOne
+    private Agente agente;
 }

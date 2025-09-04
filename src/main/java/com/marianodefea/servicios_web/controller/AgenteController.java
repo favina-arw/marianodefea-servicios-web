@@ -27,10 +27,10 @@ public class AgenteController {
     public String listarAgentes(Model model){
 
         List<ListarAgenteDTO> agentes = agenteService.findAll().stream().map(agente ->{
-            List<CargoAsignadoDTO> cargosAsignados = agente.getCargosAsignados().stream()
+            List<CargoAsignadoDTO> cargosAsignados = agente.getCargos().stream()
                     .map(ca -> new CargoAsignadoDTO(
                             ca.getId(),
-                            ca.getCargo().getNombre(),
+                            ca.getCargoTipo().getNombre(),
                             ca.getHorario() != null ? ca.getHorario().getHoraInicio().toString() : "-",
                             ca.getHorario() != null ? ca.getHorario().getHoraFin().toString() : "-",
                             ca.isActivo()
