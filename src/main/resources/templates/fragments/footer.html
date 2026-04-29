@@ -1,7 +1,16 @@
-<!-- Fragmento del footer - style="background-color: #9FC0DE;" -->
-<footer th:fragment="footer" class="footer mt-auto py-3 bg-light">
-    <div class="footer-container">
-        <span class="text-muted">Place sticky footer content here.</span>
+<footer th:fragment="footer" class="footer mt-auto py-3 border-top bg-body-tertiary">
+    <div class="container-fluid px-4">
+        <div class="d-flex flex-column flex-md-row align-items-center justify-content-between small text-muted">
+            <div class="mb-2 mb-md-0 d-flex align-items-center">
+                <i class="bi bi-code-slash text-primary fs-5 me-2"></i>
+                <span>
+                    &copy; 2026 <span class="fw-bold text-body">Federico Adrián Viña</span>
+                    <span class="mx-1">&middot;</span> Backend Software Developer
+                </span>
+            </div>
+            <div>
+                <span class="badge rounded-pill border border-secondary text-secondary px-3 bg-transparent">Versión 1.0.0</span>
+            </div>
+        </div>
     </div>
 </footer>
-

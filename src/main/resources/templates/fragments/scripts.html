@@ -1,54 +1,62 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
-    <!-- Fragmento de scripts -->
-    <th:block th:fragment="scripts">
-        <!-- Script del sidebar colapsable -->
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                const toggleBtn = document.getElementById('toggle-sidebar');
-                const sidebar = document.querySelector('.sidebar');
+<th:block th:fragment="scripts">
 
-                if(toggleBtn && sidebar) {
-                    toggleBtn.addEventListener('click', () => {
-                        sidebar.classList.toggle('collapsed');
-                        sidebar.style.width = sidebar.classList.contains('collapsed') ? '80px' : '250px';
-                    });
-                }
-            });
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
 
-            document.addEventListener('DOMContentLoaded', function() {
-                const sidebar = document.querySelector('.sidebar');
-                const toggleBtn = document.getElementById('toggle-sidebar');
+            // --- 1. LÓGICA DEL SIDEBAR ---
+            const sidebar = document.getElementById('sidebar');
+            const toggleBtn = document.getElementById('toggle-sidebar');
+            const labels = document.querySelectorAll('.menu-label');
 
-                // Cargar estado guardado
-                if(localStorage.getItem('sidebarCollapsed') === 'true') {
-                    sidebar.classList.add('collapsed');
-                    sidebar.style.width = '80px';
-                }
+            if (sidebar && toggleBtn) {
+                const isExpanded = localStorage.getItem('sidebarExpanded') === 'true';
 
-                // Manejar clic
-                toggleBtn?.addEventListener('click', () => {
-                    const isCollapsed = sidebar.classList.toggle('collapsed');
-                    sidebar.style.width = isCollapsed ? '80px' : '250px';
-                    localStorage.setItem('sidebarCollapsed', isCollapsed);
+                const applySidebarState = (expand) => {
+                    if (expand) {
+                        sidebar.style.width = '250px';
+                        labels.forEach(l => l.classList.remove('d-none'));
+                    } else {
+                        sidebar.style.width = '80px';
+                        labels.forEach(l => l.classList.add('d-none'));
+                    }
+                };
+
+                applySidebarState(isExpanded);
+
+                toggleBtn.addEventListener('click', () => {
+                    const currentlyExpanded = sidebar.style.width === '250px';
+                    applySidebarState(!currentlyExpanded);
+                    localStorage.setItem('sidebarExpanded', !currentlyExpanded);
                 });
-            });
+            }
 
-        </script>
+            // --- 2. LÓGICA DEL MODO OSCURO ---
+            const btnSwitchTheme = document.getElementById('btnSwitchTheme');
 
-        <!-- Otros scripts globales -->
+            if (btnSwitchTheme) {
+                btnSwitchTheme.addEventListener('click', () => {
+                    const currentTheme = document.documentElement.getAttribute('data-bs-theme');
+                    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
 
+                    // Cambia el atributo en el HTML inmediatamente
+                    document.documentElement.setAttribute('data-bs-theme', newTheme);
+                    // Guarda la preferencia en el navegador
+                    localStorage.setItem('theme', newTheme);
+                });
+            }
+        });
+    </script>
 
-        <!-- DataTables CSS -->
-        <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <!-- DataTables Core -->
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <!-- DataTables Bootstrap 5 Integration -->
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
 
-        <!-- jQuery (necesario para DataTables) -->
-        <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
-
-        <!-- DataTables JS -->
-        <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-        <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
-    </th:block>
-    </body>
+</th:block>
+</body>
 </html>

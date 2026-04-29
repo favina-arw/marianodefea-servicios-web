@@ -1,27 +1,132 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
-      layout:decorate="public/base">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{public/base}">
+<head>
+    <th:block layout:fragment="estilos_adicionales">
+        <style>
+            :root {
+                --sidebar-width: 220px; /* Antes 250px */
+                --sidebar-collapsed-width: 50px; /* Antes 60px */
+                --transition-speed: 0.25s;
+            }
 
-    <body>
-        <!-- Toast Notifications (si las tienes) -->
-        <div th:replace="~{fragments/toast :: toast}"></div>
+            #sidebar-wrapper {
+                width: var(--sidebar-collapsed-width);
+                height: 100vh;
+                position: fixed;
+                top: 0; left: 0; z-index: 1000;
+                transition: width 0.3s ease;
+                background-color: var(--bs-tertiary-bg);
+                overflow-x: hidden;
+            }
 
-        <!-- Navbar -->
+            body.sidebar-expanded #sidebar-wrapper { width: var(--sidebar-width); }
+
+            .main-content {
+                margin-left: var(--sidebar-collapsed-width);
+                transition: margin-left 0.3s ease;
+                padding-top: 48px; /* Redujimos el margen superior para la nueva navbar más finita */
+                display: flex;
+                flex-direction: column;
+                min-height: 100vh;
+            }
+
+            main { flex: 1; }
+            body.sidebar-expanded .main-content { margin-left: var(--sidebar-width); }
+
+            .list-group-item {
+                display: flex; align-items: center; white-space: nowrap;
+                border: none !important;
+                padding: 0.5rem 0 !important; /* Antes 0.8rem. Esto junta más los botones */
+                transition: all 0.2s ease; border-left: 3px solid transparent !important;
+                font-size: 0.9rem; /* Letra un pelín más chica */
+            }
+
+            .list-group-item:hover {
+                background-color: var(--bs-secondary-bg) !important;
+                border-left: 3px solid var(--bs-primary) !important;
+                color: var(--bs-primary) !important;
+            }
+
+            .list-group-item i {
+                min-width: calc(var(--sidebar-collapsed-width) - 3px);
+                text-align: center;
+                font-size: 1.1rem; /* Iconos más discretos */
+            }
+
+            .menu-text { opacity: 0; transition: opacity 0.2s ease; font-weight: 500; margin-left: 10px; }
+            body.sidebar-expanded .menu-text { opacity: 1; }
+            #sidebar-wrapper::-webkit-scrollbar { display: none; }
+
+            @media (max-width: 767px) {
+                #sidebar-wrapper { margin-left: calc(var(--sidebar-collapsed-width) * -1); }
+                body.sidebar-expanded #sidebar-wrapper { margin-left: 0; width: var(--sidebar-width); }
+                .main-content { margin-left: 0 !important; }
+            }
+
+            .footer { border-top: 1px solid rgba(0, 0, 0, 0.05) !important; }
+            [data-bs-theme="dark"] .footer { border-top: 1px solid rgba(255, 255, 255, 0.07) !important; }
+        </style>
+    </th:block>
+</head>
+<body>
+
+<div layout:fragment="content">
+    <!-- Inyección del Sidebar -->
+    <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+
+    <div class="main-content flex-grow-1">
+        <!-- Inyección del Navbar -->
         <div th:replace="~{fragments/navbar :: navbar}"></div>
 
-        <div class="d-flex">
-            <!-- Sidebar -->
-            <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+        <!-- CONTENIDO DINÁMICO DE LAS VISTAS -->
+        <main class="p-4">
+            <div layout:fragment="app_content"></div>
+        </main>
 
-            <!-- Contenido principal -->
-            <main class="flex-grow-1 p-3" layout:fragment="content">
-                <h1>Dashboard</h1>
-                <p th:text="${mensaje}">Contenido de prueba del dashboard</p>
-            </main>
-        </div>
-
-        <!-- Footer -->
+        <!-- Inyección del Footer -->
         <div th:replace="~{fragments/footer :: footer}"></div>
-    </body>
+    </div>
+</div>
+
+<th:block layout:fragment="scripts_adicionales">
+    <script>
+        const menuToggle = document.getElementById("menu-toggle");
+        const body = document.body;
+
+        if (localStorage.getItem('sidebar-state') === 'expanded') {
+            body.classList.add("sidebar-expanded");
+        }
+
+        menuToggle.addEventListener("click", () => {
+            body.classList.toggle("sidebar-expanded");
+            localStorage.setItem('sidebar-state', body.classList.contains("sidebar-expanded") ? 'expanded' : 'collapsed');
+        });
+
+        const themeBtn = document.getElementById('theme-btn');
+        const iconLight = document.getElementById('theme-icon-light');
+        const iconDark = document.getElementById('theme-icon-dark');
+
+        const updateIcons = (theme) => {
+            if (theme === 'dark') {
+                iconLight.classList.remove('d-none');
+                iconDark.classList.add('d-none');
+            } else {
+                iconLight.classList.add('d-none');
+                iconDark.classList.remove('d-none');
+            }
+        }
+
+        updateIcons(document.documentElement.getAttribute('data-bs-theme'));
+
+        themeBtn.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-bs-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-bs-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateIcons(newTheme);
+        });
+    </script>
+</th:block>
+
+</body>
 </html>

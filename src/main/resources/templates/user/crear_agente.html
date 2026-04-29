@@ -7,24 +7,49 @@
         <title>Crear agente</title>
     </head>
     <body>
-        <main layout:fragment="content">
-            <div class="login-container d-flex justify-content-center align-items-center vh-100">
-                <div class="login-form p-4 bg-white rounded shadow" style="max-width: 400px; width: 100%;">
-                    <h3 class="text-center mb-4">Crear Agente</h3>
-                    <form th:action="@{/agentes/crearAgente}" method="POST">
-                        <div class="mb-3">
-                            <label for="dni" class="form-label">DNI</label>
-                            <input type="text" class="form-control" id="dni" name="dni" required>
-                            <label for="cuil" class="form-label">CUIL/CUIT</label>
-                            <input type="text" class="form-control" id="cuil" name="cuil">
+        <main layout:fragment="dashboard_content">
+            <div class="card shadow-sm justify-content-center">
+                <div class="card-title">
+                    <h6 class="p-3 pb-0 fw-bold text-uppercase">Crear agente</h6>
+                    <hr class="m-0">
+                </div>
+                <div class="card-body">
+                    <!-- Le agregamos 'row' para la grilla y 'g-3' para la separación entre columnas -->
+                    <form th:action="@{/agentes/crearAgente}" method="POST" class="row g-3" style="font-size: 0.85rem;">
+
+                        <!-- Columna 1: DNI (Ocupa 3 de 12 lugares en monitores grandes) -->
+                        <div class="col-md-3">
+                            <label for="dni" class="form-label mb-1 text-muted fw-medium">DNI</label>
+                            <input type="text" class="form-control form-control-sm" id="dni" name="dni" required>
                         </div>
-                        <div class="mb-3">
-                            <label for="nombre" class="form-label">Nombre/s</label>
-                            <input type="text" class="form-control" id="nombre" name="nombre" required>
-                            <label for="apellido" class="form-label">Apellido/s</label>
-                            <input type="text" class="form-control" id="apellido" name="apellido" required>
+
+                        <!-- Columna 2: CUIL -->
+                        <div class="col-md-3">
+                            <label for="cuil" class="form-label mb-1 text-muted fw-medium">CUIL/CUIT</label>
+                            <input type="text" class="form-control form-control-sm" id="cuil" name="cuil">
                         </div>
-                        <button type="submit" class="btn btn-primary w-100">CREAR AGENTE</button>
+
+                        <!-- Columna 3: Nombre -->
+                        <div class="col-md-3">
+                            <label for="nombre" class="form-label mb-1 text-muted fw-medium">Nombre/s</label>
+                            <input type="text" class="form-control form-control-sm" id="nombre" name="nombre" required>
+                        </div>
+
+                        <!-- Columna 4: Apellido -->
+                        <div class="col-md-3">
+                            <label for="apellido" class="form-label mb-1 text-muted fw-medium">Apellido/s</label>
+                            <input type="text" class="form-control form-control-sm" id="apellido" name="apellido" required>
+                        </div>
+
+                        <!-- Fila del Botón -->
+                        <!-- mt-4 le da un poco de respiro hacia arriba, justify-content-end lo tira a la derecha -->
+                        <div class="col-12 mt-4 d-flex justify-content-center">
+                            <!-- px-4 py-2 le da el padding "mediano" perfecto sin ser exagerado como el p-3 -->
+                            <button type="submit" class="btn btn-primary p2">
+                                <i class="bi bi-person-plus-fill me-2"></i>Crear Agente
+                            </button>
+                        </div>
+
                     </form>
                 </div>
             </div>

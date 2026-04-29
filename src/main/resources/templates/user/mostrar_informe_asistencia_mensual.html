@@ -7,39 +7,63 @@
     </head>
 
     <body>
-        <main layout:fragment="content">
+        <main layout:fragment="dashboard_content">
             <div class="card shadow-sm">
                 <div class="card-body">
-                    <div class="row">
-                        <div class="col-lg-4">
-                            <h4 class="card-title mb-3 d-flex justify-content-start align-items-start">
-                                Informe de Asistencia -
-                                 <span th:text="${#strings.capitalize(#temporals.format(diasHabiles[0], 'MMMM yyyy'))}">Mes</span>
+                    <div class="d-flex flex-column flex-xl-row justify-content-between align-items-xl-center mb-4 gap-3">
+
+                        <!-- Título principal -->
+                        <div>
+                            <h4 class="mb-0 fw-bold text-body d-flex align-items-center">
+                                <i class="bi bi-journal-check text-primary me-2"></i>
+                                Informe de Asistencia
                             </h4>
+                            <!-- Subtítulo con el mes -->
+                            <span class="text-muted small fw-medium" th:text="${#strings.capitalize(#temporals.format(diasHabiles[0], 'MMMM yyyy'))}">
+                                Mes y Año
+                            </span>
                         </div>
 
-                        <div class="col-lg-4 d-flex justify-content-center align-items-center">
-                            <!-- Selector de mes -->
-                            <form onsubmit="return redirectToMes()">
-                                <div class="mb-3 d-flex align-items-center">
-                                    <label for="mes" class="form-label me-2">Seleccionar mes:</label>
-                                    <select id="mes" name="mes" class="form-select w-auto">
-                                        <option value="" disabled selected>-- Mes --</option>
+                        <!-- Barra de herramientas (Filtros y Exportación) -->
+                        <div class="d-flex flex-column flex-md-row gap-3">
+
+                            <!-- Formulario de Selección de Mes -->
+                            <form onsubmit="return redirectToMes()" class="m-0">
+                                <!-- AGREGADO: flex-nowrap para blindar el grupo -->
+                                <div class="input-group shadow-sm flex-nowrap">
+                                    <span class="input-group-text bg-body-tertiary text-muted border-end-0" title="Seleccionar mes">
+                                        <i class="bi bi-calendar3"></i>
+                                    </span>
+                                    <!-- Achiqué un poquito el min-width para que sea más flexible -->
+                                    <select id="mes" name="mes" class="form-select border-start-0 ps-0" style="min-width: 100px;">
+                                        <option value="" disabled selected>Mes...</option>
                                         <option th:each="i : ${#numbers.sequence(1, 12)}"
                                                 th:value="${i}"
-                                                th:text="${i}">Mes</option>
+                                                th:text="${i}">1</option>
                                     </select>
-                                    <button type="submit" class="btn btn-primary ms-2">Actualizar informe</button>
+                                    <!-- AGREGADO: text-nowrap para que la palabra no se parta -->
+                                    <button type="submit" class="btn btn-primary fw-semibold px-3 text-nowrap">
+                                        Actualizar
+                                    </button>
                                 </div>
                             </form>
-                        </div>
-                        <div class="col-lg-4 mb-3 d-flex justify-content-end align-items-center">
-                            <label for="formato" class="form-label me-2 mb-0">Formato:</label>
-                            <select id="formato" class="form-select w-auto me-2">
-                                <option value="a4">A4</option>
-                                <option value="legal">Oficio</option>
-                            </select>
-                            <button class="btn btn-primary" onclick="exportarTablaPDF()">Exportar PDF</button>
+
+                            <!-- Controles de Exportación PDF -->
+                            <!-- AGREGADO: flex-nowrap -->
+                            <div class="input-group shadow-sm flex-nowrap">
+                                <span class="input-group-text bg-body-tertiary border-end-0" title="Formato de página">
+                                    <i class="bi bi-file-earmark-pdf-fill text-danger"></i>
+                                </span>
+                                <select id="formato" class="form-select border-start-0 ps-0" style="min-width: 100px;">
+                                    <option value="a4">Hoja A4</option>
+                                    <option value="legal">Hoja Oficio</option>
+                                </select>
+                                <!-- AGREGADO: text-nowrap -->
+                                <button class="btn btn-danger fw-semibold px-3 text-nowrap" type="button" onclick="exportarTablaPDF()">
+                                    Exportar
+                                </button>
+                            </div>
+
                         </div>
                     </div>
 

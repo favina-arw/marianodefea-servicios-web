@@ -8,12 +8,19 @@
   </head>
 
   <body>
-    <main layout:fragment="content">
-      <a th:href="@{/fichada/informeAsistenciaMensual}" class="btn btn-primary d-flex flex-column align-items-center justify-content-center p-3" style="width: 100px; height: 100px;">
-        <i class="fa-solid fa-calendar-days fa-2x mb-2"></i>
-        <span class="fw-bold">ASISTENCIA MENSUAL</span>
-      </a>
-      <br>
+    <main layout:fragment="dashboard_content">
+
+      <div class="row g-3 mb-4">
+        <!-- Tarjeta: Agregar Agente -->
+        <div class="col-12 col-sm-6 col-xl-3">
+          <div th:replace="~{fragments/components :: action_card(
+            url='/fichada/informeAsistenciaMensual',
+            iconClass='bi bi-calendar3',
+            title='Asistencia mensual',
+            subtitle='Informe de asistencias')}">
+          </div>
+        </div>
+      </div>
 
       <div class="card shadow-sm">
         <div class="card-body">

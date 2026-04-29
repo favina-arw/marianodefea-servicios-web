@@ -1,34 +1,40 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-    <head>
-        <meta charset="UTF-8">
-        <title>Login</title>
-        <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
-        <link rel="stylesheet" th:href="@{/css/styles.css}">
-    </head>
-    <body>
-        <div class="login-container d-flex justify-content-center align-items-center vh-100">
-            <div class="login-form p-4 bg-white rounded shadow" style="max-width: 400px; width: 100%;">
-                <h3 class="text-center mb-4">Iniciar sesión</h3>
-                <div th:insert="~{fragments/toast.html}"></div>
-                <form th:action="@{/login}" method="POST">
-                    <div class="mb-3">
-                        <label for="username" class="form-label">Usuario</label>
-                        <input type="text" class="form-control" id="username" name="username" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="password" class="form-label">Contraseña</label>
-                        <input type="password" class="form-control" id="password" name="password" required>
-                    </div>
-                    <div class="mb-3 form-check">
-                        <input type="checkbox" class="form-check-input" id="rememberMe">
-                        <label class="form-check-label" for="rememberMe">Recordarme</label>
-                    </div>
-                    <button type="submit" class="btn btn-primary w-100">Entrar</button>
-                </form>
-                <p class="text-center mt-3">¿Notienes una cuenta? <a th:href="@{/register}">Registrate!</a></p>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Servicios Web</title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.3/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body class="bg-light">
+
+<div class="login-container d-flex justify-content-center align-items-center vh-100">
+    <div class="login-form p-4 bg-white rounded shadow" style="max-width: 400px; width: 100%;">
+        <h3 class="text-center mb-4">Iniciar sesión</h3>
+
+        <div th:replace="~{fragments/toast :: toast(message=${error}, type='error')}"></div>
+
+        <form th:action="@{/login}" method="POST">
+            <div class="mb-3">
+                <label for="username" class="form-label">Usuario</label>
+                <input type="text" class="form-control" id="username" name="username" required>
             </div>
-        </div>
-        <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
-    </body>
+            <div class="mb-3">
+                <label for="password" class="form-label">Contraseña</label>
+                <input type="password" class="form-control" id="password" name="password" required>
+            </div>
+            <div class="mb-3 form-check">
+                <input type="checkbox" class="form-check-input" id="rememberMe" name="remember-me">
+                <label class="form-check-label" for="rememberMe">Recordarme</label>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Entrar</button>
+        </form>
+
+        <p class="text-center mt-3">¿No tienes una cuenta? <a th:href="@{/register}">Regístrate!</a></p>
+    </div>
+</div>
+
+<script th:src="@{/webjars/bootstrap/5.3.3/js/bootstrap.bundle.min.js}"></script>
+</body>
 </html>

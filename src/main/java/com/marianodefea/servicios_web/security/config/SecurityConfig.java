@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -31,12 +32,13 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain (HttpSecurity httpSecurity) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
-                .cors(Customizer.withDefaults()) // Habilita CORS con la configuración por defecto
-                .csrf(csrf -> csrf.disable()) // Deshabilita CSRF si no usas formularios tradicionales
+                .cors(Customizer.withDefaults())
+                .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/public/**","/login","/register","/css/**", "/js/**", "/images/**").permitAll()
+                        // Agregué "/webjars/**" aquí abajo
+                        .requestMatchers("/", "/public/**", "/login", "/register", "/css/**", "/js/**", "/images/**", "/webjars/**").permitAll()
                         .requestMatchers("/fichada/**").permitAll()
                         .requestMatchers("/agentes/**").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
@@ -44,13 +46,20 @@ public class SecurityConfig {
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
-                .httpBasic(Customizer.withDefaults()) // HTTP Basic Auth
+                // Comentamos o eliminamos httpBasic si quieres usar solo formularios
+                // .httpBasic(Customizer.withDefaults())
                 .formLogin(login -> login
                         .loginPage("/login")
                         .defaultSuccessUrl("/dashboard", true)
                         .failureHandler((request, response, exception) -> {
-                            System.out.println("Error de autenticación: " + exception.getMessage());
-                            response.sendRedirect("/login?error=true&errorMessage=" + exception.getMessage()); // Añade el mensaje de error
+                            // Capturamos el tipo de excepción para dar un mensaje claro
+                            String message = "Usuario o contraseña incorrectos.";
+                            if (exception instanceof LockedException) {
+                                message = "Tu cuenta está bloqueada. Contacta a un administrador.";
+                            }
+                            // Redirigimos pasando el mensaje codificado para que no se rompa la URL
+                            String encodedMessage = java.net.URLEncoder.encode(message, java.nio.charset.StandardCharsets.UTF_8);
+                            response.sendRedirect("/login?errorMessage=" + encodedMessage);
                         })
                         .permitAll()
                 )
