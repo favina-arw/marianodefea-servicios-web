@@ -85,7 +85,10 @@
 
         <!-- Inyección del Footer -->
         <div th:replace="~{fragments/footer :: footer}"></div>
+
+        <!--<div th:replace="~{fragments/toast :: toast_global}"></div>-->
     </div>
+
 </div>
 
 <th:block layout:fragment="scripts_adicionales">
@@ -126,7 +129,7 @@
             updateIcons(newTheme);
         });
     </script>
-</th:block>
 
+</th:block>
 </body>
 </html>

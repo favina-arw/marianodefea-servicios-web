@@ -6,9 +6,11 @@ import com.marianodefea.servicios_web.dto.ListarAgenteDTO;
 import com.marianodefea.servicios_web.model.Agente;
 import com.marianodefea.servicios_web.service.AgenteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,43 +24,23 @@ public class AgenteController {
 
     @GetMapping("/")
     public String listarAgentes(Model model){
-
-        List<ListarAgenteDTO> agentes = agenteService.findAll().stream().map(agente ->{
-            List<CargoAsignadoDTO> cargosAsignados = agente.getCargos().stream()
-                    .map(ca -> new CargoAsignadoDTO(
-                            ca.getId(),
-                            ca.getCargoTipo().getNombre(),
-                            ca.getHorario() != null ? ca.getHorario().getHoraInicio().toString() : "-",
-                            ca.getHorario() != null ? ca.getHorario().getHoraFin().toString() : "-",
-                            ca.isActivo()
-                    )).collect(Collectors.toList());
-
-            return new ListarAgenteDTO(
-                    agente.getId(),
-                    agente.getCuil(),
-                    agente.getDni(),
-                    agente.getNombre(),
-                    agente.getApellido(),
-                    agente.isActivo(),
-                    cargosAsignados
-            );
-        }).collect(Collectors.toList());
+        List<ListarAgenteDTO> agentes = agenteService.obtenerTodosLosAgentesDTO();
         model.addAttribute("agentes", agentes);
         return "user/listar_agentes";
     }
 
     @GetMapping("/crearAgente")
-    public String crearAgenteFormulario(){
+    public String crearAgenteFormulario(Model model){
+        model.addAttribute("agenteDTO", new AgenteDTO());
         return "user/crear_agente";
     }
 
     @PostMapping("/crearAgente")
-    public String crearAgente(@ModelAttribute AgenteDTO agenteDTO, Model model){
-        System.out.println("Entro a crear agente");
-        System.out.println(agenteDTO);
+    public String crearAgente(@ModelAttribute AgenteDTO agenteDTO, Model model, RedirectAttributes redirectAttributes){
+
         Agente nuevoAgente = new Agente();
         nuevoAgente.setDni(agenteDTO.getDni());
-        if (agenteDTO.getCuil().isBlank() || agenteDTO.getCuil().isEmpty()){
+        if (agenteDTO.getCuil() == null || agenteDTO.getCuil().isBlank()){
             nuevoAgente.setCuil(null);
         }else{
             nuevoAgente.setCuil(agenteDTO.getCuil());
@@ -66,14 +48,36 @@ public class AgenteController {
         nuevoAgente.setNombre(agenteDTO.getNombre().toUpperCase());
         nuevoAgente.setApellido(agenteDTO.getApellido().toUpperCase());
 
-        Agente agenteCreado = agenteService.save(nuevoAgente);
-        if (agenteCreado == null) {
-            model.addAttribute("error", "Hubo un problema, el agente no fue registrado");
-            return "agentes/crear_agente";
+        try {
+            Agente agenteCreado = agenteService.save(nuevoAgente);
+            redirectAttributes.addFlashAttribute("success", "Agente: "+ agenteCreado.getApellido() + ", " + agenteCreado.getNombre() + " creado con éxito.");
+            return "redirect:/agentes/";
+        }catch (DataIntegrityViolationException e){
+            model.addAttribute("error", "Ya existe un agente registrado con ese DNI o CUIL.");
+            return "user/crear_agente";
         }
-        model.addAttribute("success", "Agente: " + agenteCreado.getNombre() + ", " + agenteCreado.getApellido() + ". Creado con éxito.");
+    }
+
+    @GetMapping("/baja/{id}")
+    public String desactivarAgente (@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        try {
+            agenteService.deactivarAgente(id);
+            redirectAttributes.addFlashAttribute("success", "El agente fue desactivado con éxito");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Error al intentar dar de baja al agente");
+        }
         return "redirect:/agentes/";
     }
 
+    @GetMapping("/alta/{id}")
+    public String activarAgente (@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        try {
+            agenteService.activarAgente(id);
+            redirectAttributes.addFlashAttribute("success", "El agente fue activado con éxito");
+        } catch ( Exception e){
+            redirectAttributes.addFlashAttribute("error", "Error al intentar activar al agente");
+        }
+        return "redirect:/agentes/";
+    }
 
 }

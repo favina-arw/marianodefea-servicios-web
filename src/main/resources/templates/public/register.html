@@ -1,36 +1,71 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-    <head>
-        <meta charset="UTF-8">
-        <title>Registro de Usuario</title>
-        <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorate="~{public/base}"> <!-- Heredamos del layout principal -->
+<head>
+    <title>Registro - Gestión Escolar</title>
+    <th:block layout:fragment="estilos_adicionales">
+        <!-- Si tenés algo específico para el login en tu styles.css, lo llamamos acá -->
         <link rel="stylesheet" th:href="@{/css/styles.css}">
-    </head>
-    <body>
-        <div th:insert="~{fragments/toast.html}"></div>
-        <div class="container bg-white rounded shadow" style="max-width: 600px; width: 100%;">
-            <div class="row justify-content-center">
-                <div class="col-md-9">
-                    <h2 class="text-center">Registro de Usuario</h2>
-                    <form th:action="@{/register}" method="post">
-                        <div class="mb-3">
-                            <label for="cuil" class="form-label">CUIL</label>
-                            <input type="text" class="form-control" id="cuil" name="cuil" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="password" class="form-label">Contraseña</label>
-                            <input type="password" class="form-control" id="password" name="password" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="confirmPassword" class="form-label">Confirmar Contraseña</label>
-                            <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary w-100">REGISTRARSE</button>
-                    </form>
-                    <p class="text-center mt-3">¿Ya tienes una cuenta? <a th:href="@{/login}">Inicia sesión</a></p>
-                </div>
+    </th:block>
+</head>
+<body>
+
+<!-- Todo este bloque se inyecta en el 'content' del base.html -->
+<div layout:fragment="content" class="d-flex justify-content-center align-items-center vh-100">
+
+    <!-- Misma tarjeta que el login para mantener coherencia -->
+    <div class="card shadow-lg border-0 rounded-4" style="max-width: 450px; width: 100%;">
+        <div class="card-body p-4 p-md-5">
+
+            <!-- Encabezado con ícono distinto para diferenciar del login -->
+            <div class="text-center mb-4">
+                <i class="bi bi-person-vcard text-primary" style="font-size: 3rem;"></i>
+                <h3 class="fw-bold mt-2">Registro de Usuario</h3>
+                <p class="text-muted small">Colegio N° 795</p>
             </div>
+
+            <!-- El formulario -->
+            <form th:action="@{/register}" method="POST">
+
+                <div class="mb-3">
+                    <label for="cuil" class="form-label text-muted fw-medium small">CUIL</label>
+                    <div class="input-group shadow-sm">
+                        <span class="input-group-text bg-transparent border-end-0 text-muted"><i class="bi bi-123"></i></span>
+                        <input type="text" class="form-control border-start-0 ps-0" id="cuil" name="cuil" placeholder="Sin guiones ni espacios" required>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="password" class="form-label text-muted fw-medium small">Contraseña</label>
+                    <div class="input-group shadow-sm">
+                        <span class="input-group-text bg-transparent border-end-0 text-muted"><i class="bi bi-lock"></i></span>
+                        <input type="password" class="form-control border-start-0 ps-0" id="password" name="password" required>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label for="confirmPassword" class="form-label text-muted fw-medium small">Confirmar Contraseña</label>
+                    <div class="input-group shadow-sm">
+                        <!-- Ícono de check para dar la idea de confirmación -->
+                        <span class="input-group-text bg-transparent border-end-0 text-muted"><i class="bi bi-check-circle"></i></span>
+                        <input type="password" class="form-control border-start-0 ps-0" id="confirmPassword" name="confirmPassword" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100 fw-bold py-2">
+                    <i class="bi bi-person-plus-fill me-2"></i>Registrarse
+                </button>
+
+            </form>
+
+            <p class="text-center mt-4 mb-0 small text-muted">
+                ¿Ya tienes una cuenta? <a th:href="@{/login}" class="text-decoration-none fw-semibold">Inicia sesión</a>
+            </p>
         </div>
-        <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
-    </body>
+    </div>
+
+</div>
+
+</body>
 </html>

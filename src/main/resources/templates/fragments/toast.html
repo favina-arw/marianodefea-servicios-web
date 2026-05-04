@@ -1,27 +1,45 @@
-<div th:fragment="toast(message, type)" th:if="${message != null}"
-     class="toast-container position-fixed top-0 end-0 p-3">
+<!-- Le sacamos los parámetros del paréntesis -->
+<div th:fragment="toast_global" aria-live="polite" aria-atomic="true" class="position-relative">
+    <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1050;">
 
-    <div id="liveToast" class="toast align-items-center text-white border-0"
-         th:classappend="${
-            type == 'error' ? 'bg-danger' :
-            (type == 'success' ? 'bg-success' :
-            (type == 'info' ? 'bg-info text-dark' :
-            (type == 'primary' || type == 'in' ? 'bg-primary' :
-            (type == 'warning' || type == 'out' ? 'bg-warning text-dark' : 'bg-secondary'))))
-         }"
-         role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="d-flex">
-            <div class="toast-body" th:text="${message}"></div>
-            <button type="button" class="btn-close btn-close-white me-2 m-auto"
-                    data-bs-dismiss="toast" aria-label="Close"></button>
+        <!-- Escucha directamente a la variable "success" -->
+        <div th:if="${success != null}" class="toast align-items-center text-white bg-success border-0 show" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body" th:text="${success}"></div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
         </div>
-    </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const toastEl = document.getElementById('liveToast');
-            const toast = new bootstrap.Toast(toastEl, { delay: 6000 });
-            toast.show();
-        });
-    </script>
+        <!-- Escucha directamente a la variable "warning" -->
+        <div th:if="${warning != null}" class="toast align-items-center text-white bg-danger border-0 show" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body" th:text="${warning}"></div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+
+        <!-- Escucha directamente a la variable "error" -->
+        <div th:if="${error != null}" class="toast align-items-center text-white bg-danger border-0 show" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body" th:text="${error}"></div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+
+        <!-- Si querés mantener tus variables originales "in" y "out" para el fichador, las agregás acá -->
+        <div th:if="${in != null}" class="toast align-items-center text-white bg-info border-0 show" role="alert">
+            <div class="d-flex">
+                <div class="toast-body" th:text="${in}"></div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+            </div>
+        </div>
+
+        <div th:if="${out != null}" class="toast align-items-center text-white bg-warning border-0 show" role="alert">
+            <div class="d-flex">
+                <div class="toast-body" th:text="${out}"></div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+            </div>
+        </div>
+
+    </div>
 </div>

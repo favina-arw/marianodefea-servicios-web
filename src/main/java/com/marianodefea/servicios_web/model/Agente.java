@@ -23,28 +23,24 @@ public class Agente {
 
     @Column(unique = true)
     private String cuil;
+
     @Column(unique = true, nullable = false)
     private String dni;
+
     @Column(nullable = false)
     private String nombre;
+
     @Column(nullable = false)
     private String apellido;
+
     private boolean activo = true;
 
-    @OneToMany(mappedBy = "agente")
-    private List<Cargo> cargos;
+
+    @OneToMany(mappedBy = "agente", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<AgenteCargo> cargosAsignados = new ArrayList<>();
 
     @OneToMany(mappedBy = "agente", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @OrderBy("hora DESC")
     private List<Fichada> fichadas = new ArrayList<>();
-
-    /*public void asignarCargo(Cargo cargo, Horario horario) {
-        AgenteCargo agenteCargo = AgenteCargo.crear(this, cargo, horario);
-        cargosAsignados.add(agenteCargo);
-    }*/
-
-    public Boolean isActivo(){
-        return this.activo;
-    }
 
 }

@@ -22,8 +22,8 @@ public class ListarAgenteDTO {
     private boolean activo;
     private List<CargoAsignadoDTO> cargosAsignados;
 
-    public String isActivo(){
-    return this.activo ? "Activo" : "Inactivo";
-    }
+    //public String isActivo(){
+    //return this.activo ? "Activo" : "Inactivo";
+    //}
 
 }

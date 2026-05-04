@@ -1,16 +1,23 @@
-<footer th:fragment="footer" class="footer mt-auto py-3 border-top bg-body-tertiary">
-    <div class="container-fluid px-4">
+<footer th:fragment="footer" class="mt-auto pb-2 px-4">
+    <!-- El contenedor flotante -->
+    <div class="bg-body-tertiary rounded-pill shadow-sm border px-4 py-2" style="border-color: var(--bs-border-color-translucent);">
         <div class="d-flex flex-column flex-md-row align-items-center justify-content-between small text-muted">
+
             <div class="mb-2 mb-md-0 d-flex align-items-center">
-                <i class="bi bi-code-slash text-primary fs-5 me-2"></i>
+                <!-- Le puse un fondito sutil al ícono para que resalte en la isla -->
+                <div class="bg-primary-subtle text-primary rounded-circle d-flex align-items-center justify-content-center me-2" style="width: 28px; height: 28px;">
+                    <i class="bi bi-code-slash fs-6"></i>
+                </div>
                 <span>
                     &copy; 2026 <span class="fw-bold text-body">Federico Adrián Viña</span>
                     <span class="mx-1">&middot;</span> Backend Software Developer
                 </span>
             </div>
+
             <div>
-                <span class="badge rounded-pill border border-secondary text-secondary px-3 bg-transparent">Versión 1.0.0</span>
+                <span class="badge rounded-pill border border-secondary text-secondary px-3 py-1 bg-transparent">v1.0.0</span>
             </div>
+
         </div>
     </div>
 </footer>

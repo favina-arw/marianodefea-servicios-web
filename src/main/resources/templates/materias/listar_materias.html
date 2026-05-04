@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorate="~{layouts/dashboard}">
+<head>
+    <meta charset="UTF-8">
+    <title>Materias</title>
+</head>
+<body>
+<main layout:fragment="dashboard_content">
+    <div class="row g-3 mb-4">
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div th:replace="~{fragments/components :: action_card(
+            url='/admin/materias/crear',
+            iconClass='bi bi-plus-lg me-1',
+            title='Nueva Materia',
+            subtitle='Crear nueva materia')}">
+            </div>
+        </div>
+    </div>
+
+    <div class="card shadow-sm justify-content-center">
+        <div class="card-body">
+            <h4 class="card-title mb-3">Listado de Materias</h4>
+            <hr>
+            <div class="table-responsive">
+                <table class="table table-striped table-hover align-middle mb-0" style="font-size: 0.9rem;">
+                    <thead class="table-light">
+                    <tr>
+                        <th class="ps-3">ID</th>
+                        <th>NOMBRE DE LA MATERIA</th>
+                        <th>CICLO</th>
+                        <th class="text-center">ESTADO</th>
+                        <th class="text-center pe-3">ACCIONES</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="materia : ${materias}">
+                        <td class="ps-3 text-muted" th:text="${materia.id}"></td>
+                        <td class="fw-semibold" th:text="${materia.nombre}"></td>
+
+                        <!-- Imprimimos el Enum de Ciclo. Como es un texto, lo mostramos tal cual -->
+                        <td th:text="${materia.ciclo}"></td>
+
+                        <td class="text-center">
+                            <span th:if="${materia.activo}" class="badge bg-success">Activa</span>
+                            <span th:unless="${materia.activo}" class="badge bg-danger">Inactiva</span>
+                        </td>
+
+                        <td class="text-center pe-3">
+                            <div class="d-flex justify-content-center gap-1">
+                                <a th:href="@{/materias/editar/{id}(id=${materia.id})}"
+                                   class="btn btn-sm btn-primary" data-bs-toggle="tooltip" title="Editar">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+
+                                <a th:if="${materia.activo}" th:href="@{/materias/baja/{id}(id=${materia.id})}"
+                                   class="btn btn-sm btn-danger" data-bs-toggle="tooltip" title="Dar de baja">
+                                    <i class="bi bi-dash-circle"></i>
+                                </a>
+
+                                <a th:unless="${materia.activo}" th:href="@{/materias/alta/{id}(id=${materia.id})}"
+                                   class="btn btn-sm btn-success" data-bs-toggle="tooltip" title="Activar">
+                                    <i class="bi bi-check-circle"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <!-- Mensaje si la tabla está vacía -->
+                    <tr th:if="${#lists.isEmpty(materias)}">
+                        <td colspan="5" class="text-center text-muted py-4">
+                            <i class="bi bi-inbox fs-4 d-block mb-2"></i>
+                            No hay materias registradas en el sistema.
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

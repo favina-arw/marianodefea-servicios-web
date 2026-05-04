@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorate="~{layouts/dashboard}">
+<head>
+    <title>Nuevo Tipo de Cargo</title>
+</head>
+<body>
+<main layout:fragment="dashboard_content">
+
+    <div class="card shadow-sm border-0 rounded">
+
+        <div class="card-header bg-transparent border-bottom-0 pt-3 pb-0">
+            <h6 class="mb-0 fw-bold text-body text-uppercase">
+                Nuevo Tipo de Cargo
+            </h6>
+            <hr class="mt-3 mb-0 text-muted opacity-25">
+        </div>
+
+        <div class="card-body">
+
+            <form th:action="@{/admin/cargo_tipos/guardar}" th:object="${cargoTipo}" method="post">
+
+                <div class="row">
+                    <div class="col-md-12 form-group mb-3">
+                        <label class="font-weight-bold">Nombre del Cargo <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" th:field="*{nombre}" placeholder="Ej: PROFESOR, PRECEPTOR" required>
+                        <small class="form-text text-muted">El sistema lo guardará automáticamente en mayúsculas.</small>
+                    </div>
+                </div>
+
+                <div class="row mt-2">
+                    <div class="col-md-12 form-group">
+                        <label class="font-weight-bold">Descripción (Opcional)</label>
+                        <textarea class="form-control" th:field="*{descripcion}" rows="3" placeholder="Breve detalle..."></textarea>
+                    </div>
+                </div>
+
+                <div class="col-lg-12 d-flex justify-content-center">
+                    <button type="submit" class="btn btn-primary btn-block mt-4">
+                        Guardar Tipo de Cargo
+                    </button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+</main>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorate="~{layouts/dashboard}">
+
+<head>
+  <title>Admin</title>
+</head>
+
+<body>
+  <main layout:fragment="dashboard_content">
+    <div class="row g-3 mb-4">
+      <!-- Tarjeta: Agregar Agente -->
+      <div class="col-3 col-sm-6 col-xl-3">
+        <div th:replace="~{fragments/components :: action_card(
+            url='/admin/cursos/',
+            iconClass='bi bi-journal-bookmark-fill',
+            title='Cursos',
+            subtitle='Gestión de Cursos')}">
+        </div>
+      </div>
+      <div class="col-3 col-sm-6 col-xl-3">
+        <div th:replace="~{fragments/components :: action_card(
+          url='/admin/materias/',
+          iconClass='bi bi-book-half',
+          title='Materias',
+          subtitle='Gestión de materias')}">
+        </div>
+      </div>
+
+      <div class="col-3 col-sm-6 col-xl-3">
+        <div th:replace="~{fragments/components :: action_card(
+          url='/admin/cargo_tipos/',
+          iconClass='bi bi-book-half',
+          title='Tipos de Cargos',
+          subtitle='Gestión tipos de Cargos')}">
+        </div>
+      </div>
+
+      <div class="col-3 col-sm-6 col-xl-3">
+        <div th:replace="~{fragments/components :: action_card(
+          url='/admin/cargos/',
+          iconClass='bi bi-book-half',
+          title='Cargos',
+          subtitle='Gestión de Cargos')}">
+        </div>
+      </div>
+    </div>
+  </main>
+</body>

@@ -2,57 +2,54 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
       layout:decorate="~{layouts/dashboard}">
-    <head>
-        <meta charset="UTF-8">
-        <title>Crear agente</title>
-    </head>
-    <body>
-        <main layout:fragment="dashboard_content">
-            <div class="card shadow-sm justify-content-center">
-                <div class="card-title">
-                    <h6 class="p-3 pb-0 fw-bold text-uppercase">Crear agente</h6>
-                    <hr class="m-0">
+<head>
+    <meta charset="UTF-8">
+    <title>Crear Agente</title>
+</head>
+<body>
+<main layout:fragment="dashboard_content">
+    <div class="card shadow-sm justify-content-center border-0 rounded-3 mb-4">
+        <div class="card-header bg-transparent border-bottom-0 pt-3 pb-0">
+            <h6 class="mb-0 fw-bold text-body text-uppercase">
+                <i class="bi bi-person-plus me-2"></i>Crear Nuevo Agente
+            </h6>
+            <hr class="mt-3 mb-0 text-muted opacity-25">
+        </div>
+
+        <div class="card-body">
+            <!-- El formulario limpio, sin alertas arriba, vinculado al DTO -->
+            <form th:action="@{/agentes/crearAgente}" th:object="${agenteDTO}" method="POST" class="row g-3" style="font-size: 0.85rem;">
+
+                <div class="col-md-3">
+                    <label class="form-label mb-1 text-muted fw-medium">DNI</label>
+                    <input type="text" class="form-control form-control-sm" th:field="*{dni}" required>
                 </div>
-                <div class="card-body">
-                    <!-- Le agregamos 'row' para la grilla y 'g-3' para la separación entre columnas -->
-                    <form th:action="@{/agentes/crearAgente}" method="POST" class="row g-3" style="font-size: 0.85rem;">
 
-                        <!-- Columna 1: DNI (Ocupa 3 de 12 lugares en monitores grandes) -->
-                        <div class="col-md-3">
-                            <label for="dni" class="form-label mb-1 text-muted fw-medium">DNI</label>
-                            <input type="text" class="form-control form-control-sm" id="dni" name="dni" required>
-                        </div>
-
-                        <!-- Columna 2: CUIL -->
-                        <div class="col-md-3">
-                            <label for="cuil" class="form-label mb-1 text-muted fw-medium">CUIL/CUIT</label>
-                            <input type="text" class="form-control form-control-sm" id="cuil" name="cuil">
-                        </div>
-
-                        <!-- Columna 3: Nombre -->
-                        <div class="col-md-3">
-                            <label for="nombre" class="form-label mb-1 text-muted fw-medium">Nombre/s</label>
-                            <input type="text" class="form-control form-control-sm" id="nombre" name="nombre" required>
-                        </div>
-
-                        <!-- Columna 4: Apellido -->
-                        <div class="col-md-3">
-                            <label for="apellido" class="form-label mb-1 text-muted fw-medium">Apellido/s</label>
-                            <input type="text" class="form-control form-control-sm" id="apellido" name="apellido" required>
-                        </div>
-
-                        <!-- Fila del Botón -->
-                        <!-- mt-4 le da un poco de respiro hacia arriba, justify-content-end lo tira a la derecha -->
-                        <div class="col-12 mt-4 d-flex justify-content-center">
-                            <!-- px-4 py-2 le da el padding "mediano" perfecto sin ser exagerado como el p-3 -->
-                            <button type="submit" class="btn btn-primary p2">
-                                <i class="bi bi-person-plus-fill me-2"></i>Crear Agente
-                            </button>
-                        </div>
-
-                    </form>
+                <div class="col-md-3">
+                    <label class="form-label mb-1 text-muted fw-medium">CUIL/CUIT</label>
+                    <input type="text" class="form-control form-control-sm" th:field="*{cuil}">
                 </div>
-            </div>
-        </main>
-    </body>
+
+                <div class="col-md-3">
+                    <label class="form-label mb-1 text-muted fw-medium">Nombre/s</label>
+                    <input type="text" class="form-control form-control-sm" th:field="*{nombre}" required>
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label mb-1 text-muted fw-medium">Apellido/s</label>
+                    <input type="text" class="form-control form-control-sm" th:field="*{apellido}" required>
+                </div>
+
+                <!-- Fila del Botón -->
+                <div class="col-12 mt-4 d-flex justify-content-center">
+                    <button type="submit" class="btn btn-success btn-sm fw-semibold px-4 py-2">
+                        Guardar Agente
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</main>
+</body>
 </html>

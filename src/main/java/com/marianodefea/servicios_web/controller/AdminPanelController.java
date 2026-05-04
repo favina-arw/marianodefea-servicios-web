@@ -7,17 +7,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/")
-public class IndexController {
+@RequestMapping("/admin")
+public class AdminPanelController {
 
-    @GetMapping
-    public String index(){
-        return "public/index";
-    }
-
-    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
-    @GetMapping("/dashboard")
-    public String dashboard(){
-        return "user/main_dashboard";
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/")
+    public String adminHome(){
+        return "admin/home";
     }
 }

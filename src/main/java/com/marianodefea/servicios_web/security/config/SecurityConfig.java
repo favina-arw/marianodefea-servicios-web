@@ -37,10 +37,9 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        // Agregué "/webjars/**" aquí abajo
-                        .requestMatchers("/", "/public/**", "/login", "/register", "/css/**", "/js/**", "/images/**", "/webjars/**").permitAll()
-                        .requestMatchers("/fichada/**").permitAll()
-                        .requestMatchers("/agentes/**").permitAll()
+                        .requestMatchers("/", "/public/**", "/login", "/register", "/error", "/css/**", "/js/**", "/images/**", "/webjars/**").permitAll()
+                        .requestMatchers("/fichada/**").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers("/agentes/**").hasAnyRole("USER", "ADMIN")
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/user/**").hasAnyRole("USER", "ADMIN")
                         .anyRequest().authenticated()

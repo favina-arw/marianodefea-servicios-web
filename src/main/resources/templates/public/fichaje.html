@@ -1,104 +1,145 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-    <head>
-        <meta charset="UTF-8">
-        <title>Fichaje de Personal</title>
-        <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorate="~{public/base}">
+<head>
+    <title>Fichaje de Personal</title>
+    <th:block layout:fragment="estilos_adicionales">
         <link rel="stylesheet" th:href="@{/css/styles.css}">
-    </head>
-    <body>
-        <div class="container align-items-center m-0">
-            <div class="row w-100">
-                <div class="col-lg-6 p-3 justify-content-start align-items-start bg-white rounded shadow w-auto ajuste-exacto">
-                    <table id="tabla-fichadas" class="table table-striped w-auto mt-0 mb-0">
-                        <thead>
-                        <tr>
-                            <th style="width: 200px; white-space: nowrap;">AGENTE</th>
-                            <th style="width: 50px; white-space: nowrap;">TIPO</th>
-                            <th style="width: 80px; white-space: nowrap; text-align: center">HORA</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr th:each="fichada : ${ultimasQuince}">
-                            <td th:text="${fichada.agente.apellido} + ', ' + ${fichada.agente.nombre}" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"></td>
-                            <td th:text="${fichada.tipoFichada.identificador}" style="white-space: nowrap; text-align: center;"></td>
-                            <td th:text="${#temporals.format(fichada.hora, 'dd/MM HH:mm')}" style="white-space: nowrap;"></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="col-6 d-flex justify-content-center">
-                    <div class="p-4 bg-white rounded shadow w-auto ajuste-exacto" >
-                        <h3 class="text-center mb-4">Fichaje de Personal</h3>
-                        <!-- Imagen del logo -->
-                        <div class="text-center my-3">
-                            <img th:src="@{/images/logo_nuevo_795.png}"
-                                 alt="Logo"
-                                 class="img-fluid rounded"
-                                 style="max-height: 300px;">
-                        </div>
-                        <div class="text-center mb-3">
-                            <h5><span id="hora-actual" class="fw-bold"></span></h5>
-                        </div>
-                        <div th:insert="~{fragments/toast.html}"></div>
+        <!-- Agregá cualquier otro CSS específico del fichador acá -->
+    </th:block>
+</head>
+<body>
 
-                        <form th:action="@{/fichada}" method="POST" id="fichadaForm">
-                            <div class="mb-3">
-                                <label for="dni" class="form-label">DNI/CUIL/CUIT</label>
-                                <input type="text" class="form-control" id="dni" name="dni" autocomplete="off" required>
-                            </div>
+<div layout:fragment="content" class="d-flex align-items-center justify-content-center" style="min-height: 85vh;">
+    <!-- Contenedor principal con un ancho máximo para que no se estire demasiado en monitores gigantes -->
+    <div class="container-fluid w-100" style="max-width: 1300px;">
 
-                            <button type="submit" class="btn btn-primary w-100" id="ficharBtn">FICHAR</button>
+        <div class="row g-4 align-items-stretch justify-content-center">
 
-                            <button class="btn btn-primary w-100" type="button" disabled id="loadingBtn" style="display: none;">
-                                <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
-                                <span role="status">Cargando...</span>
-                            </button>
-                        </form>
+            <!-- MITAD IZQUIERDA: Tabla (Le damos 7 columnas para que los nombres respiren) -->
+            <div class="col-12 col-lg-7">
+                <div class="p-4 bg-white rounded-4 shadow h-100">
+                    <h6 class="mb-3 border-bottom pb-2 text-uppercase">Últimos Movimientos</h6>
+
+                    <!-- CLAVE: table-responsive contiene a la tabla para que no explote hacia los costados -->
+                    <div class="table-responsive">
+                        <table id="tabla-fichadas" class="table table-striped align-middle mt-0 mb-0">
+                            <thead>
+                            <tr>
+                                <th>AGENTE</th>
+                                <th class="text-center" style="width: 80px;">TIPO</th>
+                                <th class="text-center" style="width: 120px;">HORA</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="fichada : ${ultimasQuince}">
+                                <!-- Usamos text-truncate para cortar nombres súper largos con "..." sin romper el diseño -->
+                                <td th:text="${fichada.agente.apellido} + ', ' + ${fichada.agente.nombre}"
+                                    class="text-truncate fw-semibold"
+                                    style="max-width: 300px;"
+                                    th:title="${fichada.agente.apellido} + ', ' + ${fichada.agente.nombre}">
+                                </td>
+                                <td class="text-center fw-bold">
+                                    <span
+                                          th:text="${fichada.tipoFichada.identificador}">
+                                    </span>
+                                </td>
+                                <td th:text="${#temporals.format(fichada.hora, 'dd/MM HH:mm')}" class="text-center text-muted"></td>
+                            </tr>
+                            <tr th:if="${#lists.isEmpty(ultimasQuince)}">
+                                <td colspan="3" class="text-center text-muted py-4">
+                                    <i class="bi bi-clock-history fs-4 d-block mb-2 text-secondary"></i>
+                                    Aún no hay registros en este turno.
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
+
+            <!-- MITAD DERECHA: Fichador (Le damos 5 columnas, es más angosto pero alto) -->
+            <div class="col-12 col-lg-5">
+                <div class="p-4 bg-white rounded-4 shadow text-center h-100 d-flex flex-column justify-content-center">
+                    <h3 class="mb-4 text-dark fw-bold">Fichaje de Personal</h3>
+
+                    <!-- Logo un poquito más chico para que balancee con la tabla -->
+                    <div class="my-3">
+                        <img th:src="@{/images/logo_nuevo_795.png}"
+                             alt="Logo"
+                             class="img-fluid rounded"
+                             style="max-height: 220px;">
+                    </div>
+
+                    <div class="mb-4 border-bottom pb-3">
+                        <h4 class="mb-0"><span id="hora-actual" class="fw-bold text-primary tracking-wide"></span></h4>
+                    </div>
+
+                    <form th:action="@{/fichada}" method="POST" id="fichadaForm" class="mt-2">
+                        <div class="mb-4 px-3">
+                            <label for="dni" class="form-label fw-bold">INGRESE DNI / CUIL / CUIT</label>
+                            <input type="text" class="form-control form-control-lg text-center fw-bold shadow-sm" id="dni" name="dni" autocomplete="off" required>
+                        </div>
+
+                        <div class="px-3">
+                            <button type="submit" class="btn btn-primary btn-lg w-100 fw-bold shadow-sm" id="ficharBtn">
+                                REGISTRAR FICHADA
+                            </button>
+
+                            <button class="btn btn-primary btn-lg w-100 fw-bold shadow-sm" type="button" disabled id="loadingBtn" style="display: none;">
+                                <span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
+                                <span role="status">PROCESANDO...</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
         </div>
+    </div>
+</div>
 
-        <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
-        <script>
-            function actualizarHora() {
-                const ahora = new Date();
-                const horas = String(ahora.getHours()).padStart(2, '0');
-                const minutos = String(ahora.getMinutes()).padStart(2, '0');
-                const dia = String(ahora.getDate()).padStart(2, '0');
-                const mes = String(ahora.getMonth() + 1).padStart(2, '0');
-                const año = String(ahora.getFullYear()).slice(-2);
+<th:block layout:fragment="scripts_adicionales">
+    <script>
+        function actualizarHora() {
+            const ahora = new Date();
+            const horas = String(ahora.getHours()).padStart(2, '0');
+            const minutos = String(ahora.getMinutes()).padStart(2, '0');
+            const dia = String(ahora.getDate()).padStart(2, '0');
+            const mes = String(ahora.getMonth() + 1).padStart(2, '0');
+            const año = String(ahora.getFullYear()).slice(-2);
 
-                document.getElementById('hora-actual').textContent =
-                    `${horas}:${minutos} - ${dia}/${mes}/${año}`;
-            }
+            document.getElementById('hora-actual').textContent =
+                `${horas}:${minutos} - ${dia}/${mes}/${año}`;
+        }
 
-            actualizarHora();
-            setInterval(actualizarHora, 1000);
+        actualizarHora();
+        setInterval(actualizarHora, 1000);
 
-            document.getElementById('fichadaForm').addEventListener('submit', function() {
-                document.getElementById('ficharBtn').style.display = 'none';
-                document.getElementById('loadingBtn').style.display = 'block';
+        document.getElementById('fichadaForm').addEventListener('submit', function() {
+            document.getElementById('ficharBtn').style.display = 'none';
+            document.getElementById('loadingBtn').style.display = 'block';
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const dniInput = document.getElementById("dni");
+
+            dniInput.addEventListener("keydown", function (event) {
+                if (event.key === "Enter") {
+                    setTimeout(() => {
+                        dniInput.focus();
+                        dniInput.value = "";
+                    }, 100);
+                }
             });
 
-            
-            document.addEventListener("DOMContentLoaded", function () {
-                const dniInput = document.getElementById("dni");
-            
-                dniInput.addEventListener("keydown", function (event) {
-                    if (event.key === "Enter") {
-                        setTimeout(() => {
-                            dniInput.focus();
-                            dniInput.value = ""; // Limpiar el campo después del envío
-                        }, 100);
-                    }
-                });
-            
-                window.addEventListener("load", function () {
-                    dniInput.focus(); // Asegurar que el input tenga el foco tras la recarga
-                });
+            window.addEventListener("load", function () {
+                dniInput.focus();
             });
-        </script>
-    </body>
+        });
+    </script>
+</th:block>
+
+</body>
 </html>
