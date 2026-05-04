@@ -93,4 +93,8 @@ public class AgenteService implements IAgenteService{
             );
         }).collect(Collectors.toList());
     }
+
+    public Optional<Agente> findByIdConCargosCompletos(Long id) {
+        return agenteRepository.findByIdConCargosCompletos(id);
+    }
 }

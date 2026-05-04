@@ -1,27 +1,51 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorate="~{layouts/dashboard}">
 <head>
-    <meta charset="UTF-8">
-    <title>Tipo de Fichadas</title>
-    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
-    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <title>Nuevo Tipo de Fichada</title>
 </head>
 <body>
-<div th:insert="~{fragments/toast.html}"></div>
-<div class="login-container d-flex justify-content-center align-items-center vh-100">
-    <div class="login-form p-4 bg-white rounded shadow" style="max-width: 400px; width: 100%;">
-        <h3 class="text-center mb-4">Crear Tipo de Fichada</h3>
-        <form th:action="@{/fichada/crearTipoFichada}" method="POST">
-            <div class="mb-3">
-                <label for="identificador" class="form-label">Identificador</label>
-                <input type="text" class="form-control" id="identificador" name="identificador" required>
-                <label for="nombre" class="form-label">Nombre</label>
-                <input type="text" class="form-control" id="nombre" name="nombre" required>
-            </div>
-            <button type="submit" class="btn btn-primary w-100">CREAR TIPO DE FICHADA</button>
-        </form>
+
+<main layout:fragment="dashboard_content">
+
+    <div class="card shadow-sm border-0 rounded">
+
+        <div class="card-header bg-transparent border-bottom-0 pt-3 pb-0">
+            <h6 class="mb-0 fw-bold text-body text-uppercase">
+                Crear Tipo de Fichada
+            </h6>
+            <hr class="mt-3 mb-0 text-muted opacity-25">
+        </div>
+
+        <div class="card-body">
+
+            <form th:action="@{/fichada/crearTipoFichada}" method="POST">
+
+                <div class="row">
+                    <div class="col-md-6 form-group mb-3">
+                        <label class="font-weight-bold" for="identificador">Identificador <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="identificador" name="identificador" placeholder="Ej: E, S" maxlength="1" required>
+                        <small class="form-text text-muted">Letra o código único (Ej: 'E' para Entrada).</small>
+                    </div>
+
+                    <div class="col-md-6 form-group mb-3">
+                        <label class="font-weight-bold" for="nombre">Nombre <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Ej: ENTRADA, SALIDA" required>
+                    </div>
+                </div>
+
+                <div class="col-lg-12 d-flex justify-content-center">
+                    <button type="submit" class="btn btn-success btn-block mt-4">
+                        Confirmar Tipo
+                    </button>
+                </div>
+
+            </form>
+
+        </div>
     </div>
-</div>
-<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+
+</main>
 </body>
 </html>

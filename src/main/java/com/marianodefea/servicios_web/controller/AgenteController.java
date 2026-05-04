@@ -8,11 +8,13 @@ import com.marianodefea.servicios_web.service.AgenteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Controller
@@ -78,6 +80,19 @@ public class AgenteController {
             redirectAttributes.addFlashAttribute("error", "Error al intentar activar al agente");
         }
         return "redirect:/agentes/";
+    }
+
+    @Transactional(readOnly = true)
+    @GetMapping("/ver/{id}")
+    public String verAgente(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes){
+        Optional<Agente> agenteOptional = agenteService.findByIdConCargosCompletos(id);
+        if(agenteOptional.isPresent()) {
+            model.addAttribute("agente", agenteOptional.get());
+            return "user/ver_agente";
+        } else {
+            redirectAttributes.addFlashAttribute("error", "Agente no encontrado");
+            return "redirect:/agentes/";
+        }
     }
 
 }

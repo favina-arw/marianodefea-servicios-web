@@ -12,7 +12,7 @@
 
       <div class="row g-3 mb-4">
         <!-- Tarjeta: Agregar Agente -->
-        <div class="col-12 col-sm-6 col-xl-3">
+        <div class="col-3 col-sm-6 col-xl-3">
           <div th:replace="~{fragments/components :: action_card(
             url='/fichada/informeAsistenciaMensual',
             iconClass='bi bi-calendar3',
@@ -20,7 +20,18 @@
             subtitle='Informe de asistencias')}">
           </div>
         </div>
+
+        <div class="col-3 col-sm-6 col-xl-3">
+          <div th:replace="~{fragments/components :: action_card(
+          url='/fichada/crearTipoFichada',
+          iconClass='bi bi-box-arrow-in-right',
+          title='Crear Tipo de Fichada',
+          subtitle='Crear nuevo tipo de fichada')}">
+          </div>
+        </div>
+
       </div>
+
 
       <div class="card shadow-sm">
         <div class="card-body">

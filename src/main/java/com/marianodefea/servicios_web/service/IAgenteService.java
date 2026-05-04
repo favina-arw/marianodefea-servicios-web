@@ -10,6 +10,7 @@ public interface IAgenteService {
     Optional<Agente> findById(Long id);
     Optional<Agente> findByDni(String dni);
     Optional<Agente> findByCuil(String cuil);
+    Optional<Agente> findByIdConCargosCompletos(Long id);
     Agente save(Agente agente);
     void deleteById(Long id);
     Agente update(Agente agente);
