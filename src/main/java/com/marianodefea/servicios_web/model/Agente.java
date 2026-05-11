@@ -7,7 +7,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.math.BigInteger;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -24,7 +28,7 @@ public class Agente {
     @Column(unique = true)
     private String cuil;
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String dni;
 
     @Column(nullable = false)
@@ -32,6 +36,20 @@ public class Agente {
 
     @Column(nullable = false)
     private String apellido;
+
+    private Long numeroLegajo;
+
+    private LocalDate fechaNacimiento;
+
+    private String domicilio;
+
+    private String telefono;
+
+    private String titulo;
+
+    private String email;
+
+    private LocalDate fechaIngreso;
 
     private boolean activo = true;
 

@@ -95,4 +95,28 @@ public class AgenteController {
         }
     }
 
+    @GetMapping("/editar/{id}")
+    public String actualizarAgente(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes){
+        Optional<Agente> agenteOptional = agenteService.findById(id);
+
+        if (agenteOptional.isPresent()){
+            model.addAttribute("agente", agenteOptional.get());
+            return "user/editar_agente";
+        }else{
+            redirectAttributes.addFlashAttribute("error", "Agente no encontrado");
+            return "redirect:/agentes/";
+        }
+    }
+
+    @PostMapping("/actualizar")
+    public String actualizarAgente(@ModelAttribute Agente agente, RedirectAttributes redirectAttributes) {
+        try {
+            agenteService.save(agente);
+            redirectAttributes.addFlashAttribute("success", "El perfil de " + agente.getApellido() + " se actualizó correctamente.");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Error al intentar guardar los cambios.");
+        }
+        return "redirect:/agentes/ver/" + agente.getId();
+    }
+
 }
