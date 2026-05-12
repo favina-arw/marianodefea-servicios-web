@@ -57,7 +57,7 @@ public class Agente {
     @OneToMany(mappedBy = "agente", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<AgenteCargo> cargosAsignados = new ArrayList<>();
 
-    @OneToMany(mappedBy = "agente", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "agente", cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("hora DESC")
     private List<Fichada> fichadas = new ArrayList<>();
 
