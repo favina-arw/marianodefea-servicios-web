@@ -12,12 +12,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 public class AgenteCargoService {
 
     @Autowired private IAgenteCargoRepository agenteCargoRepository;
     @Autowired private IAgenteRepository agenteRepository;
     @Autowired private ICargoRepository cargoRepository;
+
+    public Optional<AgenteCargo> findById(Long id){ return agenteCargoRepository.findById(id); }
+
+    public Optional<AgenteCargo> findByIdConRelaciones(Long id){ return agenteCargoRepository.findByIdConRelaciones(id); }
+
+    public AgenteCargo save(AgenteCargo agenteCargo){ return agenteCargoRepository.save(agenteCargo); }
+
+    public Optional<AgenteCargo> findByIdCompleto(Long id) { return agenteCargoRepository.findByIdCompleto(id); }
 
     @Transactional
     public void asignarCargo(AsignacionCargoDTO dto) {

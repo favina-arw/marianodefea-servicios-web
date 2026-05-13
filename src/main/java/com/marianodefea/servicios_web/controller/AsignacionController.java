@@ -1,17 +1,24 @@
 package com.marianodefea.servicios_web.controller;
 
+import com.marianodefea.servicios_web.dto.ActualizarAgenteCargoDTO;
 import com.marianodefea.servicios_web.dto.AsignacionCargoDTO;
+import com.marianodefea.servicios_web.dto.mapper.AgenteCargoMapper;
+import com.marianodefea.servicios_web.model.AgenteCargo;
 import com.marianodefea.servicios_web.repository.IAgenteRepository;
 import com.marianodefea.servicios_web.repository.ICargoRepository;
 import com.marianodefea.servicios_web.service.AgenteCargoService;
 import com.marianodefea.servicios_web.service.AgenteService;
 import com.marianodefea.servicios_web.service.CargoService;
+import com.marianodefea.servicios_web.utils.Horario;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.Banner;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/admin/asignaciones")
@@ -21,6 +28,7 @@ public class AsignacionController {
     @Autowired private AgenteCargoService agenteCargoService;
     @Autowired private AgenteService agenteService;
     @Autowired private CargoService cargoService;
+    @Autowired private AgenteCargoMapper agenteCargoMapper;
 
     @GetMapping("/crear")
     public String formAsignar(Model model) {
@@ -44,5 +52,40 @@ public class AsignacionController {
         }
         // Lo mandamos a la tabla principal de agentes
         return "redirect:/agentes/";
+    }
+
+    @GetMapping("/agenteCargo/editar/{id}")
+    public String mostrarEdicionCargo(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes){
+        Optional<AgenteCargo> cargoOpt = agenteCargoService.findByIdConRelaciones(id);
+        if (cargoOpt.isPresent()){
+            ActualizarAgenteCargoDTO dto = agenteCargoMapper.aDto(cargoOpt.get());
+            model.addAttribute("cargoEdit", dto);
+            return "asignaciones/editar_agente_cargo";
+        } else {
+            redirectAttributes.addFlashAttribute("error", "No se encontró el cargo asignado.");
+            return "redirect:/agentes/";
+        }
+    }
+
+    @PostMapping("/agenteCargo/editar")
+    public String guardarEdicionCargo(@ModelAttribute("cargoEdit") ActualizarAgenteCargoDTO dto, RedirectAttributes redirectAttributes){
+        try {
+            Optional<AgenteCargo> cargoRealOpt = agenteCargoService.findById(dto.getId());
+            if (cargoRealOpt.isPresent()){
+                AgenteCargo cargoReal = cargoRealOpt.get();
+                if (cargoReal.getHorario() == null){
+                    cargoReal.setHorario(new Horario());
+                }
+
+                agenteCargoMapper.actualizarDesdeDto(dto, cargoReal);
+                agenteCargoService.save(cargoReal);
+
+                redirectAttributes.addFlashAttribute("success", "Cargo actualizado correctamente.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            redirectAttributes.addFlashAttribute("error", "Error al guardar los cambios del cargo.");
+        }
+        return "redirect:/agentes/ver/" + dto.getAgenteId();
     }
 }

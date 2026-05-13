@@ -1,8 +1,10 @@
 package com.marianodefea.servicios_web.controller;
 
+import com.marianodefea.servicios_web.dto.ActualizarAgenteDTO;
 import com.marianodefea.servicios_web.dto.AgenteDTO;
 import com.marianodefea.servicios_web.dto.CargoAsignadoDTO;
 import com.marianodefea.servicios_web.dto.ListarAgenteDTO;
+import com.marianodefea.servicios_web.dto.mapper.AgenteMapper;
 import com.marianodefea.servicios_web.model.Agente;
 import com.marianodefea.servicios_web.service.AgenteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -22,7 +25,10 @@ import java.util.stream.Collectors;
 public class AgenteController {
 
     @Autowired
-    AgenteService agenteService;
+    private AgenteService agenteService;
+
+    @Autowired
+    private AgenteMapper agenteMapper;
 
     @GetMapping("/")
     public String listarAgentes(Model model){
@@ -100,7 +106,8 @@ public class AgenteController {
         Optional<Agente> agenteOptional = agenteService.findById(id);
 
         if (agenteOptional.isPresent()){
-            model.addAttribute("agente", agenteOptional.get());
+            ActualizarAgenteDTO agenteDTO = agenteMapper.aDto(agenteOptional.get());
+            model.addAttribute("agente", agenteDTO);
             return "user/editar_agente";
         }else{
             redirectAttributes.addFlashAttribute("error", "Agente no encontrado");
@@ -109,14 +116,23 @@ public class AgenteController {
     }
 
     @PostMapping("/actualizar")
-    public String actualizarAgente(@ModelAttribute Agente agente, RedirectAttributes redirectAttributes) {
+    public String actualizarAgente(@ModelAttribute("agente") ActualizarAgenteDTO dto, RedirectAttributes redirectAttributes) {
         try {
-            agenteService.save(agente);
-            redirectAttributes.addFlashAttribute("success", "El perfil de " + agente.getApellido() + " se actualizó correctamente.");
+            Optional<Agente> agenteExistenteOpt = agenteService.findById(dto.getId());
+            if (agenteExistenteOpt.isPresent()){
+                Agente agenteReal = agenteExistenteOpt.get();
+                agenteMapper.actualizarAgenteDesdeDto(dto, agenteReal);
+                agenteService.save(agenteReal);
+                redirectAttributes.addFlashAttribute("success", "El perfil de " + agenteReal.getApellido() + " se actualizó correctamente.");
+            } else {
+                redirectAttributes.addFlashAttribute("error", "No se encontró al agente");
+                return "redirect:/agentes/";
+            }
         } catch (Exception e) {
+            e.printStackTrace();
             redirectAttributes.addFlashAttribute("error", "Error al intentar guardar los cambios.");
         }
-        return "redirect:/agentes/ver/" + agente.getId();
+        return "redirect:/agentes/ver/" + dto.getId();
     }
 
 }

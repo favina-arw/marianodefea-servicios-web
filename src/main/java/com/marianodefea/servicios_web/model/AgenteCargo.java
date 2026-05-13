@@ -29,6 +29,7 @@ public class AgenteCargo {
     @Embedded
     private Horario horario;
 
+    @Builder.Default
     private boolean activo = true;
 
     private LocalDate fechaAlta;
