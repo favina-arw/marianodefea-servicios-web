@@ -44,11 +44,6 @@
                         <span class="badge bg-secondary ms-1 rounded-pill" th:text="${agente.cargosAsignados.size()}"></span>
                     </button>
                 </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="fichadas-tab" data-bs-toggle="tab" data-bs-target="#fichadas" type="button" role="tab">
-                        <i class="bi bi-clock-history me-1"></i> Historial de Fichadas
-                    </button>
-                </li>
             </ul>
         </div>
 
@@ -58,33 +53,62 @@
 
                 <!-- 1. PESTAÑA: DATOS GENERALES -->
                 <div class="tab-pane fade show active" id="datos" role="tabpanel" tabindex="0">
-                    <div class="row g-4">
-                        <div class="col-md-6">
-                            <div class="p-3 border rounded shadow-sm">
+                    <div class="row g-3">
+
+                        <div class="col-md-3">
+                            <div class="p-3 border rounded shadow-sm h-100 bg-white">
                                 <p class="text-muted mb-1 small text-uppercase fw-bold">Documento (DNI)</p>
-                                <p class="mb-0 fs-5" th:text="${agente.dni}"></p>
+                                <p class="mb-0 fs-6 fw-semibold" th:text="${agente.dni ?: '-'}"></p>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="p-3 border rounded shadow-sm">
+                        <div class="col-md-3">
+                            <div class="p-3 border rounded shadow-sm h-100 bg-white">
                                 <p class="text-muted mb-1 small text-uppercase fw-bold">CUIL / CUIT</p>
-                                <p class="mb-0 fs-5" th:text="${agente.cuil != null ? agente.cuil : 'No registrado'}"></p>
+                                <p class="mb-0 fs-6 fw-semibold" th:text="${agente.cuil ?: '-'}"></p>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="p-3 border rounded shadow-sm h-100 bg-white">
+                                <p class="text-muted mb-1 small text-uppercase fw-bold">Nro. de Legajo</p>
+                                <p class="mb-0 fs-6 fw-semibold" th:text="${agente.numeroLegajo ?: '-'}"></p>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="p-3 border rounded shadow-sm h-100 bg-white">
+                                <p class="text-muted mb-1 small text-uppercase fw-bold">Título / Especialidad</p>
+                                <p class="mb-0 fs-6 fw-semibold text-truncate" th:title="${agente.titulo}" th:text="${agente.titulo ?: '-'}"></p>
                             </div>
                         </div>
 
-                        <!-- ESPACIOS PREPARADOS PARA EL FUTURO (Teléfono y Email) -->
-                        <div class="col-md-6">
-                            <div class="p-3 border rounded shadow-sm opacity-75">
-                                <p class="text-muted mb-1 small text-uppercase fw-bold">Teléfono de Contacto</p>
-                                <p class="mb-0 fs-5 fst-italic text-muted">A completar en edición...</p>
-                                <!-- Futuro: <p class="mb-0 fs-5" th:text="${agente.telefono}"></p> -->
+                        <div class="col-md-3">
+                            <div class="p-3 border rounded shadow-sm h-100 bg-white">
+                                <p class="text-muted mb-1 small text-uppercase fw-bold">Fecha de Nacimiento</p>
+                                <p class="mb-0 fs-6 fw-semibold" th:text="${agente.fechaNacimiento != null ? #temporals.format(agente.fechaNacimiento, 'dd/MM/yyyy') : '-'}"></p>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="p-3 border rounded shadow-sm opacity-75">
+                        <div class="col-md-3">
+                            <div class="p-3 border rounded shadow-sm h-100 bg-white">
+                                <p class="text-muted mb-1 small text-uppercase fw-bold">Fecha de Ingreso</p>
+                                <p class="mb-0 fs-6 fw-semibold" th:text="${agente.fechaIngreso != null ? #temporals.format(agente.fechaIngreso, 'dd/MM/yyyy') : '-'}"></p>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="p-3 border rounded shadow-sm h-100 bg-white">
+                                <p class="text-muted mb-1 small text-uppercase fw-bold">Teléfono</p>
+                                <p class="mb-0 fs-6 fw-semibold" th:text="${agente.telefono ?: '-'}"></p>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="p-3 border rounded shadow-sm h-100 bg-white">
                                 <p class="text-muted mb-1 small text-uppercase fw-bold">Correo Electrónico</p>
-                                <p class="mb-0 fs-5 fst-italic text-muted">A completar en edición...</p>
-                                <!-- Futuro: <p class="mb-0 fs-5" th:text="${agente.email}"></p> -->
+                                <p class="mb-0 fs-6 fw-semibold text-truncate" th:title="${agente.email}" th:text="${agente.email ?: '-'}"></p>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="p-3 border rounded shadow-sm bg-white">
+                                <p class="text-muted mb-1 small text-uppercase fw-bold">Domicilio</p>
+                                <p class="mb-0 fs-6 fw-semibold" th:text="${agente.domicilio ?: '-'}"></p>
                             </div>
                         </div>
                     </div>
@@ -96,10 +120,10 @@
                         <table class="table table-hover align-middle mb-0">
                             <thead class="">
                             <tr>
-                                <th class="ps-3">Cargo Estrutural</th>
-                                <th class="text-center">Toma de Posesión</th>
-                                <th class="text-center">Horario</th>
-                                <th class="text-center">Estado</th>
+                                <th class="ps-3 text-uppercase">Cargo</th>
+                                <th class="text-center text-uppercase">Toma de Posesión</th>
+                                <th class="text-center text-uppercase">Horario</th>
+                                <th class="text-center text-uppercase">Estado</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -110,10 +134,15 @@
                                 <td class="text-center" th:text="${#temporals.format(asignacion.fechaAlta, 'dd/MM/yyyy')}"></td>
 
                                 <td class="text-center">
-                                        <span class="badge border bg-body-secondary text-body px-2 py-1">
-                                            <i class="bi bi-clock me-1"></i>
-                                            <span th:text="${asignacion.horario.horaInicio + ' a ' + asignacion.horario.horaFin}"></span>
-                                        </span>
+                                    <!-- Opción A: Tiene horario asignado -->
+                                    <span th:if="${asignacion.horario != null}" class="badge border bg-body-secondary text-body px-2 py-1">
+                                        <i class="bi bi-clock text-primary me-1"></i>
+                                        <span th:text="${asignacion.horario.horaInicio + ' a ' + asignacion.horario.horaFin}"></span>
+                                    </span>
+                                    <!-- Opción B: NO tiene horario (evita que explote la pantalla) -->
+                                    <span th:unless="${asignacion.horario != null}" class="badge border bg-body-secondary text-body px-2 py-1 fst-italic">
+                                        <i class="bi bi-exclamation-circle me-1"></i> Sin horario
+                                    </span>
                                 </td>
 
                                 <td class="text-center">
@@ -130,42 +159,6 @@
                         </table>
                     </div>
                 </div>
-
-                <!-- 3. PESTAÑA: HISTORIAL DE FICHADAS -->
-                <div class="tab-pane fade" id="fichadas" role="tabpanel" tabindex="0">
-                    <div class="table-responsive border rounded shadow-sm">
-                        <table class="table table-striped table-hover align-middle mb-0">
-                            <thead class="">
-                            <tr>
-                                <th class="ps-3">Fecha y Hora</th>
-                                <th class="text-center">Movimiento</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr th:each="fichada : ${agente.fichadas}">
-                                <td class="ps-3">
-                                    <i class="bi bi-calendar-event text-secondary me-2"></i>
-                                    <span th:text="${#temporals.format(fichada.hora, 'dd/MM/yyyy - HH:mm')}"></span> hs
-                                </td>
-                                <td class="text-center">
-                                        <span th:if="${fichada.tipoFichada.identificador.toString() == 'E'}" class="badge bg-info text-white">
-                                            <i class="bi bi-box-arrow-in-right me-1"></i> ENTRADA
-                                        </span>
-                                    <span th:if="${fichada.tipoFichada.identificador.toString() == 'S'}" class="badge bg-warning text-dark">
-                                            <i class="bi bi-box-arrow-right me-1"></i> SALIDA
-                                        </span>
-                                </td>
-                            </tr>
-                            <tr th:if="${#lists.isEmpty(agente.fichadas)}">
-                                <td colspan="2" class="text-center text-muted py-4 fst-italic">
-                                    No hay registros de fichadas para este agente.
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
             </div>
         </div>
     </div>

@@ -27,11 +27,10 @@ public class AgenteCargo {
     private Cargo cargo;
 
     @Embedded
-    private Horario horario; // El horario que cumple Fede en este cargo en particular
+    private Horario horario;
 
     private boolean activo = true;
 
-    // TIP EDUCATIVO: Guardar las fechas te salva la vida en sistemas escolares
     private LocalDate fechaAlta;
     private LocalDate fechaBaja;
 
