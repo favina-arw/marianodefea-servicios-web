@@ -9,78 +9,76 @@
 <body>
 
 <main layout:fragment="dashboard_content">
-    <div class="container-fluid py-4">
-        <div class="row justify-content-center">
-            <div class="col-12 col-lg-8">
 
-                <div class="card shadow-sm border-0">
-                    <div class="card-header bg-transparent border-bottom-0 pt-3 pb-0">
-                        <h6 class="mb-0 fw-bold text-body text-uppercase">
-                            Editar Horario: <span class="text-primary" th:text="${cargoEdit.nombreCargo}">Cargo</span>
-                        </h6>
-                        <hr class="mt-3 mb-0 text-muted opacity-25">
+    <div class="card shadow-sm">
+        <div class="card-header bg-transparent border-bottom-0 pt-3 pb-0">
+            <h6 class="mb-0 fw-bold text-body text-uppercase">
+                Editar Horario: <span class="text-primary" th:text="${cargoEdit.nombreCargo}">Cargo</span>
+            </h6>
+            <hr class="mt-3 mb-0 text-muted opacity-25">
+        </div>
+
+        <div class="card-body px-4 py-4">
+            <!-- El action apunta al @PostMapping de tu controlador -->
+            <form th:action="@{/admin/asignaciones/agenteCargo/editar}" th:object="${cargoEdit}" method="post">
+
+                <!-- CLAVE: Campos ocultos para mantener los IDs durante el viaje al backend -->
+                <input type="hidden" th:field="*{id}">
+                <input type="hidden" th:field="*{agenteId}">
+
+                <div class="row g-3">
+
+                    <!-- Fecha de Alta -->
+                    <div class="col-12 col-md-4">
+                        <label for="fechaAlta" class="form-label fw-semibold text-muted small text-uppercase">Fecha de Alta</label>
+                        <input type="date"
+                               id="fechaAlta"
+                               class="form-control bg-light"
+                               th:field="*{fechaAlta}"
+                               required>
                     </div>
 
-                    <div class="card-body px-4 py-4">
-                        <!-- El action apunta al @PostMapping de tu controlador -->
-                        <form th:action="@{/admin/asignaciones/agenteCargo/editar}" th:object="${cargoEdit}" method="post">
-
-                            <!-- CLAVE: Campos ocultos para mantener los IDs durante el viaje al backend -->
-                            <input type="hidden" th:field="*{id}">
-                            <input type="hidden" th:field="*{agenteId}">
-
-                            <div class="row g-3">
-
-                                <!-- Fecha de Alta -->
-                                <div class="col-12 col-md-4">
-                                    <label for="fechaAlta" class="form-label fw-semibold text-muted small text-uppercase">Fecha de Alta</label>
-                                    <input type="date"
-                                           id="fechaAlta"
-                                           class="form-control bg-light"
-                                           th:field="*{fechaAlta}"
-                                           required>
-                                </div>
-
-                                <!-- Hora de Inicio -->
-                                <div class="col-12 col-md-4">
-                                    <label for="horaInicio" class="form-label fw-semibold text-muted small text-uppercase">Hora de Entrada</label>
-                                    <input type="time"
-                                           id="horaInicio"
-                                           class="form-control bg-light"
-                                           th:field="*{horaInicio}"
-                                           required>
-                                </div>
-
-                                <!-- Hora de Fin -->
-                                <div class="col-12 col-md-4">
-                                    <label for="horaFin" class="form-label fw-semibold text-muted small text-uppercase">Hora de Salida</label>
-                                    <input type="time"
-                                           id="horaFin"
-                                           class="form-control bg-light"
-                                           th:field="*{horaFin}"
-                                           required>
-                                </div>
-
-                            </div>
-
-                            <hr class="mt-4 mb-3 text-muted opacity-25">
-
-                            <!-- Botonera -->
-                            <div class="d-flex justify-content-end gap-2">
-                                <a th:href="@{/agentes/ver/{id}(id=${cargoEdit.agenteId})}"
-                                   class="btn btn-outline-secondary px-4">
-                                    Cancelar
-                                </a>
-                                <button type="submit" class="btn btn-primary px-4">
-                                    Guardar Cambios
-                                </button>
-                            </div>
-
-                        </form>
+                    <!-- Hora de Inicio -->
+                    <div class="col-12 col-md-4">
+                        <label for="horaInicio" class="form-label fw-semibold text-muted small text-uppercase">Hora de Entrada</label>
+                        <input type="time"
+                               id="horaInicio"
+                               class="form-control bg-light"
+                               th:field="*{horaInicio}"
+                               required>
                     </div>
+
+                    <!-- Hora de Fin -->
+                    <div class="col-12 col-md-4">
+                        <label for="horaFin" class="form-label fw-semibold text-muted small text-uppercase">Hora de Salida</label>
+                        <input type="time"
+                               id="horaFin"
+                               class="form-control bg-light"
+                               th:field="*{horaFin}"
+                               required>
+                    </div>
+
                 </div>
 
-            </div>
+                <hr class="mt-4 mb-3 text-muted opacity-25">
+
+                <!-- Botonera -->
+                <div class="d-flex justify-content-center gap-2">
+                    <button type="submit" class="btn btn-success btn-sm">
+                        Guardar Cambios
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+    <!-- Botón para volver al listado -->
+    <div class="card mt-5">
+        <div class="card-body d-flex justify-content-center">
+            <a th:href="@{/agentes/}" class="btn btn-sm btn-primary">
+                Volver
+            </a>
         </div>
     </div>
 </main>

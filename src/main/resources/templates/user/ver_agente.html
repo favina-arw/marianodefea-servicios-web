@@ -53,62 +53,86 @@
 
                 <!-- 1. PESTAÑA: DATOS GENERALES -->
                 <div class="tab-pane fade show active" id="datos" role="tabpanel" tabindex="0">
-                    <div class="row g-3">
 
-                        <div class="col-md-3">
-                            <div class="p-3 border rounded shadow-sm h-100 bg-white">
-                                <p class="text-muted mb-1 small text-uppercase fw-bold">Documento (DNI)</p>
-                                <p class="mb-0 fs-6 fw-semibold" th:text="${agente.dni ?: '-'}"></p>
+                    <!-- SECCIÓN: DATOS DE IDENTIDAD -->
+                    <div class="mb-4">
+                        <h6 class="text-primary fw-bold small text-uppercase mb-3">Datos de Identidad</h6>
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <div class="p-3 border rounded shadow-sm h-100 bg-white">
+                                    <p class="text-muted mb-1 small text-uppercase fw-bold">Apellido y Nombre</p>
+                                    <p class="mb-0 fs-6 fw-semibold" th:text="${agente.apellido + ', ' + agente.nombre}"></p>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="p-3 border rounded shadow-sm h-100 bg-white">
+                                    <p class="text-muted mb-1 small text-uppercase fw-bold">Documento (DNI)</p>
+                                    <p class="mb-0 fs-6 fw-semibold" th:text="${agente.dni ?: '-'}"></p>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="p-3 border rounded shadow-sm h-100 bg-white">
+                                    <p class="text-muted mb-1 small text-uppercase fw-bold">CUIL / CUIT</p>
+                                    <p class="mb-0 fs-6 fw-semibold" th:text="${agente.cuil ?: '-'}"></p>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-3">
-                            <div class="p-3 border rounded shadow-sm h-100 bg-white">
-                                <p class="text-muted mb-1 small text-uppercase fw-bold">CUIL / CUIT</p>
-                                <p class="mb-0 fs-6 fw-semibold" th:text="${agente.cuil ?: '-'}"></p>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="p-3 border rounded shadow-sm h-100 bg-white">
-                                <p class="text-muted mb-1 small text-uppercase fw-bold">Nro. de Legajo</p>
-                                <p class="mb-0 fs-6 fw-semibold" th:text="${agente.numeroLegajo ?: '-'}"></p>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="p-3 border rounded shadow-sm h-100 bg-white">
-                                <p class="text-muted mb-1 small text-uppercase fw-bold">Título / Especialidad</p>
-                                <p class="mb-0 fs-6 fw-semibold text-truncate" th:title="${agente.titulo}" th:text="${agente.titulo ?: '-'}"></p>
-                            </div>
-                        </div>
+                        <hr class="mt-4 mb-0 opacity-25">
+                    </div>
 
-                        <div class="col-md-3">
-                            <div class="p-3 border rounded shadow-sm h-100 bg-white">
-                                <p class="text-muted mb-1 small text-uppercase fw-bold">Fecha de Nacimiento</p>
-                                <p class="mb-0 fs-6 fw-semibold" th:text="${agente.fechaNacimiento != null ? #temporals.format(agente.fechaNacimiento, 'dd/MM/yyyy') : '-'}"></p>
+                    <!-- SECCIÓN: INFORMACIÓN PERSONAL Y CONTACTO -->
+                    <div class="mb-4">
+                        <h6 class="text-primary fw-bold small text-uppercase mb-3">Información Personal y Contacto</h6>
+                        <div class="row g-3">
+                            <div class="col-md-3">
+                                <div class="p-3 border rounded shadow-sm h-100 bg-white">
+                                    <p class="text-muted mb-1 small text-uppercase fw-bold">Fecha de Nacimiento</p>
+                                    <p class="mb-0 fs-6 fw-semibold" th:text="${agente.fechaNacimiento != null ? #temporals.format(agente.fechaNacimiento, 'dd/MM/yyyy') : '-'}"></p>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="p-3 border rounded shadow-sm h-100 bg-white">
+                                    <p class="text-muted mb-1 small text-uppercase fw-bold">Domicilio Real</p>
+                                    <p class="mb-0 fs-6 fw-semibold" th:text="${agente.domicilio ?: '-'}"></p>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="p-3 border rounded shadow-sm h-100 bg-white">
+                                    <p class="text-muted mb-1 small text-uppercase fw-bold">Teléfono</p>
+                                    <p class="mb-0 fs-6 fw-semibold" th:text="${agente.telefono ?: '-'}"></p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="p-3 border rounded shadow-sm h-100 bg-white">
+                                    <p class="text-muted mb-1 small text-uppercase fw-bold">Correo Electrónico</p>
+                                    <p class="mb-0 fs-6 fw-semibold text-truncate" th:title="${agente.email}" th:text="${agente.email ?: '-'}"></p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="p-3 border rounded shadow-sm h-100 bg-white">
+                                    <p class="text-muted mb-1 small text-uppercase fw-bold">Título / Especialidad</p>
+                                    <p class="mb-0 fs-6 fw-semibold text-truncate" th:title="${agente.titulo}" th:text="${agente.titulo ?: '-'}"></p>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-3">
-                            <div class="p-3 border rounded shadow-sm h-100 bg-white">
-                                <p class="text-muted mb-1 small text-uppercase fw-bold">Fecha de Ingreso</p>
-                                <p class="mb-0 fs-6 fw-semibold" th:text="${agente.fechaIngreso != null ? #temporals.format(agente.fechaIngreso, 'dd/MM/yyyy') : '-'}"></p>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="p-3 border rounded shadow-sm h-100 bg-white">
-                                <p class="text-muted mb-1 small text-uppercase fw-bold">Teléfono</p>
-                                <p class="mb-0 fs-6 fw-semibold" th:text="${agente.telefono ?: '-'}"></p>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="p-3 border rounded shadow-sm h-100 bg-white">
-                                <p class="text-muted mb-1 small text-uppercase fw-bold">Correo Electrónico</p>
-                                <p class="mb-0 fs-6 fw-semibold text-truncate" th:title="${agente.email}" th:text="${agente.email ?: '-'}"></p>
-                            </div>
-                        </div>
+                        <hr class="mt-4 mb-0 opacity-25">
+                    </div>
 
-                        <div class="col-md-12">
-                            <div class="p-3 border rounded shadow-sm bg-white">
-                                <p class="text-muted mb-1 small text-uppercase fw-bold">Domicilio</p>
-                                <p class="mb-0 fs-6 fw-semibold" th:text="${agente.domicilio ?: '-'}"></p>
+                    <!-- SECCIÓN: INFORMACIÓN ADMINISTRATIVA -->
+                    <div class="mb-4">
+                        <h6 class="text-primary fw-bold small text-uppercase mb-3">Información Administrativa</h6>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="p-3 border rounded shadow-sm h-100 bg-white">
+                                    <p class="text-muted mb-1 small text-uppercase fw-bold">Número de Legajo</p>
+                                    <p class="mb-0 fs-6 fw-semibold" th:text="${agente.numeroLegajo ?: '-'}"></p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="p-3 border rounded shadow-sm h-100 bg-white">
+                                    <p class="text-muted mb-1 small text-uppercase fw-bold">Fecha de Ingreso</p>
+                                    <p class="mb-0 fs-6 fw-semibold" th:text="${agente.fechaIngreso != null ? #temporals.format(agente.fechaIngreso, 'dd/MM/yyyy') : '-'}"></p>
+                                </div>
                             </div>
                         </div>
                     </div>

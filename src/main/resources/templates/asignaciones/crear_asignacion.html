@@ -8,7 +8,7 @@
 <body>
 <main layout:fragment="dashboard_content">
 
-    <div class="card shadow-sm border-0 rounded">
+    <div class="card shadow-sm">
 
         <div class="card-header bg-transparent border-bottom-0 pt-3 pb-0">
             <h6 class="mb-0 fw-bold text-body text-uppercase">
@@ -34,7 +34,7 @@
                     <div class="col-md-6 form-group">
                         <label class="font-weight-bold">Seleccionar Cargo Disponible <span class="text-danger">*</span></label>
                         <select th:field="*{cargoId}" class="form-control" required>
-                            <option value="">Elegí la posición estructural...</option>
+                            <option value="">Elegí un cargo...</option>
                             <!-- Esto asume que tenés los Cargos en el modelo. Ajustá el th:text si necesitás mostrar el curso -->
                             <option th:each="cargo : ${cargos}"
                                     th:value="${cargo.id}"
@@ -59,13 +59,22 @@
                 </div>
 
                 <div class="col-lg-12 d-flex justify-content-center">
-                    <button type="submit" class="btn btn-primary btn-block mt-4">
+                    <button type="submit" class="btn btn-success btn-block mt-4">
                         Confirmar Asignación
                     </button>
                 </div>
 
             </form>
 
+        </div>
+    </div>
+
+    <!-- Botón para volver al listado -->
+    <div class="card mt-5">
+        <div class="card-body d-flex justify-content-center">
+            <a th:href="@{/agentes/}" class="btn btn-sm btn-primary">
+                Volver
+            </a>
         </div>
     </div>
 
