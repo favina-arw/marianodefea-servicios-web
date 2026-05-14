@@ -47,11 +47,16 @@ public class AsignacionController {
             // Le pasamos todo el paquete (IDs, fechas, horas) al Service de una
             agenteCargoService.asignarCargo(dto);
             redirectAttributes.addFlashAttribute("success", "¡Cargo asignado al agente con éxito!");
-        } catch (Exception e) {
+            return "redirect:/agentes/";
+        }catch(IllegalArgumentException iae) {
+            redirectAttributes.addFlashAttribute("error", iae.getMessage());
+            return "redirect:/crear_asignacion";
+        }catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Error al procesar la asignación: " + e.getMessage());
+            redirectAttributes.addFlashAttribute("errorExt", "" + e.getMessage());
+            return "redirect:/agentes/";
         }
-        // Lo mandamos a la tabla principal de agentes
-        return "redirect:/agentes/";
+
     }
 
     @GetMapping("/agenteCargo/editar/{id}")
@@ -70,6 +75,16 @@ public class AsignacionController {
     @PostMapping("/agenteCargo/editar")
     public String guardarEdicionCargo(@ModelAttribute("cargoEdit") ActualizarAgenteCargoDTO dto, RedirectAttributes redirectAttributes){
         try {
+
+            Horario horarioAValdiar = new Horario(dto.getHoraInicio(), dto.getHoraFin());
+
+            boolean haySuperposicion = agenteCargoService.existeSuperposicion(dto.getAgenteId(), horarioAValdiar, dto.getId());
+
+            if (haySuperposicion){
+                redirectAttributes.addFlashAttribute("error", "El horario ingresado se superpone con otro cargo activo de este agente.");
+                return "redirect:/agentes/";
+            }
+
             Optional<AgenteCargo> cargoRealOpt = agenteCargoService.findById(dto.getId());
             if (cargoRealOpt.isPresent()){
                 AgenteCargo cargoReal = cargoRealOpt.get();

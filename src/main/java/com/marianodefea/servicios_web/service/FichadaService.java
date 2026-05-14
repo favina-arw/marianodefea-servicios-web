@@ -1,8 +1,8 @@
 package com.marianodefea.servicios_web.service;
 
-import com.marianodefea.servicios_web.model.Agente;
 import com.marianodefea.servicios_web.model.fichada.Fichada;
 import com.marianodefea.servicios_web.repository.IFichadaRepository;
+import com.marianodefea.servicios_web.service.interfaces.IFichadaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -10,11 +10,10 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Service
-public class FichadaService implements IFichadaService{
+public class FichadaService implements IFichadaService {
     @Autowired
     private IFichadaRepository fichadaRepository;
 

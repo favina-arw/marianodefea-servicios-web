@@ -2,6 +2,7 @@ package com.marianodefea.servicios_web.service;
 
 import com.marianodefea.servicios_web.model.security.Role;
 import com.marianodefea.servicios_web.repository.IRoleRepository;
+import com.marianodefea.servicios_web.service.interfaces.IRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class RoleService implements IRoleService{
+public class RoleService implements IRoleService {
     @Autowired
     private IRoleRepository roleRepository;
 

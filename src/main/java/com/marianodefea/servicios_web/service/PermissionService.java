@@ -2,6 +2,7 @@ package com.marianodefea.servicios_web.service;
 
 import com.marianodefea.servicios_web.model.security.Permission;
 import com.marianodefea.servicios_web.repository.IPermissionRepository;
+import com.marianodefea.servicios_web.service.interfaces.IPermissionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

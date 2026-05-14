@@ -2,6 +2,7 @@ package com.marianodefea.servicios_web.service;
 
 import com.marianodefea.servicios_web.model.fichada.TipoFichada;
 import com.marianodefea.servicios_web.repository.ITipoFichadaRepository;
+import com.marianodefea.servicios_web.service.interfaces.ITipoFichadaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class TipoFichadaService implements ITipoFichadaService{
+public class TipoFichadaService implements ITipoFichadaService {
 
     @Autowired
     private ITipoFichadaRepository tipoFichadaRepository;

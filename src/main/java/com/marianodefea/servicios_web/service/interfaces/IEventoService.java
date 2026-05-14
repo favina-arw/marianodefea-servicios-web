@@ -1,4 +1,4 @@
-package com.marianodefea.servicios_web.service;
+package com.marianodefea.servicios_web.service.interfaces;
 
 
 import java.time.LocalDate;

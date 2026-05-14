@@ -4,6 +4,7 @@ import com.marianodefea.servicios_web.dto.CargoAsignadoDTO;
 import com.marianodefea.servicios_web.dto.ListarAgenteDTO;
 import com.marianodefea.servicios_web.model.Agente;
 import com.marianodefea.servicios_web.repository.IAgenteRepository;
+import com.marianodefea.servicios_web.service.interfaces.IAgenteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,7 +14,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class AgenteService implements IAgenteService{
+public class AgenteService implements IAgenteService {
     @Autowired
     private IAgenteRepository agenteRepository;
 

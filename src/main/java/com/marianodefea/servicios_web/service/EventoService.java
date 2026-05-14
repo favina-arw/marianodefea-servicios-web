@@ -2,6 +2,7 @@ package com.marianodefea.servicios_web.service;
 
 import com.marianodefea.servicios_web.model.Evento;
 import com.marianodefea.servicios_web.repository.IEventoRepository;
+import com.marianodefea.servicios_web.service.interfaces.IEventoService;
 import com.marianodefea.servicios_web.utils.enums.TipoEvento;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,7 +12,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Service
-public class EventoService implements IEventoService{
+public class EventoService implements IEventoService {
 
     @Autowired
     private IEventoRepository eventoRepository;
