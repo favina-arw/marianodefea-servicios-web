@@ -77,6 +77,29 @@
     </div>
 </div>
 
+<div th:fragment="select(campo, label, requerido, helpText, colLg, opcionesFragment)"
+     th:classappend="'col-lg-' + ${colLg != null ? colLg : 6}"
+     class="col-12 col-md-6 mb-3">
+
+    <label th:for="'id_' + ${campo}" class="form-label fw-semibold text-body-secondary small text-uppercase">
+        <span th:text="${label}">Label</span>
+        <span th:if="${requerido}" class="text-danger">*</span>
+    </label>
+
+    <select th:field="*{__${campo}__}"
+            th:id="'id_' + ${campo}"
+            class="form-select shadow-none select2-busqueda"
+            th:required="${requerido}">
+
+        <th:block th:replace="${opcionesFragment}"></th:block>
+
+    </select>
+
+    <div th:if="${helpText}" class="form-text small mt-1">
+        <span th:text="'@ ' + ${helpText}" class="fst-italic"></span>
+    </div>
+</div>
+
 <div th:fragment="archivo(campo, label, requerido, helpText, colLg)"
      th:classappend="'col-lg-' + ${colLg != null ? colLg : 6}"
      class="col-12 col-md-6 mb-3">

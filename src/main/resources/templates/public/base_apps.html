@@ -194,6 +194,16 @@
                 container.classList.add('d-none'); // Esconde la caja de preview
             }
         }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Inicializar Select2
+            $('.select2-busqueda').select2({
+                theme: 'bootstrap-5',
+                language: 'es',
+                width: '100%',
+                placeholder: "Buscar y seleccionar..."
+            });
+        });
     </script>
 
 </th:block>
