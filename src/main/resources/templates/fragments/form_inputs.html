@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div th:fragment="texto(campo, label, placeholder, requerido, helpText, colLg)"
+     th:classappend="'col-lg-' + ${colLg != null ? colLg : 6}"
+     class="col-12 col-md-6 mb-3">
+    <label th:for="'id_' + ${campo}" class="form-label fw-semibold text-body-secondary small text-uppercase">
+        <span th:text="${label}">Label</span>
+        <span th:if="${requerido}" class="text-danger">*</span>
+    </label>
+    <input type="text"
+           th:field="*{__${campo}__}"
+           th:id="'id_' + ${campo}"
+           class="form-control shadow-none"
+           th:placeholder="${placeholder}"
+           th:required="${requerido}">
+    <div th:if="${helpText}" class="form-text small mt-1">
+        <span th:text="'@ ' + ${helpText}" class="fst-italic"></span>
+    </div>
+</div>
+
+
+<div th:fragment="numero(campo, label, placeholder, requerido, helpText, colLg)"
+     th:classappend="'col-lg-' + ${colLg != null ? colLg : 6}"
+     class="col-12 col-md-6 mb-3">
+    <label th:for="'id_' + ${campo}" class="form-label fw-semibold text-body-secondary small text-uppercase">
+        <span th:text="${label}">Label</span>
+        <span th:if="${requerido}" class="text-danger">*</span>
+    </label>
+    <input type="number"
+           th:field="*{__${campo}__}"
+           th:id="'id_' + ${campo}"
+           class="form-control shadow-none"
+           th:placeholder="${placeholder}"
+           th:required="${requerido}">
+    <div th:if="${helpText}" class="form-text small mt-1">
+        <span th:text="'@ ' + ${helpText}" class="fst-italic"></span>
+    </div>
+</div>
+
+
+<div th:fragment="fecha(campo, label, requerido, helpText, colLg)"
+     th:classappend="'col-lg-' + ${colLg != null ? colLg : 6}"
+     class="col-12 col-md-6 mb-3">
+    <label th:for="'id_' + ${campo}" class="form-label fw-semibold text-body-secondary small text-uppercase">
+        <span th:text="${label}">Label</span>
+        <span th:if="${requerido}" class="text-danger">*</span>
+    </label>
+    <input type="date"
+           th:field="*{__${campo}__}"
+           th:id="'id_' + ${campo}"
+           class="form-control shadow-none"
+           th:required="${requerido}">
+    <div th:if="${helpText}" class="form-text small mt-1">
+        <span th:text="'@ ' + ${helpText}" class="fst-italic"></span>
+    </div>
+</div>
+
+<div th:fragment="hora(campo, label, requerido, helpText, colLg)"
+     th:classappend="'col-lg-' + ${colLg != null ? colLg : 6}"
+     class="col-12 col-md-6 mb-3">
+    <label th:for="'id_' + ${campo}" class="form-label fw-semibold text-body-secondary small text-uppercase">
+        <span th:text="${label}">Label</span>
+        <span th:if="${requerido}" class="text-danger">*</span>
+    </label>
+
+    <input type="text"
+           th:field="*{__${campo}__}"
+           th:id="'id_' + ${campo}"
+           class="form-control shadow-none reloj-24h bg-white"
+           placeholder="--:--"
+           th:required="${requerido}">
+
+    <div th:if="${helpText}" class="form-text small mt-1">
+        <span th:text="'@ ' + ${helpText}" class="fst-italic"></span>
+    </div>
+</div>
+
+<div th:fragment="archivo(campo, label, requerido, helpText, colLg)"
+     th:classappend="'col-lg-' + ${colLg != null ? colLg : 6}"
+     class="col-12 col-md-6 mb-3">
+    <label th:for="'id_' + ${campo}" class="form-label fw-semibold text-body-secondary small text-uppercase">
+        <span th:text="${label}">Label</span>
+        <span th:if="${requerido}" class="text-danger">*</span>
+    </label>
+
+    <input type="file"
+           th:id="'id_' + ${campo}"
+           th:name="${campo}"
+           class="form-control shadow-none"
+           th:required="${requerido}"
+           th:onchange="'previsualizarArchivo(this, \'' + ${campo} + '\')'">
+
+    <div th:if="${helpText}" class="form-text small mt-1">
+        <span th:text="'@ ' + ${helpText}" class="fst-italic"></span>
+    </div>
+
+    <div th:id="'container_preview_' + ${campo}" class="mt-3 p-2 border border-secondary-subtle rounded shadow-sm d-none position-relative" style="min-height: 50px;">
+
+        <button type="button" class="btn-close position-absolute top-0 end-0 m-2" style="z-index: 10;"
+                th:onclick="'limpiarArchivo(\'' + ${campo} + '\')'" aria-label="Eliminar"></button>
+
+        <img th:id="'img_preview_' + ${campo}" src="" class="img-fluid rounded d-none mx-auto block shadow-sm" style="max-height: 200px;">
+
+        <embed th:id="'pdf_preview_' + ${campo}" src="" type="application/pdf" class="w-100 d-none rounded border border-secondary-subtle" style="height: 300px;">
+
+        <div th:id="'info_preview_' + ${campo}" class="text-center text-body-secondary small py-2 d-none">
+            <i class="bi bi-file-earmark-check-fill text-success fs-4 d-block mb-1"></i>
+            <span class="fw-semibold"></span>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

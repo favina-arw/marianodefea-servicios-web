@@ -86,13 +86,16 @@
         <!-- Inyección del Footer -->
         <div th:replace="~{fragments/footer :: footer}"></div>
 
-        <!--<div th:replace="~{fragments/toast :: toast_global}"></div>-->
+
     </div>
 
 </div>
 
 <th:block layout:fragment="scripts_adicionales">
     <script>
+
+        // TEMAS CLARO/OSCURO
+
         const menuToggle = document.getElementById("menu-toggle");
         const body = document.body;
 
@@ -128,6 +131,69 @@
             localStorage.setItem('theme', newTheme);
             updateIcons(newTheme);
         });
+
+        // CONFIGURACIÓN PARA INPUTS TIPO HORA
+
+        document.addEventListener('DOMContentLoaded', function() {
+
+            // Inicializamos todos los inputs de hora con formato 24hs estricto
+            flatpickr(".reloj-24h", {
+                enableTime: true,        // Habilita selección de tiempo
+                noCalendar: true,        // Apaga el calendario (solo queremos la hora)
+                dateFormat: "H:i",       // Formato backend: "14:30"
+                time_24hr: true,         // ¡La magia! Fuerza las 24 horas sin AM/PM
+                locale: "es",            // Idioma español
+                minuteIncrement: 5       // Salta de a 5 minutos (opcional, podés poner 1)
+            });
+
+        });
+
+        // PREVISUALIZACIÓN DE ARCHIVOS
+
+        function previsualizarArchivo(input, campo) {
+            const container = document.getElementById('container_preview_' + campo);
+            const imgPreview = document.getElementById('img_preview_' + campo);
+            const pdfPreview = document.getElementById('pdf_preview_' + campo);
+            const infoPreview = document.getElementById('info_preview_' + campo);
+
+            if (input.files && input.files[0]) {
+                const file = input.files[0];
+                const fileType = file.type;
+                const fileURL = URL.createObjectURL(file); // Crea ruta temporal local
+
+                // Resetear estados visuales
+                imgPreview.classList.add('d-none');
+                pdfPreview.classList.add('d-none');
+                infoPreview.classList.add('d-none');
+                container.classList.remove('d-none');
+
+                // Evaluar tipo de archivo
+                if (fileType.startsWith('image/')) {
+                    imgPreview.src = fileURL;
+                    imgPreview.classList.remove('d-none');
+                } else if (fileType === 'application/pdf') {
+                    pdfPreview.src = fileURL;
+                    pdfPreview.classList.remove('d-none');
+                } else {
+                    // Si sube un .doc, .xls, .zip, etc., mostramos un feedback amigable
+                    const spanText = infoPreview.querySelector('span');
+                    spanText.innerText = `${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)`;
+                    infoPreview.classList.remove('d-none');
+                }
+            } else {
+                container.classList.add('d-none');
+            }
+        }
+
+        function limpiarArchivo(campo) {
+            const input = document.getElementById('id_' + campo);
+            const container = document.getElementById('container_preview_' + campo);
+
+            if (input) {
+                input.value = ''; // Resetea el input de tipo archivo nativo
+                container.classList.add('d-none'); // Esconde la caja de preview
+            }
+        }
     </script>
 
 </th:block>

@@ -18,35 +18,20 @@
 
         <div class="card-body">
             <!-- El formulario limpio, sin alertas arriba, vinculado al DTO -->
-            <form th:action="@{/agentes/crearAgente}" th:object="${agenteDTO}" method="POST" class="row g-3" style="font-size: 0.85rem;">
+            <form th:action="@{/agentes/crearAgente}" th:object="${agenteDTO}" method="post" enctype="multipart/form-data">
 
-                <div class="col-md-3">
-                    <label class="form-label mb-1 text-muted fw-medium">DNI</label>
-                    <input type="text" class="form-control form-control-sm" th:field="*{dni}" required>
+                <div class="row">
+                    <div th:replace="~{fragments/form_inputs :: texto('nombre', 'Nombre', 'Ej: Juan Hernesto', true, 'Tal como figura en DNI', 3)}"></div>
+
+                    <div th:replace="~{fragments/form_inputs :: texto('apellido', 'Apellido', 'Ej: Perez', true, 'Tal como figura en DNI', 3)}"></div>
+
+                    <div th:replace="~{fragments/form_inputs :: numero('dni', 'Número de DNI', '', true, 'Sin puntos ni guiones', 3)}"></div>
+
+                    <div th:replace="~{fragments/form_inputs :: numero('cuil', 'Número CUIL/CUIT', '', true, 'Sin puntos ni guiones', 3)}"></div>
                 </div>
-
-                <div class="col-md-3">
-                    <label class="form-label mb-1 text-muted fw-medium">CUIL/CUIT</label>
-                    <input type="text" class="form-control form-control-sm" th:field="*{cuil}">
-                </div>
-
-                <div class="col-md-3">
-                    <label class="form-label mb-1 text-muted fw-medium">Nombre/s</label>
-                    <input type="text" class="form-control form-control-sm" th:field="*{nombre}" required>
-                </div>
-
-                <div class="col-md-3">
-                    <label class="form-label mb-1 text-muted fw-medium">Apellido/s</label>
-                    <input type="text" class="form-control form-control-sm" th:field="*{apellido}" required>
-                </div>
-
-                <!-- Fila del Botón -->
                 <div class="col-12 mt-4 d-flex justify-content-center">
-                    <button type="submit" class="btn btn-success btn-sm fw-semibold px-4 py-2">
-                        Guardar Agente
-                    </button>
+                    <button type="submit" class="btn btn-success btn-sm fw-semibold">Guardar Agente</button>
                 </div>
-
             </form>
         </div>
     </div>
@@ -54,9 +39,10 @@
     <!-- Botón para volver al listado -->
     <div class="card mt-5">
         <div class="card-body d-flex justify-content-center">
-            <a th:href="@{/agentes/}" class="btn btn-sm btn-primary">
+            <a th:href="@{/agentes/}" class="btn btn-sm btn-primary fw-semibold">
                 Volver
             </a>
+        </div>
         </div>
     </div>
 </main>

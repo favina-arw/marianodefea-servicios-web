@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<!-- Fragmento parametrizado: recibe el texto del error como argumento -->
+<div th:fragment="alertaErrorFormulario(mensaje)"
+     th:if="${mensaje}"
+     class="alert alert-danger d-flex shadow-sm mb-0 mx-3 mt-3 border-start border-danger border-2"
+     role="alert">
+
+  <i class="bi bi-exclamation-triangle-fill fs-4 me-3 text-danger"></i>
+  <div>
+    <h6 class="alert-heading fw-bold mb-1">Atención</h6>
+    <!-- Imprimimos el parámetro que nos manden -->
+    <span th:text="${mensaje}" class="mb-0 small">Detalle del error.</span>
+  </div>
+</div>
+
+</body>
+</html>

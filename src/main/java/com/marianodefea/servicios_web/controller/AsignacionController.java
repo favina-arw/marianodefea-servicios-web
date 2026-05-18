@@ -49,8 +49,9 @@ public class AsignacionController {
             redirectAttributes.addFlashAttribute("success", "¡Cargo asignado al agente con éxito!");
             return "redirect:/agentes/";
         }catch(IllegalArgumentException iae) {
-            redirectAttributes.addFlashAttribute("error", iae.getMessage());
-            return "redirect:/crear_asignacion";
+            redirectAttributes.addFlashAttribute("error", "Error al procesar la asignación");
+            redirectAttributes.addFlashAttribute("errorExt", iae.getMessage());
+            return "redirect:/admin/asignaciones/crear";
         }catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Error al procesar la asignación: " + e.getMessage());
             redirectAttributes.addFlashAttribute("errorExt", "" + e.getMessage());
