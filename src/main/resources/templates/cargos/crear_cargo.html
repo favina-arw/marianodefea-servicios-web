@@ -22,35 +22,25 @@
             <form th:action="@{/admin/cargos/guardar}" th:object="${cargo}" method="post">
 
                 <div class="row">
-                    <div class="col-md-12 form-group mb-3">
-                        <label class="font-weight-bold">Tipo de Cargo <span class="text-danger">*</span></label>
-                        <select class="form-control" th:field="*{cargoTipo}" required>
+                    <div th:replace="~{fragments/form_inputs :: select('cargoTipo', 'Tipo de Cargo', true, 'Seleccione el rol', 4, ~{::tipos})}">
+                        <th:block th:fragment="tipos">
                             <option value="">Seleccione el rol...</option>
-                            <option th:each="tipo : ${tipos}"
-                                    th:value="${tipo.id}"
-                                    th:text="${tipo.nombre}"></option>
-                        </select>
+                            <option th:each="t : ${tipos}" th:value="${t.id}" th:text="${t.nombre}"></option>
+                        </th:block>
                     </div>
-                </div>
 
-                <div class="row mt-2">
-                    <div class="col-md-6 form-group">
-                        <label class="font-weight-bold">Curso Asignado</label>
-                        <select class="form-control" th:field="*{curso}">
+                    <div th:replace="~{fragments/form_inputs :: select('curso', 'Curso Asignado', false, 'Seleccione en caso de que corresponda', 4, ~{::cursos})}">
+                        <th:block th:fragment="cursos">
                             <option value="">Ninguno / No aplica</option>
-                            <option th:each="c : ${cursos}"
-                                    th:value="${c.id}"
-                                    th:text="${c.getNombreCompleto()}"></option>
-                        </select>
+                            <option th:each="c : ${cursos}" th:value="${c.id}" th:text="${c.getNombreCompleto()}"></option>
+                        </th:block>
                     </div>
-                    <div class="col-md-6 form-group">
-                        <label class="font-weight-bold">Materia Asignada</label>
-                        <select class="form-control" th:field="*{materia}">
+
+                    <div th:replace="~{fragments/form_inputs :: select('materia', 'Materia asignada', false, 'Seleccione en caso de que corresponda', 4, ~{::materias})}">
+                        <th:block th:fragment="materias">
                             <option value="">Ninguna / No aplica</option>
-                            <option th:each="m : ${materias}"
-                                    th:value="${m.id}"
-                                    th:text="${m.nombre + ' (' + m.ciclo + ')'}"></option>
-                        </select>
+                            <option th:each="m : ${materias}" th:value="${m.id}" th:text="${m.nombre + ' (' + m.ciclo + ')'}"></option>
+                        </th:block>
                     </div>
                 </div>
 

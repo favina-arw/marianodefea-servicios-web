@@ -77,6 +77,41 @@
     </div>
 </div>
 
+<div th:fragment="textarea(campo, label, placeholder, requerido, helpText, filas, colLg)"
+     th:classappend="'col-lg-' + ${colLg != null ? colLg : 12}"
+     class="col-12 col-md-12 mb-3">
+    <label th:for="'id_' + ${campo}" class="form-label fw-semibold text-body-secondary small text-uppercase">
+        <span th:text="${label}">Label</span>
+        <span th:if="${requerido}" class="text-danger">*</span>
+    </label>
+    <textarea th:field="*{__${campo}__}"
+              th:id="'id_' + ${campo}"
+              class="form-control shadow-none"
+              th:placeholder="${placeholder}"
+              th:required="${requerido}"
+              th:rows="${filas != null ? filas : 3}"></textarea>
+    <div th:if="${helpText}" class="form-text small mt-1">
+        <span th:text="'@ ' + ${helpText}" class="fst-italic"></span>
+    </div>
+</div>
+
+
+<div th:fragment="checkbox(campo, label, helpText, colLg)"
+     th:classappend="'col-lg-' + ${colLg != null ? colLg : 6}"
+     class="col-12 col-md-6 mb-3">
+    <div class="form-check form-switch mt-md-4">
+        <input class="form-check-input shadow-none cursor-pointer" type="checkbox" role="switch"
+               th:field="*{__${campo}__}"
+               th:id="'id_' + ${campo}">
+        <label class="form-check-label fw-semibold text-body-secondary ms-1 cursor-pointer" th:for="'id_' + ${campo}">
+            <span th:text="${label}">Label</span>
+        </label>
+    </div>
+    <div th:if="${helpText}" class="form-text small mt-1 ms-4">
+        <span th:text="'@ ' + ${helpText}" class="fst-italic"></span>
+    </div>
+</div>
+
 <div th:fragment="select(campo, label, requerido, helpText, colLg, opcionesFragment)"
      th:classappend="'col-lg-' + ${colLg != null ? colLg : 6}"
      class="col-12 col-md-6 mb-3">
@@ -132,6 +167,29 @@
             <i class="bi bi-file-earmark-check-fill text-success fs-4 d-block mb-1"></i>
             <span class="fw-semibold"></span>
         </div>
+    </div>
+</div>
+
+<div th:fragment="botonera(textoBoton)" class="col-12 mt-4 pt-3 border-top border-secondary-subtle">
+    <span class="text-body-secondary small">
+        <span class="text-danger fw-bold fs-6">*</span> Los campos son obligatorios
+    </span>
+
+    <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center gap-3">
+
+        <div class="d-flex gap-2 w-100 justify-content-sm-center">
+            <!--
+            ## Si lo quiero usar, agregar "urlCancelar" en los paramatros de la función.
+
+            <a th:if="${urlCancelar != null}" th:href="${urlCancelar}" class="btn btn-outline-secondary px-4 w-100 w-sm-auto">
+                Cancelar
+            </a>
+            -->
+            <button type="submit" class="btn btn-success btn-sm text-uppercase fw-semibold shadow-sm">
+                <span th:text="${textoBoton != null ? textoBoton : 'Guardar'}">Guardar</span>
+            </button>
+        </div>
+
     </div>
 </div>
 

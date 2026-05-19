@@ -18,22 +18,12 @@
         </div>
 
         <div class="card-body">
-
             <form th:action="@{/admin/cargo_tipos/guardar}" th:object="${cargoTipo}" method="post">
 
                 <div class="row">
-                    <div class="col-md-12 form-group mb-3">
-                        <label class="font-weight-bold">Nombre del Cargo <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" th:field="*{nombre}" placeholder="Ej: PROFESOR, PRECEPTOR" required>
-                        <small class="form-text text-muted">El sistema lo guardará automáticamente en mayúsculas.</small>
-                    </div>
-                </div>
+                    <div th:replace="~{fragments/form_inputs :: texto('nombre', 'Nombre del Cargo', 'Ej: Profesor, Preceptor, etc', true, 'El sistema lo guardara automáticamente en mayúsculas' , 4)}"></div>
 
-                <div class="row mt-2">
-                    <div class="col-md-12 form-group">
-                        <label class="font-weight-bold">Descripción (Opcional)</label>
-                        <textarea class="form-control" th:field="*{descripcion}" rows="3" placeholder="Breve detalle..."></textarea>
-                    </div>
+                    <div th:replace="~{fragments/form_inputs :: texto('descripcion', 'Descripción', 'Breve detalle...', false, false, 8)}"></div>
                 </div>
 
                 <div class="col-lg-12 d-flex justify-content-center">
@@ -41,9 +31,7 @@
                         Guardar Tipo de Cargo
                     </button>
                 </div>
-
             </form>
-
         </div>
     </div>
 

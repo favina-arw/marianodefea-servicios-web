@@ -27,37 +27,14 @@
                 <input type="hidden" th:field="*{agenteId}">
 
                 <div class="row g-3">
-
                     <!-- Fecha de Alta -->
-                    <div class="col-12 col-md-4">
-                        <label for="fechaAlta" class="form-label fw-semibold text-muted small text-uppercase">Fecha de Alta</label>
-                        <input type="date"
-                               id="fechaAlta"
-                               class="form-control bg-light"
-                               th:field="*{fechaAlta}"
-                               required>
-                    </div>
+                    <div th:replace="~{fragments/form_inputs :: fecha('fechaAlta', 'Fecha de Alta', true, 'Fecha en la que se comienza a ejercer el cargo', 4)}"></div>
 
                     <!-- Hora de Inicio -->
-                    <div class="col-12 col-md-4">
-                        <label for="horaInicio" class="form-label fw-semibold text-muted small text-uppercase">Hora de Entrada</label>
-                        <input type="time"
-                               id="horaInicio"
-                               class="form-control bg-light"
-                               th:field="*{horaInicio}"
-                               required>
-                    </div>
+                    <div th:replace="~{fragments/form_inputs :: hora('horaInicio', 'Hora de Entrada', true, 'Hora en la que inicia actividades', 4)}"></div>
 
                     <!-- Hora de Fin -->
-                    <div class="col-12 col-md-4">
-                        <label for="horaFin" class="form-label fw-semibold text-muted small text-uppercase">Hora de Salida</label>
-                        <input type="time"
-                               id="horaFin"
-                               class="form-control bg-light"
-                               th:field="*{horaFin}"
-                               required>
-                    </div>
-
+                    <div th:replace="~{fragments/form_inputs :: hora('horaFin', 'Hora de Salida', true, 'Hora en la que finaliza actividades', 4)}"></div>
                 </div>
 
                 <hr class="mt-4 mb-3 text-muted opacity-25">
