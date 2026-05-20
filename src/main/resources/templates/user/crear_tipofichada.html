@@ -23,23 +23,12 @@
             <form th:action="@{/fichada/crearTipoFichada}" method="POST">
 
                 <div class="row">
-                    <div class="col-md-6 form-group mb-3">
-                        <label class="font-weight-bold" for="identificador">Identificador <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="identificador" name="identificador" placeholder="Ej: E, S" maxlength="1" required>
-                        <small class="form-text text-muted">Letra o código único (Ej: 'E' para Entrada).</small>
-                    </div>
+                    <div th:replace="~{fragments/form_inputs :: texto('identificador', 'Identificador', 'Ej: E para Entrada, S para Salida', true, 'Letra o código único', 3)}"></div>
 
-                    <div class="col-md-6 form-group mb-3">
-                        <label class="font-weight-bold" for="nombre">Nombre <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Ej: ENTRADA, SALIDA" required>
-                    </div>
+                    <div th:replace="~{fragments/form_inputs :: texto('nombre', 'Nombre', 'Ej: ENTRADA, SALIDA', true, null, 3)}"></div>
                 </div>
 
-                <div class="col-lg-12 d-flex justify-content-center">
-                    <button type="submit" class="btn btn-success btn-sm mt-4">
-                        Confirmar Tipo
-                    </button>
-                </div>
+                <div th:replace="~{fragments/form_inputs :: botonera(null)}"></div>
 
             </form>
 
