@@ -98,7 +98,8 @@ public class FichadaController {
     }
 
     @GetMapping("/crearTipoFichada")
-    public String createTipoFichada(){
+    public String createTipoFichada(Model model){
+        model.addAttribute("tipoFichada", new TipoFichada());
         return "user/crear_tipofichada";
     }
 

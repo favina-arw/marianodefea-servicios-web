@@ -20,7 +20,7 @@
 
         <div class="card-body">
 
-            <form th:action="@{/fichada/crearTipoFichada}" method="POST">
+            <form th:action="@{/fichada/crearTipoFichada}" th:object="${tipoFichada}" method="POST">
 
                 <div class="row">
                     <div th:replace="~{fragments/form_inputs :: texto('identificador', 'Identificador', 'Ej: E para Entrada, S para Salida', true, 'Letra o código único', 3)}"></div>

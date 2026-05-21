@@ -40,11 +40,7 @@
                 <hr class="mt-4 mb-3 text-muted opacity-25">
 
                 <!-- Botonera -->
-                <div class="d-flex justify-content-center gap-2">
-                    <button type="submit" class="btn btn-success btn-sm">
-                        Guardar Cambios
-                    </button>
-                </div>
+                <div th:replace="~{fragments/form_inputs :: botonera(null)}"></div>
 
             </form>
         </div>
