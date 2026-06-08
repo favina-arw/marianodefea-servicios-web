@@ -16,4 +16,5 @@ public interface IFichadaService {
     Fichada save(Fichada fichada);
     void deleteById(Long id);
     Fichada update(Fichada fichada);
+    Fichada registrarFichada(String dni);
 }

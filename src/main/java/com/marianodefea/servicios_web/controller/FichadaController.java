@@ -13,6 +13,7 @@ import com.marianodefea.servicios_web.service.InformeService;
 import com.marianodefea.servicios_web.service.TipoFichadaService;
 import com.marianodefea.servicios_web.utils.DateUtils;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.core.Local;
 import org.springframework.data.domain.Page;
@@ -22,6 +23,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -33,20 +35,21 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
+@AllArgsConstructor
 @RequestMapping("/fichada")
 public class FichadaController {
 
-    @Autowired
-    private FichadaService fichadaService;
 
-    @Autowired
-    private TipoFichadaService tipoFichadaService;
+    private final FichadaService fichadaService;
 
-    @Autowired
-    private AgenteService agenteService;
 
-    @Autowired
-    private InformeService informeService;
+    private final TipoFichadaService tipoFichadaService;
+
+
+    private final AgenteService agenteService;
+
+
+    private final InformeService informeService;
 
     @GetMapping("/listarFichadas")
     public String listarFichadas(
@@ -141,98 +144,26 @@ public class FichadaController {
     @PreAuthorize("permitAll()")
     @PostMapping()
     public String ficharAgente(@RequestParam String dni, Model model, RedirectAttributes redirectAttributes){
-        if (dni.length() <= 8){
-            Optional<Agente> agente = agenteService.findByDni(dni);
-            if (agente.isEmpty()) {
-                redirectAttributes.addFlashAttribute("error", "No se encuantra Agente con DNI: " + dni + "");
-                return "redirect:/fichada/fichador";
-            }
+        try {
+            Fichada fichadaGuardada = fichadaService.registrarFichada(dni);
 
-            List<Fichada> fichadasDeAgente = agente.get().getFichadas();
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm (dd/MM/yy)");
-            char tipoFichada;
-            String mensaje;
+            Agente agente = fichadaGuardada.getAgente();
+            char tipo = fichadaGuardada.getTipoFichada().getIdentificador();
 
-            if(fichadasDeAgente.isEmpty()) {
-                tipoFichada = 'E';
-                mensaje = "¡Hola! ¡" + agente.get().getApellido().toUpperCase() + ", " + agente.get().getNombre().toUpperCase() + "!";
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm (dd/MM/yyyy");
+            String saludo = (tipo == 'E') ? "¡Hola!" : "¡Adiós!";
+            String mensaje = String.format("%s ¡%s, %s!\nHora: %s",
+                    saludo,
+                    agente.getApellido(),
+                    agente.getNombre(),
+                    fichadaGuardada.getHora().format(formatter));
 
-                Fichada nuevaFichada = new Fichada();
-                nuevaFichada.setAgente(agente.get());
-                nuevaFichada.setTipoFichada(tipoFichadaService.findByIdentificador(tipoFichada).get());
-                nuevaFichada.setHora(LocalDateTime.now());
-                Fichada fichadaParaRetornar = fichadaService.save(nuevaFichada);
-                String horaFormateada = fichadaParaRetornar.getHora().format(formatter);
-                redirectAttributes.addFlashAttribute("in", mensaje + "\nHora: " + horaFormateada);
-                return "redirect:/fichada/fichador";
-            }
-
-            if(fichadasDeAgente.get(0).getTipoFichada().getIdentificador().equals('E')){
-                tipoFichada = 'S';
-                mensaje = "¡Adiós! ¡" + agente.get().getApellido().toUpperCase() + ", "+ agente.get().getNombre().toUpperCase() + "!";
-            }else {
-                tipoFichada = 'E';
-                mensaje = "¡Hola! ¡" + agente.get().getApellido().toUpperCase() + ", "+ agente.get().getNombre().toUpperCase() + "!";
-            }
-
-            Fichada nuevaFichada = new Fichada();
-            nuevaFichada.setAgente(agente.get());
-            nuevaFichada.setTipoFichada(tipoFichadaService.findByIdentificador(tipoFichada).get());
-            nuevaFichada.setHora(LocalDateTime.now());
-            Fichada fichadaParaRetornar = fichadaService.save(nuevaFichada);
-            String horaFormateada = fichadaParaRetornar.getHora().format(formatter);
-
-            if(fichadaParaRetornar.getTipoFichada().getIdentificador().equals('E')) {
-                redirectAttributes.addFlashAttribute("in", mensaje + "\nHora: " + horaFormateada);
-            }else {
-                redirectAttributes.addFlashAttribute("out", mensaje + "\nHora: " + horaFormateada);
-            }
-        }else{
-            Optional<Agente> agente = agenteService.findByCuil(dni);
-            if (agente.isEmpty()) {
-                redirectAttributes.addFlashAttribute("error", "No se encuantra Agente con DNI: " + dni + "");
-                return "redirect:/fichada/fichador";
-            }
-
-            List<Fichada> fichadasDeAgente = agente.get().getFichadas();
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm (dd/MM/yy)");
-            char tipoFichada;
-            String mensaje;
-
-            if(fichadasDeAgente.isEmpty()) {
-                tipoFichada = 'E';
-                mensaje = "¡Hola! ¡" + agente.get().getApellido().toUpperCase() + ", " + agente.get().getNombre().toUpperCase() + "!";
-
-                Fichada nuevaFichada = new Fichada();
-                nuevaFichada.setAgente(agente.get());
-                nuevaFichada.setTipoFichada(tipoFichadaService.findByIdentificador(tipoFichada).get());
-                nuevaFichada.setHora(LocalDateTime.now());
-                Fichada fichadaParaRetornar = fichadaService.save(nuevaFichada);
-                String horaFormateada = fichadaParaRetornar.getHora().format(formatter);
-                redirectAttributes.addFlashAttribute("in", mensaje + "\nHora: " + horaFormateada);
-                return "redirect:/fichada/fichador";
-            }
-
-            if(fichadasDeAgente.get(0).getTipoFichada().getIdentificador().equals('E')){
-                tipoFichada = 'S';
-                mensaje = "¡Adiós! ¡" + agente.get().getApellido().toUpperCase() + ", "+ agente.get().getNombre().toUpperCase() + "!";
-
-            }else {
-                tipoFichada = 'E';
-                mensaje = "¡Hola! ¡" + agente.get().getApellido().toUpperCase() + ", " + agente.get().getNombre().toUpperCase() + "!";
-            }
-
-            Fichada nuevaFichada = new Fichada();
-            nuevaFichada.setAgente(agente.get());
-            nuevaFichada.setTipoFichada(tipoFichadaService.findByIdentificador(tipoFichada).get());
-            nuevaFichada.setHora(LocalDateTime.now());
-            Fichada fichadaParaRetornar = fichadaService.save(nuevaFichada);
-            String horaFormateada = fichadaParaRetornar.getHora().format(formatter);
-            if(fichadaParaRetornar.getTipoFichada().getIdentificador().equals('E')) {
-                redirectAttributes.addFlashAttribute("in", mensaje + "\nHora: " + horaFormateada);
-            }else {
-                redirectAttributes.addFlashAttribute("out", mensaje + "\nHora: " + horaFormateada);
-            }
+            String flashAttributeName = (tipo == 'E') ? "in" : "out";
+            redirectAttributes.addFlashAttribute(flashAttributeName, mensaje);
+        }catch (IllegalArgumentException e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+        }catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
         }
         return "redirect:/fichada/fichador";
     }

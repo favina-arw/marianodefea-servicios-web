@@ -15,6 +15,7 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface IFichadaRepository extends JpaRepository<Fichada, Long>, JpaSpecificationExecutor<Fichada> {
@@ -22,6 +23,8 @@ public interface IFichadaRepository extends JpaRepository<Fichada, Long>, JpaSpe
         Specification<Fichada> specification = FichadaSpecification.buscarPorFiltros(nombre, apellido, tipoFichada, fechaDesde, fechaHasta, dni);
         return findAll(specification, pageable);
     }
+
+    Optional<Fichada> findFirstByAgenteOrderByHoraDesc(Agente agente);
     List<Fichada> findByAgenteAndHoraBetween(Agente agente, LocalDateTime start, LocalDateTime end);
     List<Fichada> findTop10ByOrderByHoraDesc();
 

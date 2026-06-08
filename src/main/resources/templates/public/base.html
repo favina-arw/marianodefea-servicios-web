@@ -87,23 +87,30 @@
 <script th:inline="javascript">
     function lanzarToast(mensaje, tipo = 'success') {
         let colorBackground;
+        let colorText; // Nueva variable para el texto
+
         switch(tipo) {
             case 'error':
             case 'danger':
-                colorBackground = "#ff0c0c";
+                colorBackground = "#f8d7da";
+                colorText = "#58151c"; // text-danger-emphasis
                 break;
             case 'warning':
-                colorBackground = "#f3e012";
+                colorBackground = "#fff3cd";
+                colorText = "#664d03"; // text-warning-emphasis
                 break;
-            case 'out': // Sumamos el color para 'out' (Salida)
-                colorBackground = "#f89b29";
+            case 'out':
+                colorBackground = "#ffe5d0";
+                colorText = "#8a3a00"; // Tono marrón oscuro para contraste con naranja
                 break;
             case 'info':
-            case 'in': // Sumamos el color para 'in' (Entrada)
-                colorBackground = "#2193b0";
+            case 'in':
+                colorBackground = "#cff4fc";
+                colorText = "#055160"; // text-info-emphasis
                 break;
             default: // success
-                colorBackground = "#26bf16";
+                colorBackground = "#d1e7dd";
+                colorText = "#0f5132"; // text-success-emphasis
         }
 
         Toastify({
@@ -114,11 +121,12 @@
             position: "right",
             stopOnFocus: true,
             offset: {
-                x: 0,  // Margen horizontal
-                y: 45  // Margen vertical (Aumentá este número si querés que baje más)
+                x: 0,
+                y: 45
             },
             style: {
                 background: colorBackground,
+                color: colorText, // Aplicamos el color de texto dinámico
                 borderRadius: "10px",
                 fontWeight: "600",
                 fontSize: "13px",
@@ -155,7 +163,6 @@
         });
     });
 </script>
-<div th:replace="~{fragments/toast :: toast_global}"></div>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/i18n/es.js"></script>
