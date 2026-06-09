@@ -17,29 +17,26 @@
             <hr class="mt-3 mb-0 text-muted opacity-25">
         </div>
 
-        <!-- === INICIO ALERTA DE ERROR === -->
         <div th:replace="~{fragments/alertas :: alertaErrorFormulario(${errorExt})}"></div>
-        <!-- === FIN ALERTA DE ERROR === -->
-
         <div class="card-body">
 
             <form th:action="@{/agentes/guardar_asignacion}" th:object="${asignacionDTO}" method="post">
 
                 <div class="row">
                     <div class="col-md-6">
-                        <label class="font-weight-bold">Seleccionar Agente <span class="text-danger">*</span></label>
-                        <select th:field="*{agenteId}" class="form-control" required>
-                            <option value="" class="text-muted">Elegí un agente de la lista...</option>
-                            <option th:each="agente : ${agentes}"
-                                    th:value="${agente.id}"
-                                    th:text="${agente.apellido + ', ' + agente.nombre}"></option>
+                        <label class="font-weight-bold">Agente Seleccionado</label>
+                        <select class="form-control" disabled>
+                            <option th:value="${agente.id}"
+                                    th:text="${agente.apellido + ', ' + agente.nombre}"
+                                    selected></option>
                         </select>
+                        <input type="hidden" th:field="*{agenteId}" />
                     </div>
+
                     <div class="col-md-6 form-group">
                         <label class="font-weight-bold">Seleccionar Cargo Disponible <span class="text-danger">*</span></label>
                         <select th:field="*{cargoId}" class="form-control" required>
                             <option value="" class="text-muted">Elegí un cargo...</option>
-                            <!-- Esto asume que tenés los Cargos en el modelo. Ajustá el th:text si necesitás mostrar el curso -->
                             <option th:each="cargo : ${cargos}"
                                     th:value="${cargo.id}"
                                     th:text="${cargo.cargoTipo.nombre}"></option>
@@ -73,7 +70,6 @@
         </div>
     </div>
 
-    <!-- Botón para volver al listado -->
     <div class="card mt-5">
         <div class="card-body d-flex justify-content-center">
             <a th:href="@{/agentes/}" class="btn btn-sm btn-primary">

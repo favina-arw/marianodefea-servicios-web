@@ -20,7 +20,7 @@
 
         <div class="card-body px-4 py-4">
             <!-- El action apunta al @PostMapping de tu controlador -->
-            <form th:action="@{/admin/asignaciones/agenteCargo/editar}" th:object="${cargoEdit}" method="post">
+            <form th:action="@{/agentes/agenteCargo/editar}" th:object="${cargoEdit}" method="post">
 
                 <!-- CLAVE: Campos ocultos para mantener los IDs durante el viaje al backend -->
                 <input type="hidden" th:field="*{id}">

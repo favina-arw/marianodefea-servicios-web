@@ -24,7 +24,7 @@
 
     <div class="col-12 col-sm-6 col-xl-3">
       <div th:replace="~{fragments/components :: action_card(
-                url='/admin/asignaciones/crear',
+                url='/agentes/asignar_cargo',
                 iconClass='bi bi-briefcase-fill',
                 title='Asignar Cargo',
                 subtitle='Vincular agente a cargo')}">
@@ -60,14 +60,15 @@
           <tr th:each="agente : ${agentes}">
             <td class="ps-3 text-start fw-semibold" th:text="${agente.nombre.toUpperCase()}"></td>
             <td class="text-center fw-semibold" th:text="${agente.apellido.toUpperCase()}"></td>
-            <td class="text-center text-muted" th:text="${agente.dni}"></td>
-            <td class="text-center text-muted" th:text="${agente.cuil}"></td>
+            <td class="text-center" th:text="${agente.dni}"></td>
+            <td class="text-center" th:text="${agente.cuil}"></td>
 
             <!-- BOTÓN DISPARADOR DEL MODAL -->
             <td class="text-center">
               <button type="button"
-                      class="btn btn-sm btn-outline-secondary rounded-pill fw-bold"
+                      class="btn btn-sm rounded-pill fw-bold"
                       data-bs-toggle="modal"
+                      th:classappend="${agente.cargosAsignados.size() > 0 ? 'btn-outline-primary': 'btn-outline-secondary'}"
                       th:data-bs-target="'#modalCargos_' + ${agente.id}"
                       th:title="'Ver cargos de ' + ${agente.nombre}">
                 <i class="bi bi-briefcase me-1"></i>
@@ -126,12 +127,19 @@
       <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content border-0 shadow">
 
-          <div class="modal-header">
-            <h5 class="modal-title fw-bold text-uppercase" id="modalCargosLabel">
-              <i class="bi bi-person-badge me-2 text-primary"></i>
-              Cargos de <span class="text-primary" th:text="${agente.nombre + ' ' + agente.apellido}"></span>
-            </h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+          <div class="modal-header d-flex justify-content-between">
+            <div>
+              <h5 class="modal-title fw-bold text-uppercase" id="modalCargosLabel">
+                <i class="bi bi-person-badge me-2 text-primary"></i>
+                Cargos de <span class="text-primary" th:text="${agente.nombre + ' ' + agente.apellido}"></span>
+              </h5>
+            </div>
+            <div>
+              <a th:href="@{/agentes/{id}/asignar_cargo(id=${agente.id})}" class="btn btn-primary btn-sm shadow-sm fw-bold">
+                <i class="bi bi-plus-circle me-1"></i> Asignar Nuevo Cargo
+              </a>
+              <button type="button" class="btn-close ms-2" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
           </div>
 
           <div class="modal-body">
@@ -155,7 +163,7 @@
                     <span class="badge bg-light text-dark border border-secondary" th:text="${cargoAsignado.horaSalida}"></span>
                   </td>
                   <td>
-                    <a th:href="@{/admin/asignaciones/agenteCargo/editar/{id}(id=${cargoAsignado.id})}"
+                    <a th:href="@{/agentes/agenteCargo/editar/{id}(id=${cargoAsignado.id})}"
                        class="btn btn-sm btn-primary"
                        data-bs-toggle="tooltip" title="Editar datos">
                       <i class="bi bi-pencil-square"></i>
@@ -176,7 +184,6 @@
 
           <div class="modal-footer border-top-0">
             <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Cerrar</button>
-            <!-- Acá el día de mañana podés meter un botón tipo "Asignar nuevo cargo a este agente" -->
           </div>
 
         </div>
