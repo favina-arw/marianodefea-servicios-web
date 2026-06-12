@@ -75,6 +75,7 @@ public class AgenteService implements IAgenteService {
     public List<ListarAgenteDTO> obtenerTodosLosAgentesDTO(){
         return agenteRepository.findAll().stream().map(agente -> {
             List<CargoAsignadoDTO> cargosAsignados = agente.getCargosAsignados().stream()
+                    .filter(ca -> ca.isActivo())
                     .map(ca -> new CargoAsignadoDTO(
                     ca.getId(),
                     ca.getCargo().getCargoTipo().getNombre(),

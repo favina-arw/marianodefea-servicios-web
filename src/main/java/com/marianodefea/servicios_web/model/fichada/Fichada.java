@@ -28,5 +28,4 @@ public class Fichada {
     private Agente agente;
     @Column(name = "tipo_registro", nullable = false, columnDefinition = "varchar(255) default 'MANUAL'")
     private String tipoRegistro = "MANUAL";
-
 }

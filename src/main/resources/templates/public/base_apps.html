@@ -4,8 +4,8 @@
     <th:block layout:fragment="estilos_adicionales">
         <style>
             :root {
-                --sidebar-width: 220px; /* Antes 250px */
-                --sidebar-collapsed-width: 50px; /* Antes 60px */
+                --sidebar-width: 220px;
+                --sidebar-collapsed-width: 50px;
                 --transition-speed: 0.25s;
             }
 
@@ -24,7 +24,7 @@
             .main-content {
                 margin-left: var(--sidebar-collapsed-width);
                 transition: margin-left 0.3s ease;
-                padding-top: 48px; /* Redujimos el margen superior para la nueva navbar más finita */
+                padding-top: 48px;
                 display: flex;
                 flex-direction: column;
                 min-height: 100vh;
@@ -36,9 +36,9 @@
             .list-group-item {
                 display: flex; align-items: center; white-space: nowrap;
                 border: none !important;
-                padding: 0.5rem 0 !important; /* Antes 0.8rem. Esto junta más los botones */
+                padding: 0.5rem 0 !important;
                 transition: all 0.2s ease; border-left: 3px solid transparent !important;
-                font-size: 0.9rem; /* Letra un pelín más chica */
+                font-size: 0.9rem;
             }
 
             .list-group-item:hover {
@@ -50,7 +50,7 @@
             .list-group-item i {
                 min-width: calc(var(--sidebar-collapsed-width) - 3px);
                 text-align: center;
-                font-size: 1.1rem; /* Iconos más discretos */
+                font-size: 1.1rem;
             }
 
             .menu-text { opacity: 0; transition: opacity 0.2s ease; font-weight: 500; margin-left: 10px; }
@@ -71,31 +71,20 @@
 <body>
 
 <div layout:fragment="content">
-    <!-- Inyección del Sidebar -->
     <div th:replace="~{fragments/sidebar :: sidebar}"></div>
 
     <div class="main-content flex-grow-1">
-        <!-- Inyección del Navbar -->
         <div th:replace="~{fragments/navbar :: navbar}"></div>
 
-        <!-- CONTENIDO DINÁMICO DE LAS VISTAS -->
-        <main class="p-4">
+        <main class="p-3">
             <div layout:fragment="app_content"></div>
         </main>
 
-        <!-- Inyección del Footer -->
         <div th:replace="~{fragments/footer :: footer}"></div>
-
-
     </div>
 
-</div>
-
-<th:block layout:fragment="scripts_adicionales">
     <script>
-
         // TEMAS CLARO/OSCURO
-
         const menuToggle = document.getElementById("menu-toggle");
         const body = document.body;
 
@@ -133,23 +122,18 @@
         });
 
         // CONFIGURACIÓN PARA INPUTS TIPO HORA
-
         document.addEventListener('DOMContentLoaded', function() {
-
-            // Inicializamos todos los inputs de hora con formato 24hs estricto
             flatpickr(".reloj-24h", {
-                enableTime: true,        // Habilita selección de tiempo
-                noCalendar: true,        // Apaga el calendario (solo queremos la hora)
-                dateFormat: "H:i",       // Formato backend: "14:30"
-                time_24hr: true,         // ¡La magia! Fuerza las 24 horas sin AM/PM
-                locale: "es",            // Idioma español
-                minuteIncrement: 5       // Salta de a 5 minutos (opcional, podés poner 1)
+                enableTime: true,
+                noCalendar: true,
+                dateFormat: "H:i",
+                time_24hr: true,
+                locale: "es",
+                minuteIncrement: 5
             });
-
         });
 
         // PREVISUALIZACIÓN DE ARCHIVOS
-
         function previsualizarArchivo(input, campo) {
             const container = document.getElementById('container_preview_' + campo);
             const imgPreview = document.getElementById('img_preview_' + campo);
@@ -159,15 +143,13 @@
             if (input.files && input.files[0]) {
                 const file = input.files[0];
                 const fileType = file.type;
-                const fileURL = URL.createObjectURL(file); // Crea ruta temporal local
+                const fileURL = URL.createObjectURL(file);
 
-                // Resetear estados visuales
                 imgPreview.classList.add('d-none');
                 pdfPreview.classList.add('d-none');
                 infoPreview.classList.add('d-none');
                 container.classList.remove('d-none');
 
-                // Evaluar tipo de archivo
                 if (fileType.startsWith('image/')) {
                     imgPreview.src = fileURL;
                     imgPreview.classList.remove('d-none');
@@ -175,7 +157,6 @@
                     pdfPreview.src = fileURL;
                     pdfPreview.classList.remove('d-none');
                 } else {
-                    // Si sube un .doc, .xls, .zip, etc., mostramos un feedback amigable
                     const spanText = infoPreview.querySelector('span');
                     spanText.innerText = `${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)`;
                     infoPreview.classList.remove('d-none');
@@ -188,15 +169,13 @@
         function limpiarArchivo(campo) {
             const input = document.getElementById('id_' + campo);
             const container = document.getElementById('container_preview_' + campo);
-
             if (input) {
-                input.value = ''; // Resetea el input de tipo archivo nativo
-                container.classList.add('d-none'); // Esconde la caja de preview
+                input.value = '';
+                container.classList.add('d-none');
             }
         }
 
         document.addEventListener('DOMContentLoaded', function() {
-            // Inicializar Select2
             $('.select2-busqueda').select2({
                 theme: 'bootstrap-5',
                 language: 'es',
@@ -205,7 +184,6 @@
             });
         });
     </script>
-
-</th:block>
+</div>
 </body>
 </html>

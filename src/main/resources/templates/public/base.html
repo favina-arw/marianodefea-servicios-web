@@ -5,13 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title layout:title-pattern="$LAYOUT_TITLE - $CONTENT_TITLE">Gestión Escolar</title>
 
-    <!-- 1. Bootstrap 5, Bootstrap Icons y jQuery vía WebJars -->
-    <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
-    <link rel="stylesheet" th:href="@{/webjars/bootstrap-icons/font/bootstrap-icons.css}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css">
 
-    <!-- Toastify CSS (Lo dejo por CDN a menos que lo hayas descargado) -->
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
 
     <script>
@@ -51,7 +50,6 @@
 
         [data-bs-theme="dark"] .card:hover { border-color: rgba(255, 255, 255, 0.2); }
 
-        /* Animación para las tarjetas de acción */
         .action-card-link .action-card {
             transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
             border: 1px solid var(--bs-border-color-translucent) !important;
@@ -79,38 +77,42 @@
 
 <div layout:fragment="content"></div>
 
-<!-- Scripts Globales vía WebJars -->
-<script th:src="@{/webjars/jquery/jquery.min.js}"></script>
-<script th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/i18n/es.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 
 <script th:inline="javascript">
     function lanzarToast(mensaje, tipo = 'success') {
         let colorBackground;
-        let colorText; // Nueva variable para el texto
+        let colorText;
 
         switch(tipo) {
             case 'error':
             case 'danger':
                 colorBackground = "#f8d7da";
-                colorText = "#58151c"; // text-danger-emphasis
+                colorText = "#58151c";
                 break;
             case 'warning':
                 colorBackground = "#fff3cd";
-                colorText = "#664d03"; // text-warning-emphasis
+                colorText = "#664d03";
                 break;
             case 'out':
                 colorBackground = "#ffe5d0";
-                colorText = "#8a3a00"; // Tono marrón oscuro para contraste con naranja
+                colorText = "#8a3a00";
                 break;
             case 'info':
             case 'in':
                 colorBackground = "#cff4fc";
-                colorText = "#055160"; // text-info-emphasis
+                colorText = "#055160";
                 break;
-            default: // success
+            default:
                 colorBackground = "#d1e7dd";
-                colorText = "#0f5132"; // text-success-emphasis
+                colorText = "#0f5132";
         }
 
         Toastify({
@@ -120,13 +122,10 @@
             gravity: "top",
             position: "right",
             stopOnFocus: true,
-            offset: {
-                x: 0,
-                y: 45
-            },
+            offset: { x: 0, y: 45 },
             style: {
                 background: colorBackground,
-                color: colorText, // Aplicamos el color de texto dinámico
+                color: colorText,
                 borderRadius: "10px",
                 fontWeight: "600",
                 fontSize: "13px",
@@ -135,25 +134,18 @@
         }).showToast();
     }
 
-    // Interceptor de mensajes de Spring Boot Model
     document.addEventListener('DOMContentLoaded', function() {
-        // Obtenemos TODAS las posibles variables del modelo
         var successMsg = /*[[${success}]]*/ null;
         var errorMsg = /*[[${error}]]*/ null;
         var infoMsg = /*[[${info}]]*/ null;
         var warningMsg = /*[[${warning}]]*/ null;
-
-        // Sumamos las del controlador de fichadas
         var inMsg = /*[[${in}]]*/ null;
         var outMsg = /*[[${out}]]*/ null;
 
-        // Disparamos los Toast según lo que haya llegado
         if (successMsg) lanzarToast(successMsg, 'success');
         if (errorMsg) lanzarToast(errorMsg, 'error');
         if (infoMsg) lanzarToast(infoMsg, 'info');
         if (warningMsg) lanzarToast(warningMsg, 'warning');
-
-        // Disparamos las fichadas
         if (inMsg) lanzarToast(inMsg, 'in');
         if (outMsg) lanzarToast(outMsg, 'out');
 
@@ -163,9 +155,7 @@
         });
     });
 </script>
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/i18n/es.js"></script>
+
 <th:block layout:fragment="scripts_adicionales"></th:block>
 </body>
 </html>

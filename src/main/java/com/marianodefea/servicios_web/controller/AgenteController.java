@@ -11,6 +11,7 @@ import com.marianodefea.servicios_web.service.CargoService;
 import com.marianodefea.servicios_web.utils.Horario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.swing.text.html.Option;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -164,7 +166,10 @@ public class AgenteController {
             if (agente.isPresent()) {
                 model.addAttribute("agente", agente.get());
                 model.addAttribute("cargos", cargoService.obtenerActivos());
-                model.addAttribute("asignacionDTO", new AsignacionCargoDTO());
+                AsignacionCargoDTO asignacionCargoDTO = new AsignacionCargoDTO();
+                asignacionCargoDTO.setAgenteId(id);
+                model.addAttribute("asignacionDTO", asignacionCargoDTO);
+
             } else {
                 // Si el Optional está vacío, redirigimos acá (no entra al catch)
                 redirectAttributes.addFlashAttribute("error", "El agente que intenta modificar no se encuentra.");
@@ -193,7 +198,7 @@ public class AgenteController {
         }catch(IllegalArgumentException iae) {
             redirectAttributes.addFlashAttribute("error", "Error al procesar la asignación");
             redirectAttributes.addFlashAttribute("errorExt", iae.getMessage());
-            return "redirect:/admin/asignaciones/crear";
+            return "redirect:/agentes/";
         }catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Error al procesar la asignación: " + e.getMessage());
             redirectAttributes.addFlashAttribute("errorExt", "" + e.getMessage());
@@ -245,6 +250,20 @@ public class AgenteController {
             redirectAttributes.addFlashAttribute("error", "Error al guardar los cambios del cargo.");
         }
         return "redirect:/agentes/ver/" + dto.getAgenteId();
+    }
+
+    @PostMapping("/agenteCargo/baja/{id}")
+    public String darBajaCargo(@PathVariable Long id,
+                               @RequestParam("fechaBaja") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaBaja,
+                               RedirectAttributes redirectAttributes){
+        try{
+            agenteCargoService.registrarBaja(id, fechaBaja);
+            redirectAttributes.addFlashAttribute("success", "Cargo dado de baja correctamente.");
+        }catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Error al intentar dar de baja al cargo");
+            redirectAttributes.addFlashAttribute("errorExt", e.getMessage());
+        }
+        return "redirect:/agentes/";
     }
 
 }

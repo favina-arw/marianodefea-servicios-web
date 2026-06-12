@@ -1,35 +1,25 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
-      layout:decorate="~{public/base_apps}"> <!-- ¡Esta línea es la que hace la magia! -->
+      layout:decorate="~{public/base_apps}">
 <head>
-    <!-- El título específico de esta pestaña. Todo lo demás (CSS, iconos) lo trae el base -->
     <title>Panel Principal</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 </head>
 <body>
 
-    <!-- Llenamos el hueco del base_apps -->
-    <div layout:fragment="app_content">
+<div layout:fragment="app_content">
 
-    <!-- Título que va a estar fijo en todos los dashboards -->
-    <!-- Contenedor del título (y si el día de mañana agregás un botón a la derecha, va acá adentro) -->
     <div class="d-flex justify-content-between align-items-center mb-2">
         <h5 class="mb-0 fw-bold text-body">Sistema de Gestión Escolar</h5>
     </div>
 
-    <!-- La línea separadora va AFUERA del flex -->
     <hr class="mb-4 text-muted">
 
-    <!-- ABRIMOS UN NUEVO HUECO PARA LOS HIJOS -->
-    <div layout:fragment="dashboard_content">
-        <!-- Acá va a caer la info de main_dashboard.html -->
-    </div>
+    <div layout:fragment="dashboard_content"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
-
-</div>
 
 </div>
 

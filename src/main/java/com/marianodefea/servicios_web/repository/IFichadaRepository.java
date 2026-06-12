@@ -27,6 +27,7 @@ public interface IFichadaRepository extends JpaRepository<Fichada, Long>, JpaSpe
     Optional<Fichada> findFirstByAgenteOrderByHoraDesc(Agente agente);
     List<Fichada> findByAgenteAndHoraBetween(Agente agente, LocalDateTime start, LocalDateTime end);
     List<Fichada> findTop10ByOrderByHoraDesc();
+    List<Fichada> findByHoraBetween(LocalDateTime start, LocalDateTime end);
 
     @Query("SELECT f FROM Fichada f " +
             "JOIN f.tipoFichada tf " +

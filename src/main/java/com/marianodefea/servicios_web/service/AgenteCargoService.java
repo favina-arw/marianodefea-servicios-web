@@ -12,29 +12,46 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class AgenteCargoService {
 
-    @Autowired private IAgenteCargoRepository agenteCargoRepository;
-    @Autowired private IAgenteRepository agenteRepository;
-    @Autowired private ICargoRepository cargoRepository;
+    @Autowired
+    private IAgenteCargoRepository agenteCargoRepository;
+    @Autowired
+    private IAgenteRepository agenteRepository;
+    @Autowired
+    private ICargoRepository cargoRepository;
 
-    public Optional<AgenteCargo> findById(Long id){ return agenteCargoRepository.findById(id); }
+    public Optional<AgenteCargo> findById(Long id) {
+        return agenteCargoRepository.findById(id);
+    }
 
-    public Optional<AgenteCargo> findByIdConRelaciones(Long id){ return agenteCargoRepository.findByIdConRelaciones(id); }
+    public Optional<AgenteCargo> findByIdConRelaciones(Long id) {
+        return agenteCargoRepository.findByIdConRelaciones(id);
+    }
 
-    public AgenteCargo save(AgenteCargo agenteCargo){ return agenteCargoRepository.save(agenteCargo); }
+    public AgenteCargo save(AgenteCargo agenteCargo) {
+        return agenteCargoRepository.save(agenteCargo);
+    }
 
-    public Optional<AgenteCargo> findByIdCompleto(Long id) { return agenteCargoRepository.findByIdCompleto(id); }
+    public Optional<AgenteCargo> findByIdCompleto(Long id) {
+        return agenteCargoRepository.findByIdCompleto(id);
+    }
+
+    @Transactional(readOnly = true)
+    public List<AgenteCargo> findAll() {
+        return agenteCargoRepository.findAll();
+    }
 
     @Transactional
     public void asignarCargo(AsignacionCargoDTO dto) {
         Horario nuevoHorario = new Horario(dto.getHoraInicio(), dto.getHoraFin());
 
-        if (existeSuperposicion(dto.getAgenteId(), nuevoHorario,null))
+        if (existeSuperposicion(dto.getAgenteId(), nuevoHorario, null))
             throw new IllegalArgumentException("El horario ingresado se superpone con otro cargo activo de éste agente.");
 
         // Buscamos a las partes involucradas
@@ -60,19 +77,29 @@ public class AgenteCargoService {
         List<AgenteCargo> cargosActivos = agenteCargoRepository.findByAgente_IdAndActivoTrue(agenteId);
 
         for (AgenteCargo cargoExistente : cargosActivos) {
-            if (idCargoAExcluir != null && cargoExistente.getId().equals(idCargoAExcluir)){
+            if (idCargoAExcluir != null && cargoExistente.getId().equals(idCargoAExcluir)) {
                 continue;
             }
 
-            if (cargoExistente.getHorario() == null || cargoExistente.getHorario().getHoraInicio() == null){
+            if (cargoExistente.getHorario() == null || cargoExistente.getHorario().getHoraInicio() == null) {
                 continue;
             }
 
-            if (cargoExistente.getHorario().superponeCon(nuevoHorario)){
+            if (cargoExistente.getHorario().superponeCon(nuevoHorario)) {
                 return true;
             }
         }
 
         return false;
     }
+
+    @Transactional
+    public void registrarBaja(Long idAsignacion, LocalDate fechaBaja) {
+        AgenteCargo asignacion = agenteCargoRepository.findById(idAsignacion)
+                .orElseThrow(() -> new IllegalArgumentException("No se encontró la asignación solicitada"));
+        asignacion.setActivo(false);
+        asignacion.setFechaBaja(fechaBaja);
+        agenteCargoRepository.save(asignacion);
+    }
+
 }

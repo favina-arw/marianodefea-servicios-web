@@ -17,6 +17,7 @@ import java.util.Optional;
 public class AsistenciaPorAgenteDTO {
     private Agente agente;
     private List<Asistencia> asistencias;
+    private List<AnomaliaDiariaDTO> anomalias;
 
     public Optional<Asistencia> getAsistenciaPorDia(LocalDate dia) {
         if (asistencias == null) {
@@ -26,4 +27,9 @@ public class AsistenciaPorAgenteDTO {
                 .filter(a -> a != null && a.getDia() != null && a.getDia().equals(dia))
                 .findFirst();
     }
+
+    public boolean tieneAnomalias() {
+        return anomalias != null && !anomalias.isEmpty();
+    }
+
 }

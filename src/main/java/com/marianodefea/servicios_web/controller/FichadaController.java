@@ -89,7 +89,12 @@ public class FichadaController {
     }
 
     @GetMapping("/informeAsistenciaMensual/{mes}")
-    public String mostrarInforme(Model model, @PathVariable("mes") int numeroMes){
+    public String mostrarInforme(Model model, @PathVariable("mes") int numeroMes, RedirectAttributes redirectAttributes){
+        if (numeroMes < 1 || numeroMes > 12) {
+            redirectAttributes.addFlashAttribute("error", "Mes inválido.");
+            // Lo mandamos al método por defecto (o al mes actual)
+            return "redirect:/fichada/informeAsistenciaMensual";
+        }
         List<AsistenciaPorAgenteDTO> informe = informeService.generarInformeAsistenciaMensual(numeroMes);
         LocalDate inicio = DateUtils.getPrimerDiaDelMes(numeroMes);
         LocalDate fin = DateUtils.getUltimoDiaDelMes(numeroMes);

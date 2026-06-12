@@ -92,6 +92,40 @@
                             </tbody>
                         </table>
                     </div>
+                    <hr class="mt-4 mb-3 border-secondary opacity-25">
+
+                    <h6 class="fw-bold text-uppercase mb-3">
+                        <i class="bi bi-exclamation-circle text-warning me-2"></i> Anexo de Novedades e Irregularidades
+                    </h6>
+
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="list-group list-group-flush border rounded shadow-sm">
+                                <div th:each="registro : ${informe}" th:if="${registro.tieneAnomalias()}" class="list-group-item bg-transparent py-3">
+                                    <div class="d-flex w-100 justify-content-between align-items-center mb-2">
+                                        <h6 class="mb-0 fw-bold text-primary">
+                                            <i class="bi bi-person me-1"></i>
+                                            <span th:text="${registro.agente.apellido.toUpperCase() + ', ' + registro.agente.nombre}"></span>
+                                        </h6>
+                                        <span class="badge bg-danger-subtle text-danger border border-danger-subtle rounded-pill">
+                                            <span th:text="${registro.anomalias.size()}"></span> anomalía/s
+                                        </span>
+                                    </div>
+                                    <ul class="mb-0 list-unstyled ps-4 border-start border-2 border-warning ms-2 pe-1">
+                                        <li th:each="anomalia : ${registro.anomalias}" class="mb-1 small">
+                                            <span class="fw-semibold me-2" th:text="${#temporals.format(anomalia.fecha, 'dd/MM/yyyy')} + ':'"></span>
+                                            <span th:text="${anomalia.observacion}"></span>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div th:if="${#lists.isEmpty(informe.?[tieneAnomalias()])}" class="list-group-item bg-transparent py-4 text-center fst-italic">
+                                    <i class="bi bi-check-circle fs-4 text-success d-block mb-2"></i>
+                                    No se registraron llegadas tarde ni salidas anticipadas en este período.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <!-- Botón para volver al listado -->

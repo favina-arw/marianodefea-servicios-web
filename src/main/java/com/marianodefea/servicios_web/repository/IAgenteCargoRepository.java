@@ -20,4 +20,6 @@ public interface IAgenteCargoRepository extends JpaRepository<AgenteCargo, Long>
 
     // Traer todo los cargos activos de un agente en particulare
     List<AgenteCargo> findByAgente_IdAndActivoTrue(Long id);
+
+    List<AgenteCargo> findByAgenteIdOrderByActivoDescFechaAltaDesc(Long agenteId);
 }
